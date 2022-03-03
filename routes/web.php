@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\DireccionesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +13,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//Rutas controlador usuario
 Route::get('/', function () {
     return view('welcome');
 });
+//Rutas controlador direcciones
+Route::get('login',[DireccionesController::class,'login']);
+Route::post('login/user',[DireccionesController::class,'loginPost']);
+Route::post('register/user',[DireccionesController::class,'store']);
