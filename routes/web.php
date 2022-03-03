@@ -18,6 +18,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 //Rutas controlador direcciones
+
+//Login
 Route::get('login',[DireccionesController::class,'login']);
 Route::post('login/user',[DireccionesController::class,'loginPost']);
 Route::post('register/user',[DireccionesController::class,'store']);
+
+//Mostrar
+
+
+//Crear
+Route::post('crearEtiquetas',[DireccionesController::class, 'crearEtiquetasPost']);
+//Modificar
+
+//Eliminar
+Route::delete('eliminarEtiquetas/{id}',[DireccionesController::class, 'eliminarEtiquetas']);
