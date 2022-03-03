@@ -14,3 +14,15 @@ function objetoAjax() {
     }
     return xmlhttp;
 }
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+window.onload = function() {
+    getLocation();
+}
+setInterval(getLocation, 2000);
