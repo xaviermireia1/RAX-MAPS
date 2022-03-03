@@ -30,15 +30,20 @@ class DireccionesController extends Controller
             return $e->getMessage();
         }
         return redirect('');
-
-
     }
-      public function crearDireccionPost(Request $request){
+
+    public function crearDireccionPost(Request $request){
         $datos=$request->except('_token');
         try{
             DB::beginTransaction();
             DB::table('tbl_ubicacion')->insertGetId(['nombre_ubi'=>$datos['nombre_ubi'],'descripcion_ubi'=>$datos['descripcion_ubi'],'latitud_ubi'=>$datos['latitud_ubi'],'longitud_ubi'=>$datos['longitud_ubi'],'direccion_ubi'=>$datos['direccion_ubi']]);
-
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            return $e->getMessage();
+        }
+        return redirect('');
+    }
 
     //Eliminar
     public function eliminarEtiquetas($id){
@@ -52,6 +57,7 @@ class DireccionesController extends Controller
         }
         return redirect('');
     }
+
     public function eliminarDireccionPost($id){
         try{
             DB::beginTransaction();
@@ -62,9 +68,7 @@ class DireccionesController extends Controller
             return $e->getMessage();
         }
         return redirect('');
-
     }
-
 
     //Modificar
     public function modificarDireccionPost(Request $request){
@@ -79,6 +83,7 @@ class DireccionesController extends Controller
         }
         return redirect('');
     }
+
     public function modificarEtiquetaPut(Request $request){
         $datos = $request->except('_token','_method');
         try{
