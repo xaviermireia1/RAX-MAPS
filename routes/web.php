@@ -15,7 +15,7 @@ use App\Http\Controllers\DireccionesController;
 */
 //Rutas controlador usuario
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 //Rutas controlador direcciones
 
