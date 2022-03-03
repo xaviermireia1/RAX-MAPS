@@ -3,82 +3,54 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Exception;
+use Illuminate\Support\Facades\Storage;
+use PhpParser\Node\Stmt\TryCatch;
 
 class DireccionesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    //Crear
+    public function crearDireccionPost(Request $request){
+        $datos=$request->except('_token');
+        try{
+            DB::beginTransaction();
+            DB::table('tbl_ubicacion')->insertGetId(['nombre_ubi'=>$datos['nombre_ubi'],'descripcion_ubi'=>$datos['descripcion_ubi'],'latitud_ubi'=>$datos['latitud_ubi'],'longitud_ubi'=>$datos['longitud_ubi'],'direccion_ubi'=>$datos['direccion_ubi']]);
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            return $e->getMessage();
+        }
+        return redirect('');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    //Modificar
+    public function modificarDireccionPost(Request $request){
+        $datos=$request->except('_token');
+        try {
+            DB::beginTransaction();
+            DB::table('tbl_ubicacion')->where('id','=',$datos['id'])->update($datos);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $e->getMessage();
+        }
+        return redirect('');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    //Mostrar
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    //Eliminar
+    public function eliminarDireccionPost($id){
+        try{
+            DB::beginTransaction();
+            DB::table('tbl_ubicacion')->where('id','=',$id)->delete();
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            return $e->getMessage();
+        }
+        return redirect('');
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
