@@ -58,7 +58,7 @@ class DireccionesController extends Controller
         return redirect('');
     }
 
-    public function eliminarDireccionPost($id){
+    public function eliminarDireccion($id){
         try{
             DB::beginTransaction();
             DB::table('tbl_ubicacion')->where('id','=',$id)->delete();
@@ -71,7 +71,7 @@ class DireccionesController extends Controller
     }
 
     //Modificar
-    public function modificarDireccionPost(Request $request){
+    public function modificarDireccionPut(Request $request){
         $datos=$request->except('_token');
         try {
             DB::beginTransaction();

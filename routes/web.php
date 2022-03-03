@@ -29,7 +29,14 @@ Route::post('register/user',[DireccionesController::class,'store']);
 
 //Crear
 Route::post('crearEtiquetas',[DireccionesController::class, 'crearEtiquetasPost']);
-//Modificar
 
+Route::post('crearDireccion',[DireccionesController::class, 'crearDireccionPost']);
+
+//Modificar
+Route::put('modificarDireccion',[DireccionesController::class, 'modificarDireccionPut']);
+
+Route::put('modificarEtiqueta',[DireccionesController::class, 'modificarEtiquetaPut']);
 //Eliminar
 Route::delete('eliminarEtiquetas/{id}',[DireccionesController::class, 'eliminarEtiquetas']);
+
+Route::delete('eliminarDireccion/{id}',[DireccionesController::class, 'eliminarDireccion']);
