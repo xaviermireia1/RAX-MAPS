@@ -13,6 +13,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $this->call([
+            tbl_rolSeeder::class,
+            tbl_equipoSeeder::class,
+            tbl_gincanaSeeder::class,
+            tbl_ubicacionSeeder::class,
+            tbl_objetivoSeeder::class,
+            tbl_pistaSeeder::class,
+            tbl_usuarioSeeder::class,
+            tbl_etiquetaSeeder::class,
+            tbl_registroSeeder::class,
+        ]);
     }
 }
