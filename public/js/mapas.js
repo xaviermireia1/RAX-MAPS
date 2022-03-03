@@ -18,6 +18,7 @@ function objetoAjax() {
 function getLocation() {
     if (navigator.geolocation) {
         //navigator.geolocation.clearWatch(id);
+        //Coger posicion
         navigator.geolocation.getCurrentPosition(showPosition);
     } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
