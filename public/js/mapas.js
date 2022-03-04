@@ -35,6 +35,7 @@ function getLocation() {
             }).addTo(map);*/
             //console.log(routingControl.getWaypoints()[0]);
             //console.log(myPosition);
+            //Segunda opcion funciona
             routingControl.spliceWaypoints(0, 1, [myPosition.coords.latitude, myPosition.coords.longitude]);
         }
     } else {
