@@ -6,6 +6,14 @@ use Illuminate\Http\Request;
 
 class UsuarioController extends Controller
 {
+    //Funciones propias
+    public function login(){
+        return view('login_register');
+    }
+
+    public function loginPost(Request $request){
+
+    }
     /**
      * Display a listing of the resource.
      *
@@ -80,13 +88,5 @@ class UsuarioController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    //Funciones propias
-    public function login(){
-        return view('login_register');
-    }
-    public function loginPost(Request $request){
-        
     }
 }
