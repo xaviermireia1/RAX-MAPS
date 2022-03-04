@@ -51,11 +51,11 @@ class tbl_registroSeeder extends Seeder
             'id_ubicacion' => 9
         ]);
         DB::table('tbl_registro')->insert([
-            'id_etiqueta' => 9,
+            'id_etiqueta' => 8,
             'id_ubicacion' => 10
         ]);
         DB::table('tbl_registro')->insert([
-            'id_etiqueta' => 10,
+            'id_etiqueta' => 9,
             'id_ubicacion' => 11
         ]);
         DB::table('tbl_registro')->insert([
