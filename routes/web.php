@@ -19,10 +19,14 @@ Route::get('/', function () {
 });
 //Rutas controlador direcciones
 
-//Login
-Route::get('login',[DireccionesController::class,'login']);
-Route::post('login/user',[DireccionesController::class,'loginPost']);
-Route::post('register/user',[DireccionesController::class,'store']);
+//Login + Logout
+Route::get('login',[UsuarioController::class,'login']);
+
+Route::post('login',[UsuarioController::class,'loginPost']);
+
+Route::post('login',[UsuarioController::class,'registraUsuario']);
+
+Route::get('logout', [UsuarioController::class, 'logout']);
 
 //Mostrar
 Route::post('direcciones',[DireccionesController::class,'mostrarDirecciones']);
