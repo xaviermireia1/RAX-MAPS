@@ -126,15 +126,20 @@ function mostrarDirecciones() {
                         iconAnchor: [10, 10],
                     })
                 }
-                markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon }).on("click", getPositionDirection).addTo(map));
+                //Este funciona para ruta
+                //markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon }).on("click", getPositionDirection).addTo(map));
+                //Este es de prueba de pop up más sacar la posicion
+                markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon })
+                    .bindPopup("<h1>" + datos[i].nombre_ubi + "</h1><p>" + datos[i].descripcion_ubi + "</p><button onclick='getPositionDirection(\"" + datos[i].latitud_ubi + "\",\"" + datos[i].longitud_ubi + "\");'>Coger ubicación</button>")
+                    .addTo(map));
             }
         }
     }
     ajax.send(formData);
 }
 
-function getPositionDirection(e) {
-    markerDestination = e;
+function getPositionDirection(lat, lng) {
+    //markerDestination = { lat, lng };
     if (routingControl != null) {
         map.removeControl(routingControl);
     }
@@ -143,7 +148,7 @@ function getPositionDirection(e) {
         createMarker: function() { return null; },
         waypoints: [
             L.latLng(myPosition.coords.latitude, myPosition.coords.longitude),
-            L.latLng(e.latlng.lat, e.latlng.lng)
+            L.latLng(lat, lng)
         ],
         routeWhileDragging: false,
         fitSelectedRoutes: false,
