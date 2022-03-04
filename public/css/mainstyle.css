@@ -1,0 +1,318 @@
+@charset "UTF-8";
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  background: #c1bdba;
+  font-family: 'Titillium Web', sans-serif;
+}
+
+.hidden {
+  display: none;
+}
+
+.region-map {
+  -webkit-transition: 0.5s ease;
+  transition: 0.5s ease;
+  width: 95%;
+  height: 100vh;
+}
+
+.region-content {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.region-sidebar {
+  width: 5%;
+  height: 100vh;
+  background-color: black;
+}
+
+.expanded {
+  width: 300px;
+}
+
+.btn-burger {
+  position: relative;
+  padding: 10px;
+}
+
+.btn-burger button {
+  background: transparent;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border: none;
+  font-size: 28px;
+}
+
+.region-sidebar {
+  -webkit-transition: 0.5s ease;
+  transition: 0.5s ease;
+  /* Estilo del boton cuando el menú está expandido*/
+  /*Estilo cuando el mouse pasa encima de cada link del menu*/
+}
+
+.region-sidebar input:checked ~ ul {
+  display: block;
+}
+
+.region-sidebar input {
+  display: none;
+}
+
+.region-sidebar .btn-burger label {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  font-weight: bold;
+  text-align: center;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.region-sidebar input:checked ~ label {
+  background: lightgrey;
+}
+
+.region-sidebar ul {
+  margin-top: 0;
+  padding: 0;
+}
+
+.region-sidebar li {
+  text-align: center;
+  display: block;
+  background: transparent;
+  margin: 0 20px;
+  padding: 10px;
+  list-style: none;
+  border: 1px solid black;
+}
+
+.region-sidebar li:hover {
+  background: #2981ca;
+}
+
+.region-sidebar .form-sidebar button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 21px;
+}
+
+.page-login {
+  overflow: hidden;
+  background: url("https://wallpapercave.com/wp/wp4313180.jpg");
+  background-repeat: no-repeat;
+}
+
+.page-login .content-login {
+  width: 100%;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.form {
+  background: rgba(19, 35, 47, 0.9);
+  padding: 40px;
+  max-width: 600px;
+  margin: 40px auto;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+          box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+}
+
+.form .tab-group {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px 0;
+}
+
+.form .tab-group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.form .tab-group li a {
+  display: block;
+  text-decoration: none;
+  padding: 15px;
+  background: rgba(160, 179, 176, 0.25);
+  color: #a0b3b0;
+  font-size: 20px;
+  float: left;
+  width: 50%;
+  text-align: center;
+  -webkit-transition: .5s ease;
+  transition: .5s ease;
+}
+
+.form .tab-content > div:last-child {
+  display: none;
+}
+
+.form h1 {
+  text-align: center;
+  color: #ffffff;
+  font-weight: 300;
+  margin: 0 0 40px;
+}
+
+.form label {
+  position: absolute;
+  -webkit-transform: translateY(6px);
+          transform: translateY(6px);
+  left: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  -webkit-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+  -webkit-backface-visibility: hidden;
+  pointer-events: none;
+  font-size: 22px;
+}
+
+.form label .req {
+  margin: 2px;
+  color: #2067a1;
+}
+
+.form label.active {
+  -webkit-transform: translateY(50px);
+          transform: translateY(50px);
+  left: 2px;
+  font-size: 14px;
+}
+
+.form label.active .req {
+  opacity: 0;
+}
+
+.form label.highlight {
+  color: #ffffff;
+}
+
+.form input,
+.form textarea {
+  font-size: 22px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 5px 10px;
+  background: none;
+  background-image: none;
+  border: 1px solid #a0b3b0;
+  color: #ffffff;
+  border-radius: 0;
+  -webkit-transition: border-color .25s ease, -webkit-box-shadow .25s ease;
+  transition: border-color .25s ease, -webkit-box-shadow .25s ease;
+  transition: border-color .25s ease, box-shadow .25s ease;
+  transition: border-color .25s ease, box-shadow .25s ease, -webkit-box-shadow .25s ease;
+}
+
+.form textarea {
+  border: 2px solid #a0b3b0;
+  resize: vertical;
+}
+
+.form .field-wrap {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.form .top-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.form .top-row > div {
+  float: left;
+  width: 48%;
+  margin-right: 4%;
+}
+
+.form .top-row > div:last-child {
+  margin: 0;
+}
+
+.form .button-block {
+  display: block;
+  width: 100%;
+}
+
+.form .forgot {
+  margin-top: -20px;
+  text-align: right;
+}
+
+.form a {
+  text-decoration: none;
+  color: #a0b3b0;
+  -webkit-transition: .5s ease;
+  transition: .5s ease;
+}
+
+.form a:hover {
+  color: white;
+}
+
+.form .tab-group .active a {
+  background: #69a6d9;
+  color: #ffffff;
+}
+
+.form .tab-group li a:hover {
+  background: #2067a1;
+  color: #ffffff;
+}
+
+.form .button {
+  border: 0;
+  outline: none;
+  border-radius: 0;
+  padding: 15px 0;
+  font-size: 2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  background: #69a6d9;
+  color: #ffffff;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.form .button:hover,
+.form .button:focus {
+  background: #2067a1;
+}
+/*# sourceMappingURL=mainstyle.css.map */
