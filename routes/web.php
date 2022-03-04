@@ -29,7 +29,7 @@ Route::post('login',[UsuarioController::class,'registraUsuario']);
 Route::get('logout', [UsuarioController::class, 'logout']);
 
 //Mostrar
-
+Route::post('direcciones',[DireccionesController::class,'mostrarDirecciones']);
 
 //Crear
 Route::post('crearEtiquetas',[DireccionesController::class, 'crearEtiquetasPost']);

@@ -16,7 +16,13 @@ class DireccionesController extends Controller
         $listaEtiquetas = DB::table('tbl_etiqueta')->select('*')->get();
         return view('mostrar', compact('listaEtiquetas'));
     }
-
+    public function mostrarDirecciones(){
+        $listaDirecciones = DB::select("SELECT ubi.*,eti.nombre_eti,eti.icono_eti  FROM tbl_ubicacion ubi 
+        inner join tbl_registro ON tbl_registro.id_ubicacion = ubi.id
+        left join tbl_etiqueta eti ON tbl_registro.id_etiqueta = eti.id
+        where eti.icono_eti like 'sys_%'");
+        return response()->json($listaDirecciones);
+    }
     //Crear
     public function crearEtiquetasPost(Request $request){
         $datos = $request->except('_token');
