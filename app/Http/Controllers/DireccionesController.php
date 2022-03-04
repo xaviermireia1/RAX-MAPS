@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Exception;
 use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\TryCatch;
-use App\Http\Requests\LoginValidacion;
 
 
 class DireccionesController extends Controller
