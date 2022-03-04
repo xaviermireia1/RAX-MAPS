@@ -25,7 +25,7 @@ Route::post('login/user',[DireccionesController::class,'loginPost']);
 Route::post('register/user',[DireccionesController::class,'store']);
 
 //Mostrar
-
+Route::post('direcciones',[DireccionesController::class,'mostrarDirecciones']);
 
 //Crear
 Route::post('crearEtiquetas',[DireccionesController::class, 'crearEtiquetasPost']);
