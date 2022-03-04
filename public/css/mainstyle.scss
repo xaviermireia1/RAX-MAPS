@@ -1,0 +1,274 @@
+/////////////////MIXINS/////////////////
+$body-bg: #c1bdba;
+$form-bg: #13232f;
+$white: #ffffff;
+$main: #69a6d9;
+$main-light: lighten($main, 5%);
+$main-dark: darken($main, 5%);
+$gray-light: #a0b3b0;
+$gray: #ddd;
+$thin: 300;
+$normal: 400;
+$bold: 600;
+$br: 4px;
+//////////////////////////////////////GENERAL/////////////////////////////
+* {
+    box-sizing: border-box;
+}
+
+//GENERAL
+body {
+    background: #c1bdba;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.hidden {
+    display: none;
+}
+
+.region-map {
+    transition: 0.5s ease;
+    width: 95%;
+    height: 100vh;
+}
+
+.region-content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.region-sidebar {
+    width: 5%;
+    height: 100vh;
+    background-color: black;
+}
+
+//BURGER
+.expanded {
+    width: 300px;
+}
+
+.btn-burger {
+    position: relative;
+    padding: 10px;
+    button {
+        background: transparent;
+        color: white;
+        width: 50px;
+        height: 50px;
+        border: none;
+        font-size: 28px;
+    }
+}
+
+.region-sidebar {
+    transition: 0.5s ease;
+    input:checked~ul {
+        display: block;
+    }
+    input {
+        display: none;
+    }
+    .btn-burger label {
+        box-sizing: border-box;
+        display: inline-block;
+        border: 1px solid black;
+        border-radius: 5px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        font-weight: bold;
+        text-align: center;
+        user-select: none;
+    }
+    /* Estilo del boton cuando el menú está expandido*/
+    input:checked~label {
+        background: lightgrey;
+    }
+    ul {
+        margin-top: 0;
+        padding: 0;
+    }
+    li {
+        text-align: center;
+        display: block;
+        background: transparent;
+        margin: 0 20px;
+        padding: 10px;
+        list-style: none;
+        border: 1px solid black;
+    }
+    /*Estilo cuando el mouse pasa encima de cada link del menu*/
+    li:hover {
+        background: #2981ca;
+    }
+    .form-sidebar {
+        button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 21px;
+        }
+    }
+}
+
+///////////////////////////LOGIN///////////////////////////////////
+.page-login {
+    overflow: hidden;
+    background: url("https://wallpapercave.com/wp/wp4313180.jpg");
+    background-repeat: no-repeat;
+    .content-login {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.form {
+    .tab-group {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 40px 0;
+    }
+    .tab-group:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .tab-group li a {
+        display: block;
+        text-decoration: none;
+        padding: 15px;
+        background: rgba(160, 179, 176, 0.25);
+        color: #a0b3b0;
+        font-size: 20px;
+        float: left;
+        width: 50%;
+        text-align: center;
+        transition: .5s ease;
+    }
+    .tab-content>div:last-child {
+        display: none;
+    }
+    h1 {
+        text-align: center;
+        color: #ffffff;
+        font-weight: 300;
+        margin: 0 0 40px;
+    }
+    label {
+        position: absolute;
+        transform: translateY(6px);
+        left: 13px;
+        color: rgba(255, 255, 255, 0.5);
+        transition: all 0.25s ease;
+        -webkit-backface-visibility: hidden;
+        pointer-events: none;
+        font-size: 22px;
+    }
+    label .req {
+        margin: 2px;
+        color: #2067a1;
+    }
+    label.active {
+        transform: translateY(50px);
+        left: 2px;
+        font-size: 14px;
+    }
+    label.active .req {
+        opacity: 0;
+    }
+    label.highlight {
+        color: #ffffff;
+    }
+    input,
+    textarea {
+        font-size: 22px;
+        display: block;
+        width: 100%;
+        height: 100%;
+        padding: 5px 10px;
+        background: none;
+        background-image: none;
+        border: 1px solid #a0b3b0;
+        color: #ffffff;
+        border-radius: 0;
+        transition: border-color .25s ease, box-shadow .25s ease;
+    }
+    textarea {
+        border: 2px solid #a0b3b0;
+        resize: vertical;
+    }
+    .field-wrap {
+        position: relative;
+        margin-bottom: 40px;
+    }
+    .top-row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .top-row>div {
+        float: left;
+        width: 48%;
+        margin-right: 4%;
+    }
+    .top-row>div:last-child {
+        margin: 0;
+    }
+    .button-block {
+        display: block;
+        width: 100%;
+    }
+    .forgot {
+        margin-top: -20px;
+        text-align: right;
+    }
+    background: rgba($form-bg,
+    .9);
+    padding: 40px;
+    max-width: 600px;
+    margin: 40px auto;
+    border-radius: $br;
+    box-shadow: 0 4px 10px 4px rgba($form-bg,
+    .3);
+    a {
+        text-decoration: none;
+        color: $gray-light;
+        transition: .5s ease;
+    }
+    a:hover {
+        color: white;
+    }
+    .tab-group .active a {
+        background: #69a6d9;
+        color: #ffffff;
+    }
+    .tab-group li a:hover {
+        background: #2067a1;
+        color: #ffffff;
+    }
+    .button {
+        border: 0;
+        outline: none;
+        border-radius: 0;
+        padding: 15px 0;
+        font-size: 2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        background: #69a6d9;
+        color: #ffffff;
+        transition: all 0.5s ease;
+        -webkit-appearance: none;
+        cursor: pointer;
+    }
+    .button:hover,
+    .button:focus {
+        background: #2067a1;
+    }
+}

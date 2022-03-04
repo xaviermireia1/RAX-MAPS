@@ -49,11 +49,6 @@ class tbl_etiquetaSeeder extends Seeder
             'icono_eti' =>'sys_bar',
             'id_usuario' => 1
         ]);
-        DB::table('tbl_etiqueta')->insert([//8
-            'nombre_eti' => 'Ocio',
-            'icono_eti' =>'sys_ocio',
-            'id_usuario' => 1
-        ]);
         DB::table('tbl_etiqueta')->insert([//9
             'nombre_eti' => 'Hospital',
             'icono_eti' =>'sys_hospital',
