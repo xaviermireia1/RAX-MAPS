@@ -37,17 +37,22 @@ class UsuarioController extends Controller
     public function registraUsuario(LoginValidacion $request){
         $datos= $request->except('_token','_method');
         $passMD5 = md5($datos['contra_usu']);
-        $rol = "administrador";
-        $equipo = 2;
+        $rol = 2;
+        $equipo = NULL;
+        $nombreEtiqueta = "Favorito";
+        $iconoEtiqueta = "sys_fav";
         try{
             DB::beginTransaction();
-            DB::table('tbl_usuario')->insertGetId(['nick_usu'=>$datos['nick_usu'],'contra_usu'=>$passMD5,'correo_usu'=>$datos['correo_usu'],'id_rol'=>$rol,'id_equipo'=>$equipo]);
+            $userID = DB::table('tbl_usuario')->insertGetId(['nick_usu'=>$datos['nick_usu'],'contra_usu'=>$passMD5,'correo_usu'=>$datos['correo_usu'],'id_rol'=>$rol,'id_equipo'=>$equipo]);
+            DB::table('tbl_etiqueta')->insertGetId(['nombre_eti'=>$nombreEtiqueta, 'incono_eti'=>$iconoEtiqueta, 'id_usuario'=>$userID]);
             DB::commit();
         }catch(\Exception $e){
             DB::rollBack();
             return $e->getMessage();
         }
-        $request->session()->put('nombre_user',$request->correo_usu);
+        $request->session()->put('nombre',$request->correo_usu);
+        $request->session()->put('id_usuario',$request->id);
+        $request->session()->put('rol','cliente');
         return redirect('');
     }
 

@@ -24,15 +24,27 @@
                         @csrf
                         <div class="field-wrap">
                             <label>Nickaname<span class="req">*</span></label>
-                            <input name="nickname_usu" type="text"required autocomplete="off"/>
+                            <input name="nick_usu" type="text" autocomplete="off"/>
+                            @error('nick_usu')
+                                <br>
+                                {{$message}}
+                            @enderror
                         </div>
                         <div class="field-wrap">
                             <label>Correo<span class="req">*</span></label>
-                            <input name="correo_usu" type="email"required autocomplete="off"/>
+                            <input name="correo_usu" type="email" autocomplete="off"/>
+                            @error('correo_usu')
+                                <br>
+                                {{$message}}
+                            @enderror
                         </div>
                         <div class="field-wrap">
                             <label>Contraseña<span class="req">*</span></label>
-                            <input name="contra_usu" type="password"required autocomplete="off"/>
+                            <input name="contra_usu" type="password" autocomplete="off"/>
+                            @error('contra_usu')
+                                <br>
+                                {{$message}}
+                            @enderror
                         </div>
                         <button type="submit" class="button button-block"/>Empezar</button>
                     </form>

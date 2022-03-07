@@ -16,8 +16,10 @@
                     <button id="btn-burger"> ☰ </button>
                 </div>
                 <ul id="form-sidebar" class="form-sidebar hidden">
-                    <li><form action="{{url('login')}}" method="GET">
-                        <button>Iniciar Session</button>
+                    <li><form action="{{url('')}}" method="POST">
+                        @csrf
+                        {{method_field('GET')}}
+                        <button>Volver Al Mapa</button>
                     </form></li>
                     <li><form action="{{url('')}}" method="GET">
                         <button>Iniciar Gimcana</button>

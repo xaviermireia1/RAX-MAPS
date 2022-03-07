@@ -32,18 +32,26 @@
                     <button id="btn-burger"> ☰ </button>
                 </div>
                 <ul id="form-sidebar" class="form-sidebar hidden">
-                    <li><form action="{{url('login')}}" method="GET">
-                        <button>Iniciar Session</button>
-                    </form></li>
-                    <li><form action="{{url('')}}" method="GET">
-                        <button>Iniciar Gimcana</button>
-                    </form></li>
                     @if (Session::get('nombre'))
-                        <li><form action="{{url('perfil')}}" method="GET">
+                        <li><form action="{{url('')}}" method="GET">
+                            <button>Iniciar Gimcana</button>
+                        </form></li>
+                        <li><form action="{{url('perfil')}}" method="POST">
+                            @csrf
+                            {{method_field('GET')}}
                             <button>Mi Perfil</button>
                         </form></li>
                         <li class="sidebar-logout"><form action="{{url('logout')}}" method="GET">
                             <button type="submit">Cerrar Sesión</button>
+                        </form></li>
+                    @else
+                        <li><form action="{{url('login')}}" method="POST">
+                            @csrf
+                            {{method_field('GET')}}
+                            <button>Iniciar Sesión</button>
+                        </form></li>
+                        <li><form action="{{url('')}}" method="GET">
+                            <button>Iniciar Gimcana</button>
                         </form></li>
                     @endif
                 </ul>
