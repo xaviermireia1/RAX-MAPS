@@ -68,6 +68,17 @@ class UsuarioController extends Controller
         return view('miPerfil');
     }
 
+    //Darse de baja
+    public function eliminarUsuario($id){
+        try{
+            DB::beginTransaction();
+            DB::table('tbl_usuario')->where('id','=',$id)->delete();
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            return $e->getMessage();
+        }
+    }
     /**
      * Display a listing of the resource.
      *
