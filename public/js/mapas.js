@@ -84,8 +84,10 @@ function infoUbicacion(datos) {
     if (routingControl != null) {
         //En caso que exista una ruta le pasamos mi posicion actual a la ruta para que cambie la posicion (así modo maps de ir de un sitio a otro y se actualiza mi posición)
         map.removeControl(routingControl);
+        btnQuitRoute.style.display = 'none';
     }
     for (let i = 0; i < datos.length; i++) {
+        let strPopUpHTML = "";
         let icon = "";
         if (datos[i].icono_eti == 'sys_museo') {
             icon = L.icon({
@@ -145,8 +147,15 @@ function infoUbicacion(datos) {
         //Este funciona para ruta
         //markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon }).on("click", getPositionDirection).addTo(map));
         //Este es de prueba de pop up más sacar la posicion
+        strPopUpHTML += "<div>";
+        strPopUpHTML += "<h1>" + datos[i].nombre_ubi + "</h1>";
+        strPopUpHTML += "<p>" + datos[i].descripcion_ubi + "</p>";
+        strPopUpHTML += "<img src='storage/" + datos[i].foto_ubi + "'/>";
+        strPopUpHTML += "<button onclick='getPositionDirection(\"" + datos[i].latitud_ubi + "\",\"" + datos[i].longitud_ubi + "\");'>Coger ubicación</button>";
+        strPopUpHTML += "</div>";
+        console.log(strPopUpHTML);
         markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon })
-            .bindPopup("<h1>" + datos[i].nombre_ubi + "</h1><p>" + datos[i].descripcion_ubi + "</p><button onclick='getPositionDirection(\"" + datos[i].latitud_ubi + "\",\"" + datos[i].longitud_ubi + "\");'>Coger ubicación</button>")
+            .bindPopup(strPopUpHTML)
             .addTo(map));
     }
 }
