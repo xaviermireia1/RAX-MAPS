@@ -13,12 +13,11 @@ use App\Http\Controllers\DireccionesController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//Rutas controlador usuario
-Route::get('/', function () {
-    return view('index');
-});
-//Rutas controlador direcciones
 
+//Ruta para index
+Route::get('/',[DireccionesController::class,'index']);
+
+//Rutas controlador usuario
 //Login + Logout
 Route::get('login',[UsuarioController::class,'login']);
 
@@ -28,6 +27,8 @@ Route::post('registro',[UsuarioController::class,'registraUsuario']);
 
 Route::get('logout', [UsuarioController::class, 'logout']);
 
+
+//Rutas controlador direcciones
 //Mostrar
 Route::post('direcciones',[DireccionesController::class,'mostrarDirecciones']);
 
