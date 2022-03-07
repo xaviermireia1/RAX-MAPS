@@ -42,7 +42,7 @@
                         <li><form action="{{url('perfil')}}" method="GET">
                             <button>Mi Perfil</button>
                         </form></li>
-                        <li><form action="{{url('logout')}}" method="GET">
+                        <li class="sidebar-logout"><form action="{{url('logout')}}" method="GET">
                             <button type="submit">Cerrar Sesión</button>
                         </form></li>
                     @endif
