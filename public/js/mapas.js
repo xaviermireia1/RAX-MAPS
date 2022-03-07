@@ -21,21 +21,7 @@ function getLocation() {
         //Coger posicion
         navigator.geolocation.getCurrentPosition(showPosition);
         if (routingControl != null) {
-            //No borrar primera opción
-            /*map.removeControl(routingControl);
-            routingControl = L.Routing.control({
-                draggableWaypoints: false,
-                createMarker: function() { return null; },
-                waypoints: [
-                    L.latLng(myPosition.coords.latitude, myPosition.coords.longitude),
-                    L.latLng(markerDestination.latlng.lat, markerDestination.latlng.lng)
-                ],
-                routeWhileDragging: false,
-                fitSelectedRoutes: false,
-            }).addTo(map);*/
-            //console.log(routingControl.getWaypoints()[0]);
-            //console.log(myPosition);
-            //Segunda opcion funciona
+            //En caso que exista una ruta le pasamos mi posicion actual a la ruta para que cambie la posicion (así modo maps de ir de un sitio a otro y se actualiza mi posición)
             routingControl.spliceWaypoints(0, 1, [myPosition.coords.latitude, myPosition.coords.longitude]);
         }
     } else {

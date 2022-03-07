@@ -49,7 +49,9 @@
                 </ul>
             </nav>
         </div>
-
+        <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA -->
+        
+        <!-- BOTON PARA CANCELAR LA RUTA -->
         <div class="region-map" id="map">
 
         </div>
