@@ -11,6 +11,7 @@ $thin: 300;
 $normal: 400;
 $bold: 600;
 $br: 4px;
+$movil: 768px;
 //////////////////////////////////////GENERAL/////////////////////////////
 * {
     box-sizing: border-box;
@@ -20,13 +21,16 @@ $br: 4px;
 body {
     background: #c1bdba;
     font-family: 'Titillium Web', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .hidden {
     display: none;
 }
 
-.region-map {
+.region-map,
+.region-content-perfil {
     transition: 0.5s ease;
     width: 95%;
     height: 100vh;
@@ -45,7 +49,7 @@ body {
     background-color: black;
 }
 
-//BURGER
+/////////////////////////////////BURGER///////////////////////////////
 .expanded {
     width: 300px;
 }
@@ -115,10 +119,12 @@ body {
 }
 
 ///////////////////////////LOGIN///////////////////////////////////
-.page-login {
+.page-login,
+.page-perfil {
     overflow: hidden;
     background: url("https://wallpapercave.com/wp/wp4313180.jpg");
     background-repeat: no-repeat;
+    background-size: cover;
     .content-login {
         width: 100%;
         height: 100vh;
@@ -129,10 +135,31 @@ body {
 }
 
 .form {
+    min-width: #{"min(600px, 90vw)"};
+    max-width: #{"min(600px, 90vw)"};
     .tab-group {
         list-style: none;
         padding: 0;
         margin: 0 0 40px 0;
+        @media(max-width: $movil) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            a {
+                width: 100%!important;
+            }
+            li {
+                width: 64%;
+            }
+        }
+    }
+    .tab-content {
+        @media(max-width: $movil) {
+            .field-wrap {
+                width: 100%!important;
+            }
+        }
     }
     .tab-group:after {
         content: "";
@@ -231,7 +258,6 @@ body {
     background: rgba($form-bg,
     .9);
     padding: 40px;
-    max-width: 600px;
     margin: 40px auto;
     border-radius: $br;
     box-shadow: 0 4px 10px 4px rgba($form-bg,
@@ -270,5 +296,55 @@ body {
     .button:hover,
     .button:focus {
         background: #2067a1;
+    }
+}
+
+///////////////////////////////PERFIL//////////////////////////////////
+.region-content-perfil {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .perfil {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 70vw;
+        background-color: rgba($form-bg, .9);
+        box-shadow: 0 4px 10px 4px rgba($form-bg, .3);
+        min-height: 60vh;
+        border-radius: $br;
+        >div {
+            padding: 20px;
+        }
+        .perfil-foto {
+            position: absolute;
+            top: -100px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            .foto-perfil {
+                border-radius: 50%;
+                width: 200px;
+                height: 200px;
+            }
+        }
+        .perfil-datos {
+            text-align: center;
+            color: white;
+        }
+        .perfil-opciones {
+            button {
+                background-color: $main;
+                border: none;
+                color: white;
+                padding: 20px;
+                font-size: 20px;
+                &:hover {
+                    background-color: $main-dark;
+                }
+            }
+        }
     }
 }

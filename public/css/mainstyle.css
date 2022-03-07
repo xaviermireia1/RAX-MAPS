@@ -7,13 +7,16 @@
 body {
   background: #c1bdba;
   font-family: 'Titillium Web', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .hidden {
   display: none;
 }
 
-.region-map {
+.region-map,
+.region-content-perfil {
   -webkit-transition: 0.5s ease;
   transition: 0.5s ease;
   width: 95%;
@@ -119,13 +122,16 @@ body {
   font-size: 21px;
 }
 
-.page-login {
+.page-login,
+.page-perfil {
   overflow: hidden;
   background: url("https://wallpapercave.com/wp/wp4313180.jpg");
   background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.page-login .content-login {
+.page-login .content-login,
+.page-perfil .content-login {
   width: 100%;
   height: 100vh;
   display: -webkit-box;
@@ -140,9 +146,10 @@ body {
 }
 
 .form {
+  min-width: min(600px, 90vw);
+  max-width: min(600px, 90vw);
   background: rgba(19, 35, 47, 0.9);
   padding: 40px;
-  max-width: 600px;
   margin: 40px auto;
   border-radius: 4px;
   -webkit-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
@@ -153,6 +160,36 @@ body {
   list-style: none;
   padding: 0;
   margin: 0 0 40px 0;
+}
+
+@media (max-width: 768px) {
+  .form .tab-group {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  .form .tab-group a {
+    width: 100% !important;
+  }
+  .form .tab-group li {
+    width: 64%;
+  }
+}
+
+@media (max-width: 768px) {
+  .form .tab-content .field-wrap {
+    width: 100% !important;
+  }
 }
 
 .form .tab-group:after {
@@ -314,5 +351,79 @@ body {
 .form .button:hover,
 .form .button:focus {
   background: #2067a1;
+}
+
+.region-content-perfil {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.region-content-perfil .perfil {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: relative;
+  width: 70vw;
+  background-color: rgba(19, 35, 47, 0.9);
+  -webkit-box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+          box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+  min-height: 60vh;
+  border-radius: 4px;
+}
+
+.region-content-perfil .perfil > div {
+  padding: 20px;
+}
+
+.region-content-perfil .perfil .perfil-foto {
+  position: absolute;
+  top: -100px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.region-content-perfil .perfil .perfil-foto .foto-perfil {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+}
+
+.region-content-perfil .perfil .perfil-datos {
+  text-align: center;
+  color: white;
+}
+
+.region-content-perfil .perfil .perfil-opciones button {
+  background-color: #69a6d9;
+  border: none;
+  color: white;
+  padding: 20px;
+  font-size: 20px;
+}
+
+.region-content-perfil .perfil .perfil-opciones button:hover {
+  background-color: #559ad4;
 }
 /*# sourceMappingURL=mainstyle.css.map */

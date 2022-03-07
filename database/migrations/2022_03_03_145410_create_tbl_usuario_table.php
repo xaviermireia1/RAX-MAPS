@@ -22,7 +22,7 @@ class CreateTblUsuarioTable extends Migration
             $table->unsignedBigInteger('id_equipo');
 
             $table->foreign('id_rol')->references('id')->on('tbl_rol');
-            $table->foreign('id_equipo')->references('id')->on('tbl_equipo');
+            $table->foreign('id_equipo')->references('id')->on('tbl_equipo')->nullable();
 
         });
     }

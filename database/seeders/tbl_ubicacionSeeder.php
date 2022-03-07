@@ -94,8 +94,8 @@ class tbl_ubicacionSeeder extends Seeder
         DB::table('tbl_ubicacion')->insert([
             'nombre_ubi' => 'Pacha Barcelona',
             'descripcion_ubi' => 'Discoteca a la última que sirve platos de cocina mediterránea y asiática con una terraza frente al mar.',
-            'latitud_ubi' => '41.38588909234384',
-            'longitud_ubi' => '2.1899535197047793',
+            'latitud_ubi' => '41.3857434045326',
+            'longitud_ubi' => '2.1970624166823183',
             'direccion_ubi' => 'Carrer de Ramon Trias Fargas, 2, 08005 Barcelona'
         ]);
         DB::table('tbl_ubicacion')->insert([
@@ -118,6 +118,13 @@ class tbl_ubicacionSeeder extends Seeder
             'latitud_ubi' => '41.379477050359924',
             'longitud_ubi' => '2.190940171047179',
             'direccion_ubi' => 'Carrer de Sant Carles, 34, 08003 Barcelona'
+        ]);
+        DB::table('tbl_ubicacion')->insert([
+            'nombre_ubi' => 'Opium Barcelona',
+            'descripcion_ubi' => 'Restaurante a la última que ofrece datos eclécticos de cocina internacional y un bar de sushi con sofás y vistas al mar.',
+            'latitud_ubi' => '41.38535296102044',
+            'longitud_ubi' => '2.196781296252854',
+            'direccion_ubi' => 'Passeig Marítim de la Barceloneta, 34, 08003 Barcelona'
         ]);
     }
 }
