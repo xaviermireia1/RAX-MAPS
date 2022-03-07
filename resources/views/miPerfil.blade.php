@@ -25,7 +25,10 @@
                         <button>Iniciar Gimcana</button>
                     </form></li>
                     @if (Session::get('nombre'))
-                        <li><form action="{{url('logout')}}" method="GET">
+                        <li><form action="{{url('perfil')}}" method="GET">
+                            <button>Mi Perfil</button>
+                        </form></li>
+                        <li class="sidebar-logout"><form action="{{url('logout')}}" method="GET">
                             <button type="submit">Cerrar Sesión</button>
                         </form></li>
                     @endif
@@ -53,6 +56,10 @@
             </div>
         </div>
     </div>
+    <div class="modal hidden" id="modal">
+        <div class="modalBox" id="modalBox"></div>
+    </div>
     <script src="js/burger.js"></script>
+    <script src="js/perfil.js"></script>
 </body>
 </html>

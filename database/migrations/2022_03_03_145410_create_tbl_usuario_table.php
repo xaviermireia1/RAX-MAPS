@@ -19,10 +19,10 @@ class CreateTblUsuarioTable extends Migration
             $table->string('contra_usu');
             $table->string('correo_usu');
             $table->unsignedBigInteger('id_rol');
-            $table->unsignedBigInteger('id_equipo');
+            $table->unsignedBigInteger('id_equipo')->nullable();
 
             $table->foreign('id_rol')->references('id')->on('tbl_rol');
-            $table->foreign('id_equipo')->references('id')->on('tbl_equipo')->nullable();
+            $table->foreign('id_equipo')->references('id')->on('tbl_equipo');
 
         });
     }
