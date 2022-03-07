@@ -57,9 +57,28 @@
                 </ul>
             </nav>
         </div>
-        <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA --> 
-        <input type="radio" name="etiqueta" onclick="filtroEtiqueta(0)"> Todo   
+        <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA -->
+        <input type="radio" name="etiqueta" onclick="filtroEtiqueta(0)"> Todo
         @foreach ($listaEtiquetas as $etiqueta)
+            @if($etiqueta->icono_eti == 'sys_ocio')
+                <img class="" src="img/icon/ico_ocio.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_bar')
+                <img class="" src="img/icon/ico_bar.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_hospital')
+                <img class="" src="img/icon/ico_hospital.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_hotel')
+                <img class="" src="img/icon/ico_hotel.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_museo')
+                <img class="" src="img/icon/ico_museo.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_parque')
+                <img class="" src="img/icon/ico_parque.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_playa')
+                <img class="" src="img/icon/ico_playa.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_restaurante')
+                <img class="" src="img/icon/ico_restaurante.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_supermercado')
+                <img class="" src="img/icon/ico_supermercado.png" width="20">
+            @endif
             <input type="radio" name="etiqueta" onclick="filtroEtiqueta({{$etiqueta->id}})">{{$etiqueta->nombre_eti}}
         @endforeach
         <!-- BOTON PARA CANCELAR LA RUTA -->
