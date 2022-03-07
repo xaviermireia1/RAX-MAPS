@@ -20,40 +20,35 @@
             <div class="tab-content">
                 <div id="signup">
                     <h1>Registrate Gratis</h1>
-                    <form action="/" method="post">
-                        <div class="top-row">
-                            <div class="field-wrap">
-                                <label>Nombre<span class="req">*</span></label>
-                                <input type="text" required autocomplete="off" />
-                            </div>
-                            <div class="field-wrap">
-                                <label>Apellidos<span class="req">*</span></label>
-                                <input type="text"required autocomplete="off"/>
-                            </div>
+                    <form action="{{url('registro')}}" method="post">
+                        @csrf
+                        <div class="field-wrap">
+                            <label>Nickaname<span class="req">*</span></label>
+                            <input name="nickname_usu" type="text"required autocomplete="off"/>
                         </div>
                         <div class="field-wrap">
                             <label>Correo<span class="req">*</span></label>
-                            <input type="email"required autocomplete="off"/>
+                            <input name="correo_usu" type="email"required autocomplete="off"/>
                         </div>
                         <div class="field-wrap">
                             <label>Contraseña<span class="req">*</span></label>
-                            <input type="password"required autocomplete="off"/>
+                            <input name="contra_usu" type="password"required autocomplete="off"/>
                         </div>
                         <button type="submit" class="button button-block"/>Empezar</button>
                     </form>
                 </div>
                 <div id="login">
                     <h1>Bienvenido de nuevo!</h1>
-                    <form action="/" method="post">
+                    <form action="{{url('login')}}" method="post">
+                        @csrf
                         <div class="field-wrap">
                             <label>Correo<span class="req">*</span></label>
-                            <input type="email"required autocomplete="off"/>
+                            <input name="correo_usu" type="email"required autocomplete="off"/>
                         </div>
                         <div class="field-wrap">
                             <label>Contraseña<span class="req">*</span></label>
-                            <input type="password"required autocomplete="off"/>
+                            <input name="contra_usu" type="password"required autocomplete="off"/>
                         </div>
-                        <p class="forgot"><a href="#">¿Has olvidado tu contraseña?</a></p>
                         <button class="button button-block"/>Iniciar Sesion</button>
                     </form>
                 </div>

@@ -11,19 +11,22 @@ use App\Http\Requests\LoginValidacion;
 
 class UsuarioController extends Controller
 {
-    //Funciones propias
+    //Login + Logout
     public function login(){
         return view('login_register');
     }
 
     public function loginPost(Request $request){
         $datos= $request->except('_token','_method');
-        $user=DB::table("tbl_rol")->join('tbl_user', 'tbl_rol.id', '=', 'tbl_user.id_rol')->where('correo_user','=',$datos['correo_user'])->where('pass_user','=',$datos['pass_user'])->first();
+        $passMD5 = md5($datos['contra_usu']);
+        $user=DB::table("tbl_rol")->join('tbl_usuario', 'tbl_rol.id', '=', 'tbl_usuario.id_rol')->where('correo_usu','=',$datos['correo_usu'])->where('contra_usu','=',$passMD5)->first();
         if($user->nombre_rol=='administrador'){
-           $request->session()->put('nombre_admin',$request->correo_usu);
+           $request->session()->put('nombre',$request->correo_usu);
+           $request->session()->put('rol','administrador');
            return redirect('');
         }if($user->nombre_rol=='cliente'){
-            $request->session()->put('nombre_user',$request->correo_usu);
+            $request->session()->put('nombre',$request->correo_usu);
+            $request->session()->put('rol','cliente');
             return redirect('');
         }
         return redirect('');
@@ -31,11 +34,12 @@ class UsuarioController extends Controller
 
     public function registraUsuario(LoginValidacion $request){
         $datos= $request->except('_token','_method');
+        $passMD5 = md5($datos['contra_usu']);
         $rol = "administrador";
         $equipo = 2;
         try{
             DB::beginTransaction();
-            DB::table('tbl_usuario')->insertGetId(['nick_usu'=>$datos['nick_usu'],'contra_usu'=>$datos['contra_usu'],'correo_usu'=>$datos['correo_usu'],'id_rol'=>$rol,'id_equipo'=>$equipo]);
+            DB::table('tbl_usuario')->insertGetId(['nick_usu'=>$datos['nick_usu'],'contra_usu'=>$passMD5,'correo_usu'=>$datos['correo_usu'],'id_rol'=>$rol,'id_equipo'=>$equipo]);
             DB::commit();
         }catch(\Exception $e){
             DB::rollBack();
@@ -46,12 +50,16 @@ class UsuarioController extends Controller
     }
 
     public function logout(Request $request){
-        $request->session()->forget('nombre_admin');
-        $request->session()->forget('nombre_user');
+        $request->session()->forget('nombre');
+        $request->session()->forget('rol');
         $request->session()->flush();
-        return redirect('');
+        return redirect('/');
     }
 
+    //Mi Perfil
+    public function perfil(){
+        return view('miPerfil');
+    }
 
     /**
      * Display a listing of the resource.

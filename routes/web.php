@@ -24,12 +24,14 @@ Route::get('login',[UsuarioController::class,'login']);
 
 Route::post('login',[UsuarioController::class,'loginPost']);
 
-Route::post('login',[UsuarioController::class,'registraUsuario']);
+Route::post('registro',[UsuarioController::class,'registraUsuario']);
 
 Route::get('logout', [UsuarioController::class, 'logout']);
 
 //Mostrar
 Route::post('direcciones',[DireccionesController::class,'mostrarDirecciones']);
+
+Route::get('perfil',[UsuarioController::class, 'perfil']);
 
 //Crear
 Route::post('crearEtiquetas',[DireccionesController::class, 'crearEtiquetasPost']);
