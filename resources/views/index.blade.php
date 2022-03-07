@@ -49,12 +49,10 @@
                 </ul>
             </nav>
         </div>
-        <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA -->
-        <fieldset>
+        <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA -->        
         @foreach ($listaEtiquetas as $etiqueta)
-        
+            <input type="radio" name="etiqueta" id="" value="{{$etiqueta->id}}">{{$etiqueta->nombre_eti}}
         @endforeach
-        <fieldset>
         <!-- BOTON PARA CANCELAR LA RUTA -->
         <div class="region-map" id="map">
 
