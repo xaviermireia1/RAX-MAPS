@@ -52,6 +52,7 @@ body {
 }
 
 .btn-burger button {
+  cursor: pointer;
   background: transparent;
   color: white;
   width: 50px;
@@ -61,6 +62,7 @@ body {
 }
 
 .region-sidebar {
+  position: relative;
   -webkit-transition: 0.5s ease;
   transition: 0.5s ease;
   /* Estilo del boton cuando el menú está expandido*/
@@ -109,6 +111,15 @@ body {
   padding: 10px;
   list-style: none;
   border: 1px solid black;
+  margin: 0;
+}
+
+.region-sidebar li.sidebar-logout {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  margin: 0;
 }
 
 .region-sidebar li:hover {
@@ -406,8 +417,8 @@ body {
 
 .region-content-perfil .perfil .perfil-foto .foto-perfil {
   border-radius: 50%;
-  width: 200px;
-  height: 200px;
+  max-height: min(20vw, 200px);
+  max-width: min(20vw, 200px);
 }
 
 .region-content-perfil .perfil .perfil-datos {
@@ -416,6 +427,7 @@ body {
 }
 
 .region-content-perfil .perfil .perfil-opciones button {
+  cursor: pointer;
   background-color: #69a6d9;
   border: none;
   color: white;
