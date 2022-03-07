@@ -44,7 +44,7 @@ class UsuarioController extends Controller
         try{
             DB::beginTransaction();
             $userID = DB::table('tbl_usuario')->insertGetId(['nick_usu'=>$datos['nick_usu'],'contra_usu'=>$passMD5,'correo_usu'=>$datos['correo_usu'],'id_rol'=>$rol,'id_equipo'=>$equipo]);
-            DB::table('tbl_etiqueta')->insertGetId(['nombre_eti'=>$nombreEtiqueta, 'incono_eti'=>$iconoEtiqueta, 'id_usuario'=>$userID]);
+            DB::table('tbl_etiqueta')->insertGetId(['nombre_eti'=>$nombreEtiqueta, 'icono_eti'=>$iconoEtiqueta, 'id_usuario'=>$userID]);
             DB::commit();
         }catch(\Exception $e){
             DB::rollBack();
