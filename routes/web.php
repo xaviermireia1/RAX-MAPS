@@ -17,7 +17,6 @@ use App\Http\Controllers\DireccionesController;
 //Ruta para index
 Route::get('/',[DireccionesController::class,'index']);
 
-//Rutas controlador usuario
 //Login + Logout
 //Mostrar
 Route::get('login',[UsuarioController::class,'login']);
@@ -31,8 +30,6 @@ Route::post('registro',[UsuarioController::class,'registraUsuario']);
 
 Route::get('logout', [UsuarioController::class, 'logout']);
 
-
-//Rutas controlador direcciones
 //Mostrar
 Route::post('direcciones',[DireccionesController::class,'mostrarDirecciones']);
 Route::get('etiqueta/{id}',[DireccionesController::class,'filtroEtiqueta']);
@@ -46,7 +43,10 @@ Route::post('crearDireccion',[DireccionesController::class, 'crearDireccionPost'
 Route::put('modificarDireccion',[DireccionesController::class, 'modificarDireccionPut']);
 
 Route::put('modificarEtiqueta',[DireccionesController::class, 'modificarEtiquetaPut']);
+
 //Eliminar
 Route::delete('eliminarEtiquetas/{id}',[DireccionesController::class, 'eliminarEtiquetas']);
 
 Route::delete('eliminarDireccion/{id}',[DireccionesController::class, 'eliminarDireccion']);
+
+Route::deletee('eliminarUsuario/{id}',[UsuarioController::class, 'eliminarUsuario']);
