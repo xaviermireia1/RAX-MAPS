@@ -52,76 +52,103 @@ function mostrarDirecciones() {
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var datos = JSON.parse(this.responseText);
-            console.log(datos);
-            for (let i = 0; i < datos.length; i++) {
-                //console.log(datos[i].id)
-                markerPosition = [];
-                let icon = "";
-                if (datos[i].icono_eti == 'sys_museo') {
-                    icon = L.icon({
-                        iconUrl: 'img/icon/ico_museo.png',
-                        iconSize: [38, 38],
-                        iconAnchor: [10, 10],
-                    })
-                } else if (datos[i].icono_eti == 'sys_ocio') {
-                    icon = L.icon({
-                        iconUrl: 'img/icon/ico_ocio.png',
-                        iconSize: [38, 38],
-                        iconAnchor: [10, 10],
-                    })
-                } else if (datos[i].icono_eti == 'sys_restaurante') {
-                    icon = L.icon({
-                        iconUrl: 'img/icon/ico_restaurante.png',
-                        iconSize: [38, 38],
-                        iconAnchor: [10, 10],
-                    })
-                } else if (datos[i].icono_eti == 'sys_playa') {
-                    icon = L.icon({
-                        iconUrl: 'img/icon/ico_playa.png',
-                        iconSize: [38, 38],
-                        iconAnchor: [10, 10],
-                    })
-                } else if (datos[i].icono_eti == 'sys_hotel') {
-                    icon = L.icon({
-                        iconUrl: 'img/icon/ico_hotel.png',
-                        iconSize: [38, 38],
-                        iconAnchor: [10, 10],
-                    })
-                } else if (datos[i].icono_eti == 'sys_supermercado') {
-                    icon = L.icon({
-                        iconUrl: 'img/icon/ico_supermercado.png',
-                        iconSize: [38, 38],
-                        iconAnchor: [10, 10],
-                    })
-                } else if (datos[i].icono_eti == 'sys_bar') {
-                    icon = L.icon({
-                        iconUrl: 'img/icon/ico_bar.png',
-                        iconSize: [38, 38],
-                        iconAnchor: [10, 10],
-                    })
-                } else if (datos[i].icono_eti == 'sys_hospital') {
-                    icon = L.icon({
-                        iconUrl: 'img/icon/ico_hospital.png',
-                        iconSize: [38, 38],
-                        iconAnchor: [10, 10],
-                    })
-                } else if (datos[i].icono_eti == 'sys_parque') {
-                    icon = L.icon({
-                        iconUrl: 'img/icon/ico_parque.png',
-                        iconSize: [38, 38],
-                        iconAnchor: [10, 10],
-                    })
-                }
-                //Este funciona para ruta
-                //markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon }).on("click", getPositionDirection).addTo(map));
-                //Este es de prueba de pop up más sacar la posicion
-                markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon })
-                    .bindPopup("<h1>" + datos[i].nombre_ubi + "</h1><p>" + datos[i].descripcion_ubi + "</p><button onclick='getPositionDirection(\"" + datos[i].latitud_ubi + "\",\"" + datos[i].longitud_ubi + "\");'>Coger ubicación</button>")
-                    .addTo(map));
-            }
+            infoUbicacion(datos);
         }
     }
     ajax.send(formData);
+}
+//filtro por Etiquetas
+function filtroEtiqueta(id) {
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'GET');
+    let ajax = objetoAjax();
+    ajax.open("POST", "etiqueta/" + id, true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var datos = JSON.parse(this.responseText);
+            infoUbicacion(datos);
+        }
+    }
+    ajax.send(formData);
+}
+
+function infoUbicacion(datos) {
+    if (markerPosition != []) {
+        for (let y = 0; y < markerPosition.length; y++) {
+            map.removeLayer(markerPosition[y]);
+        }
+        markerPosition = [];
+    }
+    if (routingControl != null) {
+        //En caso que exista una ruta le pasamos mi posicion actual a la ruta para que cambie la posicion (así modo maps de ir de un sitio a otro y se actualiza mi posición)
+        map.removeControl(routingControl);
+    }
+    for (let i = 0; i < datos.length; i++) {
+        let icon = "";
+        if (datos[i].icono_eti == 'sys_museo') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_museo.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
+        } else if (datos[i].icono_eti == 'sys_ocio') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_ocio.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
+        } else if (datos[i].icono_eti == 'sys_restaurante') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_restaurante.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
+        } else if (datos[i].icono_eti == 'sys_playa') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_playa.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
+        } else if (datos[i].icono_eti == 'sys_hotel') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_hotel.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
+        } else if (datos[i].icono_eti == 'sys_supermercado') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_supermercado.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
+        } else if (datos[i].icono_eti == 'sys_bar') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_bar.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
+        } else if (datos[i].icono_eti == 'sys_hospital') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_hospital.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
+        } else if (datos[i].icono_eti == 'sys_parque') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_parque.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
+        }
+        //Este funciona para ruta
+        //markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon }).on("click", getPositionDirection).addTo(map));
+        //Este es de prueba de pop up más sacar la posicion
+        markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon })
+            .bindPopup("<h1>" + datos[i].nombre_ubi + "</h1><p>" + datos[i].descripcion_ubi + "</p><button onclick='getPositionDirection(\"" + datos[i].latitud_ubi + "\",\"" + datos[i].longitud_ubi + "\");'>Coger ubicación</button>")
+            .addTo(map));
+    }
 }
 
 function getPositionDirection(lat, lng) {
@@ -139,11 +166,19 @@ function getPositionDirection(lat, lng) {
         routeWhileDragging: false,
         fitSelectedRoutes: false,
     }).addTo(map);
+    btnQuitRoute.style.display = 'block';
+    btnQuitRoute.onclick = function() {
+        btnQuitRoute.style.display = 'none';
+        map.removeControl(routingControl);
+    }
 }
 window.onload = function() {
     geocoder = L.esri.Geocoding.geocodeService();
-    myMarker = {}
+    myMarker = {};
+    markerPosition = [];
     routingControl = null
+    btnQuitRoute = document.getElementById('btnQuitRoute');
+    btnQuitRoute.style.display = 'none';
     map = L.map('map');
     var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
