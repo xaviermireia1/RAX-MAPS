@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{!! asset('css/mainstyle.css') !!}">
     <title>Mi Perfil</title>
 </head>
-<body>
+<body class="page-perfil">
     <div class="region-content">
         <div class="region-sidebar" id="sidebar">
             <nav>
@@ -33,8 +33,25 @@
                 </ul>
             </nav>
         </div>
-        <div class="">
-
+        <div class="region-content-perfil">
+            <div class="perfil">
+                <div class="perfil-foto">
+                    <img src="img/icon/profile.png" alt="Foto Usuario" class="foto-perfil">
+                </div>
+                <div class="perfil-datos">
+                    <h1 class="nombre-usuario">
+                        Lorem Ipsum Dolor
+                    </h1>
+                    <h2 class="equipo-usuario">
+                        Equipo A
+                    </h2>
+                </div>
+                <div class="perfil-opciones">
+                    <button>Etiquetas</button>
+                    <button>Modificar Perfil</button>
+                    <button>Equipo</button>
+                </div>
+            </div>
         </div>
     </div>
     <script src="js/burger.js"></script>
