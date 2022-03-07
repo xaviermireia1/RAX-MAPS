@@ -16,16 +16,15 @@
                     <button id="btn-burger"> ☰ </button>
                 </div>
                 <ul id="form-sidebar" class="form-sidebar hidden">
-                    <li><form action="{{url('login')}}" method="GET">
-                        <button>Iniciar Session</button>
+                    <li><form action="{{url('')}}" method="POST">
+                        @csrf
+                        {{method_field('GET')}}
+                        <button>Volver Al Mapa</button>
                     </form></li>
                     <li><form action="{{url('')}}" method="GET">
                         <button>Iniciar Gimcana</button>
                     </form></li>
                     @if (Session::get('nombre'))
-                        <li><form action="{{url('perfil')}}" method="GET">
-                            <button>Mi Perfil</button>
-                        </form></li>
                         <li><form action="{{url('logout')}}" method="GET">
                             <button type="submit">Cerrar Sesión</button>
                         </form></li>

@@ -24,9 +24,9 @@ class LoginValidacion extends FormRequest
     public function rules()
     {
         return [
-            'nick_usu'=>'required|string|max:255',
-            'contra_usu'=>'required|string|max:255',
-            'correo_usu'=>'required|string|max:255'
+            'nick_usu'=>'required|string|max:255|unique:tbl_usuario',
+            'contra_usu'=>'required|string|min:4|max:255',
+            'correo_usu'=>'required|string|max:255|unique:tbl_usuario'
         ];
     }
 }
