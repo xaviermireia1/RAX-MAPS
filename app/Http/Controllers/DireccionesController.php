@@ -17,12 +17,12 @@ class DireccionesController extends Controller
         if (session()->has('id_usuario')) {
             $id = session()->get('id_usuario');
             $listaEtiquetas = DB::select("SELECT * FROM tbl_etiqueta where id_usuario = $id AND id_usuario=1");
-            return view('index',compact('listaEtiquetas'));
         }else{
-
+            $listaEtiquetas = DB::select("SELECT * FROM tbl_etiqueta where id_usuario=1");
         }
+        return view('index',compact('listaEtiquetas'));
     }
-
+    
     public function mostrarEtiqueta(){
         $listaEtiquetas = DB::table('tbl_etiqueta')->select('*')->get();
         return view('mostrar', compact('listaEtiquetas'));

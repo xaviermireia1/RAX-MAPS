@@ -50,7 +50,11 @@
             </nav>
         </div>
         <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA -->
+        <fieldset>
+        @foreach ($listaEtiquetas as $etiqueta)
         
+        @endforeach
+        <fieldset>
         <!-- BOTON PARA CANCELAR LA RUTA -->
         <div class="region-map" id="map">
 
