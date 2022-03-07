@@ -49,4 +49,4 @@ Route::delete('eliminarEtiquetas/{id}',[DireccionesController::class, 'eliminarE
 
 Route::delete('eliminarDireccion/{id}',[DireccionesController::class, 'eliminarDireccion']);
 
-Route::deletee('eliminarUsuario/{id}',[UsuarioController::class, 'eliminarUsuario']);
+Route::delete('eliminarUsuario/{id}',[UsuarioController::class, 'eliminarUsuario']);
