@@ -20,6 +20,7 @@ class CreateTblUbicacionTable extends Migration
             $table->string('latitud_ubi');
             $table->string('longitud_ubi');
             $table->string('direccion_ubi');
+            $table->string('foto_ubi')->nullable();
         });
     }
 

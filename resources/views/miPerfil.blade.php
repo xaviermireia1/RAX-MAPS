@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{!! asset('css/style.css') !!}">
     <link rel="stylesheet" href="{!! asset('css/mainstyle.css') !!}">
+    <meta name="csrf-token" id="token" content="{{ csrf_token() }}">
     <title>Mi Perfil</title>
 </head>
 <body class="page-perfil">
@@ -49,15 +50,48 @@
                     </h2>
                 </div>
                 <div class="perfil-opciones">
-                    <button>Etiquetas</button>
-                    <button>Modificar Perfil</button>
-                    <button>Equipo</button>
+                    {{-- modalEtiquetas({{session()->get('id_usuario');}}); --}}
+                    <button onclick="abrirModal();">Mis etiquetas</button>
+                    <button onclick="abrirModal();">Modificar Perfil</button>
+                    <button onclick="abrirModal();">Equipo</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="modal hidden" id="modal">
-        <div class="modalBox" id="modalBox"></div>
+        <div class="modalBox" id="modalBox">
+            <h1 class="titulo-modal">Mis etiquetas</h1>
+            <div class="contenido-modal">
+                <div class="lista-etiquetas">
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">ETIQUETA</div>
+                </div>
+                <div class="crear-etiqueta">
+                    <form onsubmit="crearEtiqueta();return false;">
+                        <h2>Crear etiqueta</h2>
+                        <input type="text">
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="js/burger.js"></script>
     <script src="js/perfil.js"></script>
