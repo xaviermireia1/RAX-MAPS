@@ -57,11 +57,13 @@
                 </ul>
             </nav>
         </div>
-        <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA -->        
+        <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA --> 
+        <input type="radio" name="etiqueta" onclick="filtroEtiqueta(0)"> Todo   
         @foreach ($listaEtiquetas as $etiqueta)
-            <input type="radio" name="etiqueta" value="{{$etiqueta->id}}">{{$etiqueta->nombre_eti}}
+            <input type="radio" name="etiqueta" onclick="filtroEtiqueta({{$etiqueta->id}})">{{$etiqueta->nombre_eti}}
         @endforeach
         <!-- BOTON PARA CANCELAR LA RUTA -->
+        <button id="btnQuitRoute">Quitar ruta</button>
         <div class="region-map" id="map">
 
         </div>
