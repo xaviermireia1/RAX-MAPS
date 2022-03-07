@@ -22,10 +22,12 @@ class UsuarioController extends Controller
         $user=DB::table("tbl_rol")->join('tbl_usuario', 'tbl_rol.id', '=', 'tbl_usuario.id_rol')->where('correo_usu','=',$datos['correo_usu'])->where('contra_usu','=',$passMD5)->first();
         if($user->nombre_rol=='administrador'){
            $request->session()->put('nombre',$request->correo_usu);
+           $request->session()->put('id_usuario',$request->id);
            $request->session()->put('rol','administrador');
            return redirect('');
         }if($user->nombre_rol=='cliente'){
             $request->session()->put('nombre',$request->correo_usu);
+            $request->session()->put('id_usuario',$request->id);
             $request->session()->put('rol','cliente');
             return redirect('');
         }
