@@ -26,7 +26,7 @@ body {
 }
 
 .hidden {
-    display: none;
+    display: none!important;
 }
 
 .region-map,
@@ -47,6 +47,55 @@ body {
     width: 5%;
     height: 100vh;
     background-color: black;
+}
+
+////////////////////////////////////////////MODAL/////////////////////////
+.modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #333333b2;
+    transition: 0.5s ease;
+    .modalBox {
+        min-height: 60vh;
+        min-width: 80vw;
+        background-color: $white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+        border-radius: $br;
+        .contenido-modal {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            .lista-etiquetas {
+                padding: 20px;
+                width: 50%;
+                max-height: 40vh;
+                overflow-y: scroll;
+                .etiqueta {
+                    padding: 20px;
+                }
+            }
+            .crear-etiqueta {
+                padding: 20px;
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+        }
+    }
 }
 
 /////////////////////////////////BURGER///////////////////////////////
