@@ -8,6 +8,7 @@ use App\Http\Controllers\Exception;
 use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\TryCatch;
 use App\Http\Requests\LoginValidacion;
+use App\Http\Requests\LoginValidacion2;
 
 class UsuarioController extends Controller
 {
@@ -16,7 +17,7 @@ class UsuarioController extends Controller
         return view('login_register');
     }
 
-    public function loginPost(Request $request){
+    public function loginPost(LoginValidacion2 $request){
         $datos= $request->except('_token','_method');
         $passMD5 = md5($datos['contra_usu']);
         $user=DB::table("tbl_rol")->join('tbl_usuario', 'tbl_rol.id', '=', 'tbl_usuario.id_rol')->where('correo_usu','=',$datos['correo_usu'])->where('contra_usu','=',$passMD5)->first();
