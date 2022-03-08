@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/icon/raxmaps.png" type="image/x-icon">
     <link rel="stylesheet" href="{!! asset('css/mainstyle.css') !!}">
-    <script src="{!! asset('fa/js/all.js') !!}"></script>
-    <link rel="stylesheet" href="{!! asset('fa/css/all.min.css') !!}">
+    <link href="fa/css/all.css" rel="stylesheet">
     <meta name="csrf-token" id="token" content="{{ csrf_token() }}">
     <title>Mi Perfil</title>
 </head>
@@ -51,7 +50,7 @@
                 </div>
                 <div class="perfil-opciones">
                     {{-- modalEtiquetas({{session()->get('id_usuario');}}); --}}
-                    <button onclick="abrirModal();">Mis etiquetas</button>
+                    <button onclick="modalEtiquetas();">Mis etiquetas</button>
                     <button onclick="abrirModal();">Modificar Perfil</button>
                     <button onclick="abrirModal();">Equipo</button>
                 </div>
@@ -60,134 +59,7 @@
     </div>
     <div class="modal hidden" id="modal">
         <div class="modalBox" id="modalBox">
-            <h1 class="titulo-modal">Mis etiquetas</h1>
-            <div class="contenido-modal">
-                <div class="lista-etiquetas">
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <div class="submit-eliminar-etiqueta">
-                                    <input type="submit">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <div class="submit-eliminar-etiqueta">
-                                    <input type="submit">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <div class="submit-eliminar-etiqueta">
-                                    {{-- <input type="submit"> --}}
-                                    <i class="fa-solid fa-xmark"></i>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <div class="submit-eliminar-etiqueta">
-                                    <input type="submit">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <input type="submit" value="X">
-                            </form>
-                        </div>
-                    </div>
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <input type="submit" value="X">
-                            </form>
-                        </div>
-                    </div>
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <input type="submit" value="X">
-                            </form>
-                        </div>
-                    </div>
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <input type="submit" value="X">
-                            </form>
-                        </div>
-                    </div>
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <input type="submit" value="X">
-                            </form>
-                        </div>
-                    </div>
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <input type="submit" value="X">
-                            </form>
-                        </div>
-                    </div>
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <input type="submit" value="X">
-                            </form>
-                        </div>
-                    </div>
-                    <div class="etiqueta">
-                        <div class="nombre-etiqueta">ETIQUETA</div>
-                        <div class="eliminar-etiqueta">
-                            <form onsubmit="eliminarEtiqueta()return false;">
-                                <div class="submit-eliminar-etiqueta">
-                                    <input type="submit">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </div>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="crear-etiqueta">
-                    <form onsubmit="crearEtiqueta();return false;">
-                        <h2>Crear etiqueta</h2>
-                        <input type="text" placeholder="Nueva etiqueta..." class="nombre-etiqueta-crear">
-                        <input type="submit" name="enviar" value="Crear etiqueta" class="btn-etiqueta">
-                    </form>
-                </div>
-            </div>
+            
         </div>
     </div>
     <script src="js/burger.js"></script>

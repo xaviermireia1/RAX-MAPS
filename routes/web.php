@@ -18,12 +18,10 @@ use App\Http\Controllers\DireccionesController;
 Route::get('/',[DireccionesController::class,'index']);
 
 //Login + Logout
-//Mostrar
 Route::get('login',[UsuarioController::class,'login']);
 
 Route::get('perfil',[UsuarioController::class, 'perfil']);
 
-//Acciones
 Route::post('login',[UsuarioController::class,'loginPost']);
 
 Route::post('registro',[UsuarioController::class,'registraUsuario']);
@@ -31,18 +29,26 @@ Route::post('registro',[UsuarioController::class,'registraUsuario']);
 Route::get('logout', [UsuarioController::class, 'logout']);
 
 //Mostrar
-Route::post('direcciones',[DireccionesController::class,'mostrarDirecciones']);
-Route::get('etiqueta/{id}',[DireccionesController::class,'filtroEtiqueta']);
+Route::post('direcciones',[DireccionesController::class,'mostrarDireccionesMAP']);
 
+Route::get('etiqueta/{id}',[DireccionesController::class,'filtroEtiquetaMAP']);
+
+Route::post('mostrarEtiqueta',[DireccionesController::class,'mostrarEtiqueta']);
+
+Route::get('perfil/equipo',[UsuarioController::class,'mostrarEquipos']);
 //Crear
 Route::post('crearEtiquetas',[DireccionesController::class, 'crearEtiquetasPost']);
 
 Route::post('crearDireccion',[DireccionesController::class, 'crearDireccionPost']);
 
+Route::post('crearEquipo',[UsuarioController::class, 'crearEquipoPost']);
+
 //Modificar
 Route::put('modificarDireccion',[DireccionesController::class, 'modificarDireccionPut']);
 
 Route::put('modificarEtiqueta',[DireccionesController::class, 'modificarEtiquetaPut']);
+
+Route::put('modificarEquipo',[UsuarioController::class, 'modificarEquipoPut']);
 
 //Eliminar
 Route::delete('eliminarEtiquetas/{id}',[DireccionesController::class, 'eliminarEtiquetas']);
