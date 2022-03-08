@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/icon/raxmaps.png" type="image/x-icon">
     <link rel="stylesheet" href="{!! asset('css/mainstyle.css') !!}">
     <script src="{!! asset('fa/js/all.js') !!}"></script>
     <link rel="stylesheet" href="{!! asset('fa/css/all.min.css') !!}">
@@ -23,9 +24,6 @@
                         @csrf
                         {{method_field('GET')}}
                         <button>Volver Al Mapa</button>
-                    </form></li>
-                    <li><form action="{{url('')}}" method="GET">
-                        <button>Iniciar Gimcana</button>
                     </form></li>
                     @if (Session::get('nombre'))
                         <li><form action="{{url('perfil')}}" method="GET">

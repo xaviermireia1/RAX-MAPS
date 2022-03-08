@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/icon/raxmaps.png" type="image/x-icon">
     <meta name="csrf-token" id="token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <!-- Make sure you put this AFTER Leaflet's CSS -->
@@ -22,7 +23,7 @@
     <script src="js/mapas.js"></script>
     <link rel="stylesheet" href="{!! asset('css/style.css') !!}">
     <link rel="stylesheet" href="{!! asset('css/mainstyle.css') !!}">
-    <title>Agenda Churrerías</title>
+    <title>Raxmaps</title>
 </head>
 <body>
     <div class="region-content">
@@ -57,11 +58,32 @@
                 </ul>
             </nav>
         </div>
-        <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA -->        
+        <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA -->
+        <input type="radio" name="etiqueta" onclick="filtroEtiqueta(0)"> Todo
         @foreach ($listaEtiquetas as $etiqueta)
-            <input type="radio" name="etiqueta" id="" value="{{$etiqueta->id}}">{{$etiqueta->nombre_eti}}
+            @if($etiqueta->icono_eti == 'sys_ocio')
+                <img class="" src="img/icon/ico_ocio.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_bar')
+                <img class="" src="img/icon/ico_bar.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_hospital')
+                <img class="" src="img/icon/ico_hospital.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_hotel')
+                <img class="" src="img/icon/ico_hotel.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_museo')
+                <img class="" src="img/icon/ico_museo.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_parque')
+                <img class="" src="img/icon/ico_parque.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_playa')
+                <img class="" src="img/icon/ico_playa.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_restaurante')
+                <img class="" src="img/icon/ico_restaurante.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_supermercado')
+                <img class="" src="img/icon/ico_supermercado.png" width="20">
+            @endif
+            <input type="radio" name="etiqueta" onclick="filtroEtiqueta({{$etiqueta->id}})">{{$etiqueta->nombre_eti}}
         @endforeach
         <!-- BOTON PARA CANCELAR LA RUTA -->
+        <button id="btnQuitRoute">Quitar ruta</button>
         <div class="region-map" id="map">
 
         </div>

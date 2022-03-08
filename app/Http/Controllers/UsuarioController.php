@@ -8,6 +8,7 @@ use App\Http\Controllers\Exception;
 use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\TryCatch;
 use App\Http\Requests\LoginValidacion;
+use App\Http\Requests\LoginValidacion2;
 
 class UsuarioController extends Controller
 {
@@ -16,7 +17,7 @@ class UsuarioController extends Controller
         return view('login_register');
     }
 
-    public function loginPost(Request $request){
+    public function loginPost(LoginValidacion2 $request){
         $datos= $request->except('_token','_method');
         $passMD5 = md5($datos['contra_usu']);
         $user=DB::table("tbl_rol")->join('tbl_usuario', 'tbl_rol.id', '=', 'tbl_usuario.id_rol')->where('correo_usu','=',$datos['correo_usu'])->where('contra_usu','=',$passMD5)->first();
@@ -44,7 +45,7 @@ class UsuarioController extends Controller
         try{
             DB::beginTransaction();
             $userID = DB::table('tbl_usuario')->insertGetId(['nick_usu'=>$datos['nick_usu'],'contra_usu'=>$passMD5,'correo_usu'=>$datos['correo_usu'],'id_rol'=>$rol,'id_equipo'=>$equipo]);
-            DB::table('tbl_etiqueta')->insertGetId(['nombre_eti'=>$nombreEtiqueta, 'incono_eti'=>$iconoEtiqueta, 'id_usuario'=>$userID]);
+            DB::table('tbl_etiqueta')->insertGetId(['nombre_eti'=>$nombreEtiqueta, 'icono_eti'=>$iconoEtiqueta, 'id_usuario'=>$userID]);
             DB::commit();
         }catch(\Exception $e){
             DB::rollBack();
@@ -68,6 +69,17 @@ class UsuarioController extends Controller
         return view('miPerfil');
     }
 
+    //Darse de baja
+    public function eliminarUsuario($id){
+        try{
+            DB::beginTransaction();
+            DB::table('tbl_usuario')->where('id','=',$id)->delete();
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            return $e->getMessage();
+        }
+    }
     /**
      * Display a listing of the resource.
      *
