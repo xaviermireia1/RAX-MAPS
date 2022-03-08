@@ -79,11 +79,16 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 30px;
+  padding: 50px;
   border-radius: 4px;
 }
 
+.modal .modalBox .titulo-modal {
+  padding: 30px;
+}
+
 .modal .modalBox .contenido-modal {
+  height: 40vh;
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -104,10 +109,37 @@ body {
 }
 
 .modal .modalBox .contenido-modal .lista-etiquetas .etiqueta {
+  border: 1px solid black;
   padding: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.modal .modalBox .contenido-modal .lista-etiquetas .etiqueta .nombre-etiqueta {
+  width: 80%;
+}
+
+.modal .modalBox .contenido-modal .lista-etiquetas .etiqueta .eliminar-etiqueta {
+  width: 20%;
+}
+
+.modal .modalBox .contenido-modal .lista-etiquetas .etiqueta .eliminar-etiqueta input {
+  width: 5vw;
+  height: 5vw;
+  border: none;
+  color: red;
+  font-size: 20px;
 }
 
 .modal .modalBox .contenido-modal .crear-etiqueta {
+  height: 100%;
   padding: 20px;
   width: 50%;
   display: -webkit-box;
@@ -124,6 +156,48 @@ body {
       -ms-flex-pack: center;
           justify-content: center;
   text-align: center;
+}
+
+.modal .modalBox .contenido-modal .crear-etiqueta form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  height: 100%;
+  width: 100%;
+}
+
+.modal .modalBox .contenido-modal .crear-etiqueta form h2 {
+  margin: 30px;
+}
+
+.modal .modalBox .contenido-modal .crear-etiqueta form .nombre-etiqueta-crear {
+  width: 100%;
+  padding: 20px;
+  font-size: 15px;
+}
+
+.modal .modalBox .contenido-modal .crear-etiqueta form .btn-etiqueta {
+  margin: 30px 0;
+  background-color: #69a6d9;
+  width: 80%;
+  border: none;
+  color: #ffffff;
+  padding: 20px;
+  font-size: 15px;
+}
+
+.modal .modalBox .contenido-modal .crear-etiqueta form .btn-etiqueta:hover {
+  background-color: #559ad4;
 }
 
 .expanded {
