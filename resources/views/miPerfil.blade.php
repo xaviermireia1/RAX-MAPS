@@ -23,9 +23,6 @@
                         {{method_field('GET')}}
                         <button>Volver Al Mapa</button>
                     </form></li>
-                    <li><form action="{{url('')}}" method="GET">
-                        <button>Iniciar Gimcana</button>
-                    </form></li>
                     @if (Session::get('nombre'))
                         <li><form action="{{url('perfil')}}" method="GET">
                             <button>Mi Perfil</button>
