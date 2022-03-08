@@ -47,6 +47,14 @@
                                 {{$message}}
                             @enderror
                         </div>
+                        <div class="field-wrap">
+                            <label>Repetir Contraseña<span class="req">*</span></label>
+                            <input name="contra_usu_val" type="password" autocomplete="off"/>
+                            @error('contra_usu_val')
+                                <br>
+                                {{$message}}
+                            @enderror
+                        </div>
                         <button type="submit" class="button button-block"/>Empezar</button>
                     </form>
                 </div>
@@ -56,11 +64,19 @@
                         @csrf
                         <div class="field-wrap">
                             <label>Correo<span class="req">*</span></label>
-                            <input name="correo_usu" type="email"required autocomplete="off"/>
+                            <input name="correo_usu" type="email" autocomplete="off"/>
+                            @error('correo_usu')
+                                <br>
+                                {{$message}}
+                            @enderror
                         </div>
                         <div class="field-wrap">
                             <label>Contraseña<span class="req">*</span></label>
-                            <input name="contra_usu" type="password"required autocomplete="off"/>
+                            <input name="contra_usu" type="password" autocomplete="off"/>
+                            @error('contra_usu')
+                                <br>
+                                {{$message}}
+                            @enderror
                         </div>
                         <button class="button button-block"/>Iniciar Sesion</button>
                     </form>
