@@ -59,6 +59,7 @@
             </nav>
         </div>
         <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA -->
+        <img class="" src="img/icon/ico_todo.png" width="20">
         <input type="radio" name="etiqueta" onclick="filtroEtiqueta(0)"> Todo
         @foreach ($listaEtiquetas as $etiqueta)
             @if($etiqueta->icono_eti == 'sys_ocio')
@@ -79,6 +80,8 @@
                 <img class="" src="img/icon/ico_restaurante.png" width="20">
             @elseif($etiqueta->icono_eti == 'sys_supermercado')
                 <img class="" src="img/icon/ico_supermercado.png" width="20">
+            @elseif($etiqueta->icono_eti == 'sys_fav')
+                <img class="" src="img/icon/ico_fav.png" width="20">
             @endif
             <input type="radio" name="etiqueta" onclick="filtroEtiqueta({{$etiqueta->id}})">{{$etiqueta->nombre_eti}}
         @endforeach
