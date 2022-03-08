@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{!! asset('css/style.css') !!}">
     <link rel="stylesheet" href="{!! asset('css/mainstyle.css') !!}">
+    <script src="{!! asset('fa/js/all.js') !!}"></script>
+    <link rel="stylesheet" href="{!! asset('fa/css/all.min.css') !!}">
     <meta name="csrf-token" id="token" content="{{ csrf_token() }}">
     <title>Mi Perfil</title>
 </head>
@@ -63,31 +65,128 @@
             <h1 class="titulo-modal">Mis etiquetas</h1>
             <div class="contenido-modal">
                 <div class="lista-etiquetas">
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
-                    <div class="etiqueta">ETIQUETA</div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <div class="submit-eliminar-etiqueta">
+                                    <input type="submit">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <div class="submit-eliminar-etiqueta">
+                                    <input type="submit">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <div class="submit-eliminar-etiqueta">
+                                    {{-- <input type="submit"> --}}
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <div class="submit-eliminar-etiqueta">
+                                    <input type="submit">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <input type="submit" value="X">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <input type="submit" value="X">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <input type="submit" value="X">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <input type="submit" value="X">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <input type="submit" value="X">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <input type="submit" value="X">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <input type="submit" value="X">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="etiqueta">
+                        <div class="nombre-etiqueta">ETIQUETA</div>
+                        <div class="eliminar-etiqueta">
+                            <form onsubmit="eliminarEtiqueta()return false;">
+                                <div class="submit-eliminar-etiqueta">
+                                    <input type="submit">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="crear-etiqueta">
                     <form onsubmit="crearEtiqueta();return false;">
                         <h2>Crear etiqueta</h2>
-                        <input type="text">
+                        <input type="text" placeholder="Nueva etiqueta..." class="nombre-etiqueta-crear">
+                        <input type="submit" name="enviar" value="Crear etiqueta" class="btn-etiqueta">
                     </form>
                 </div>
             </div>
