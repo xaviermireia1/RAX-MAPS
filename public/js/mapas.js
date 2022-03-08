@@ -20,10 +20,6 @@ function getLocation() {
         //navigator.geolocation.clearWatch(id);
         //Coger posicion
         navigator.geolocation.getCurrentPosition(showPosition);
-        if (routingControl != null) {
-            //En caso que exista una ruta le pasamos mi posicion actual a la ruta para que cambie la posicion (así modo maps de ir de un sitio a otro y se actualiza mi posición)
-            routingControl.spliceWaypoints(0, 1, [myPosition.coords.latitude, myPosition.coords.longitude]);
-        }
     } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
     }
@@ -31,10 +27,14 @@ function getLocation() {
 
 function showPosition(position) {
     myPosition = position;
+    if (routingControl != null) {
+        //En caso que exista una ruta le pasamos mi posicion actual a la ruta para que cambie la posicion (así modo maps de ir de un sitio a otro y se actualiza mi posición)
+        routingControl.spliceWaypoints(0, 1, [myPosition.coords.latitude, myPosition.coords.longitude]);
+    }
     //Para que el mapa se centre en mi posicion actual que es donde se situará el marker
     //map.panTo(new L.LatLng(position.coords.latitude, position.coords.longitude));
     //map.setView([position.coords.latitude, position.coords.longitude], 30);
-    var popup = L.popup();
+    //var popup = L.popup();
     //Si el mapa tiene el marker de myMarker (mi posición) lo reestablecemos
     if (map.hasLayer(myMarker)) {
         map.removeLayer(myMarker);
@@ -172,6 +172,7 @@ function getPositionDirection(lat, lng) {
             L.latLng(myPosition.coords.latitude, myPosition.coords.longitude),
             L.latLng(lat, lng)
         ],
+        addWaypoints: false,
         routeWhileDragging: false,
         fitSelectedRoutes: false,
     }).addTo(map);
