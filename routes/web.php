@@ -29,10 +29,14 @@ Route::post('registro',[UsuarioController::class,'registraUsuario']);
 Route::get('logout', [UsuarioController::class, 'logout']);
 
 //Mostrar
+//AJAX MAPA
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Route::post('direcciones',[DireccionesController::class,'mostrarDireccionesMAP']);
 
 Route::get('etiqueta/{id}',[DireccionesController::class,'filtroEtiquetaMAP']);
 
+Route::post('etiquetas/usuarios',[DireccionesController::class,'cogerEtiquetaUsuarioMAP']);
+///////////////////////////////////////////////////////////////////////////////////////////////////
 Route::post('mostrarEtiqueta',[DireccionesController::class,'mostrarEtiqueta']);
 
 Route::get('perfil/equipo',[UsuarioController::class,'mostrarEquipos']);
