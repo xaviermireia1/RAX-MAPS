@@ -87,7 +87,7 @@ function infoUbicacion(datos) {
         btnQuitRoute.style.display = 'none';
     }
     for (let i = 0; i < datos.length; i++) {
-        let strPopUpHTML = "";
+        strPopUpHTML = "";
         let icon = "";
         if (datos[i].icono_eti == 'sys_museo') {
             icon = L.icon({
@@ -149,11 +149,13 @@ function infoUbicacion(datos) {
         //Este es de prueba de pop up más sacar la posicion
         strPopUpHTML += "<div>";
         strPopUpHTML += "<h1>" + datos[i].nombre_ubi + "</h1>";
+        strPopUpHTML += "<h3>" + datos[i].direccion_ubi + "</h3>";
         strPopUpHTML += "<p>" + datos[i].descripcion_ubi + "</p>";
         strPopUpHTML += "<img src='storage/" + datos[i].foto_ubi + "'/>";
         strPopUpHTML += "<button onclick='getPositionDirection(\"" + datos[i].latitud_ubi + "\",\"" + datos[i].longitud_ubi + "\");'>Coger ubicación</button>";
+        strPopUpHTML += "<button onclick='getUserTags(" + datos[i].id + ");'>Agregar etiqueta</button>";
+        strPopUpHTML += "<div id='divUserTags'></div>";
         strPopUpHTML += "</div>";
-        console.log(strPopUpHTML);
         markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon })
             .bindPopup(strPopUpHTML)
             .addTo(map));
@@ -180,13 +182,40 @@ function getPositionDirection(lat, lng) {
     btnQuitRoute.onclick = function() {
         btnQuitRoute.style.display = 'none';
         map.removeControl(routingControl);
+        routingControl = null;
     }
 }
+
+function getUserTags(idUbicacion) {
+    let divTags = document.getElementById('divUserTags');
+    let strDivTags = "";
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'POST');
+    let ajax = objetoAjax();
+    ajax.open("POST", "etiquetas/usuarios", true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var datos = JSON.parse(this.responseText);
+            if (datos.length != 0) {
+                for (let i = 0; i < datos.length; i++) {
+                    strDivTags += "<p>" + datos[i].nombre_eti + "</p>";
+                }
+            } else {
+                strDivTags = "<p>No existe ninguna etiqueta</p>";
+            }
+            divTags.innerHTML = strDivTags;
+        }
+    }
+    ajax.send(formData);
+}
+
 window.onload = function() {
     geocoder = L.esri.Geocoding.geocodeService();
     myMarker = {};
     markerPosition = [];
-    routingControl = null
+    routingControl = null;
     btnQuitRoute = document.getElementById('btnQuitRoute');
     btnQuitRoute.style.display = 'none';
     map = L.map('map');

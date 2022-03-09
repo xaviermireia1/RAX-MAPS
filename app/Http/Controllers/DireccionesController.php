@@ -162,4 +162,14 @@ class DireccionesController extends Controller
         }
         return response()->json($etiquetas);
     }
+    //Coger etiquetas del usuario del
+    public function cogerEtiquetaUsuarioMAP(){
+        $etiqueta = "";
+        if (session()->has('id_usuario')) {
+            $idUsuario = session()->get('id_usuario');
+            $rol= session()->get('rol');
+            $etiqueta = DB::select("SELECT * FROM tbl_etiqueta where id_usuario = $idUsuario");
+        }
+        return response()->json($etiqueta);
+    }
 }
