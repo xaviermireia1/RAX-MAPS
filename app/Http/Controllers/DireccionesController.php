@@ -172,4 +172,10 @@ class DireccionesController extends Controller
         }
         return response()->json($etiqueta);
     }
+    public function getEtiquetaDireccionMAP($idDireccion){
+        $etiquetasDireccion = DB::select("SELECT eti.nombre_eti FROM tbl_etiqueta eti 
+        INNER JOIN tbl_registro regi on regi.id_etiqueta = eti.id
+        where regi.id_ubicacion = $idDireccion");
+        return response()->json($etiquetasDireccion);
+    }
 }
