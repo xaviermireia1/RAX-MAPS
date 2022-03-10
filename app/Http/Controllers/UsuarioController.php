@@ -75,6 +75,14 @@ class UsuarioController extends Controller
 
     //CRUD AJAX
     //MOSTRAR
+    public function mostrarPerfil(){
+        if (session()->has('id_usuario')) {
+            $idUsuario = session()->get('id_usuario');
+        }
+        $datosUsu=DB::table('tbl_usuario')->where('id','=',$idUsuario)->first();
+        return response()->json($datosUsu);
+    }
+
     public function mostrarUsuario(){
         if (session()->has('id_usuario')) {
             $idUsuario = session()->get('id_usuario');
@@ -101,7 +109,7 @@ class UsuarioController extends Controller
         return response()->json($groups);
     }
 
-    public function unirseEquipo(Request $request, $id){
+    public function unirseEquipo(Request $request,$id){
         $datos = $request->except('_token');
 
         if (session()->has('id_usuario')) {
@@ -110,10 +118,11 @@ class UsuarioController extends Controller
 
         $equipo = DB::table('tbl_equipo')->where('id','=',$id)->select('contra_equ')->first();
 
-        if(count($equipo) == 0){
+        if($equipo->contra_equ == ""){
             try {
                 DB::beginTransaction();
-                DB::table('tbl_usuario')->where('id','=',$idUsuario)->update(['id_equipo '=>$id]);
+                //DB::table('tbl_usuario')->where('id','=',$idUsuario)->update(['id_equipo '=>$id]);
+                DB::select("UPDATE tbl_usuario SET id_equipo=$id where id=$idUsuario;");
                 DB::commit();
                 return response()->json(array('resultado'=> 'OK'));
             } catch (\Exception $e) {
@@ -122,16 +131,19 @@ class UsuarioController extends Controller
             }
         }else{
             $equipoContraseña = DB::table('tbl_equipo')->where('id','=',$id)->select('*')->first();
-            if($datos['nombre_equ'] == $equipoContraseña['nombre_equ'] && $datos['contra_equ'] == $equipoContraseña['contra_equ']){
+            if($datos['contra_equ'] == $equipoContraseña->contra_equ){
+                
                 try{
                     DB::beginTransaction();
-                    DB::table('tbl_usuario')->where('id','=',$idUsuario)->update(['id_equipo '=>$id]);
+                    DB::select("UPDATE tbl_usuario SET id_equipo=$id where id=$idUsuario;");
                     DB::commit();
                     return response()->json(array('resultado'=> 'OK'));
                 }catch (\Exception $e) {
                     DB::rollBack();
                     return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
                 }
+            }else{
+                return response()->json(array('resultado'=> 'NOK'));
             }
         }
     }
@@ -185,6 +197,29 @@ class UsuarioController extends Controller
         try{
             DB::beginTransaction();
             DB::table('tbl_equipo')->where('id','=',$datos['id'])->update($datos);
+            DB::commit();
+            return response()->json(array('resultado'=> 'OK'));
+        }catch(\Exception $e){
+            DB::rollBack();
+            return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
+        }
+    }
+
+    public function modificarPerfil(Request $request){
+        if (session()->has('id_usuario')) {
+            $idUsuario = session()->get('id_usuario');
+        }
+        $datos = $request->except('_token','_method');
+        $passMD5=md5($datos['contra_usu']);
+        $nick=$datos['nick_usu'];
+        $correu=$datos['correo_usu'];
+
+
+
+        try{
+            DB::beginTransaction();
+            //DB::table('tbl_usuario')->where('id','=',$idUsuario)->update($datos);
+            DB::select("UPDATE tbl_usuario set nick_usu='$nick', correo_usu='$correu',contra_usu='$passMD5' where id=$idUsuario;");
             DB::commit();
             return response()->json(array('resultado'=> 'OK'));
         }catch(\Exception $e){
