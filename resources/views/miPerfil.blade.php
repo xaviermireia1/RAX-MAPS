@@ -52,7 +52,11 @@
                     {{-- modalEtiquetas({{session()->get('id_usuario');}}); --}}
                     <button onclick="modalEtiquetas();">Mis etiquetas</button>
                     <button onclick="modalModPerfil();">Modificar Perfil</button>
-                    <button onclick="modalEquipos();">Equipo</button>
+                    @if (Session::get('rol') == "cliente")
+                        <button onclick="modalEquipos();">Equipo</button>
+                    @elseif (Session::get('rol') == "administrador")
+                        <button onclick="modalDirecciones();">Ubicaciones</button>
+                    @endif
                 </div>
             </div>
         </div>

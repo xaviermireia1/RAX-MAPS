@@ -45,6 +45,8 @@ Route::post('mostrarEquipo',[UsuarioController::class,'mostrarEquipos']);
 
 Route::post('mostrarPerfil',[UsuarioController::class,'mostrarPerfil']);
 
+Route::post('mostrarDirecciones',[DireccionesController::class,'mostrarDirecciones']);
+
 //Crear
 Route::post('crearEtiquetas',[DireccionesController::class, 'crearEtiquetasPost']);
 
