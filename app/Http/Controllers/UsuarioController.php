@@ -101,6 +101,40 @@ class UsuarioController extends Controller
         return response()->json($groups);
     }
 
+    public function unirseEquipo(Request $request, $id){
+        $datos = $request->except('_token');
+
+        if (session()->has('id_usuario')) {
+            $idUsuario = session()->get('id_usuario');
+        }
+
+        $equipo = DB::table('tbl_equipo')->where('id','=',$id)->select('contra_equ')->first();
+
+        if(count($equipo) == 0){
+            try {
+                DB::beginTransaction();
+                DB::table('tbl_usuario')->where('id','=',$idUsuario)->update(['id_equipo '=>$id]);
+                return response()->json(array('resultado'=> 'OK'));
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
+            }
+        }else{
+            $equipoContraseña = DB::table('tbl_equipo')->where('id','=',$id)->select('*')->first();
+            if($datos['nombre_equ'] == $equipoContraseña['nombre_equ'] && $datos['contra_equ'] == $equipoContraseña['contra_equ']){
+                try{
+                    DB::beginTransaction();
+                    DB::table('tbl_usuario')->where('id','=',$idUsuario)->update(['id_equipo '=>$id]);
+                    return response()->json(array('resultado'=> 'OK'));
+                    DB::commit();
+                }catch (\Exception $e) {
+                    DB::rollBack();
+                    return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
+                }
+            }
+        }
+    }
 
     //Eliminar
     //Darse de baja
