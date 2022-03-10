@@ -28,6 +28,10 @@ function abrirModal() {
     modal.classList.remove("hidden")
 }
 
+function cerrarModal() {
+    modal.classList.add("hidden")
+}
+
 //////////////////////////////////////////////////////////
 //ETIQUETAS
 //////////////////////////////////////////////////////////
@@ -177,7 +181,7 @@ function modalEquipos() {
     ajax.onreadystatechange = function() {
 
         if (ajax.readyState == 4 && ajax.status == 200) {
-            var respuesta = JSON.parse(this.responseText);
+            respuesta = JSON.parse(this.responseText);
 
             var recarga = '';
             recarga += `
@@ -207,13 +211,17 @@ function modalEquipos() {
                     recarga += `
                     
                         <div class="item">
-                        <button class="item-click">
-                            <div class="nombre-item">${respuesta[i].nombre_equ}</div>
                             `
                     if (respuesta[i].contra_equ != "") {
-                        recarga += `<div class="boton-item"><i class="fas fa-lock" style="color:orange;"></i></div>`
+                        recarga += `
+                        <button class="item-click" onclick="modalContraseña(${respuesta[i].id});">
+                            <div class="nombre-item">${respuesta[i].nombre_equ}</div>
+                            <div class="boton-item"><i class="fas fa-lock" style="color:orange;"></i></div>`
                     } else {
-                        recarga += `<div class="boton-item"><i class="fa fa-unlock" style="color:green;"></i></div>`
+                        recarga += `
+                        <button class="item-click" onclick="unirseEquipo(${respuesta[i].id});">
+                        <div class="nombre-item">${respuesta[i].nombre_equ}</div>
+                            <div class="boton-item"><i class="fa fa-unlock" style="color:green;"></i></div>`
                     }
                     recarga += `
                     </button>
@@ -226,16 +234,17 @@ function modalEquipos() {
                 <div class="modal-second">
                     `
             if (respuesta[0].nick_usu) {
-                recarga += `<form id="formCreateTag" method='POST' onsubmit="abandonarEquipo(); return false;">
+                recarga += `<form method='POST' onsubmit="abandonarEquipo(); return false;">
                                 <h2>Abandonar equipo</h2>
                                 <input type="submit" name="enviar" value="Haz click aquí para abandonar" class="btn-etiqueta">
                             </form>
             `
 
             } else {
-                recarga += `<form id="formCreateTag" method='POST' onsubmit="crearEquipo(); return false;">
+                recarga += `<form id="formCreateTeam" method='POST' onsubmit="crearEquipo(); return false;">
                                 <h2>Crear equipo</h2>
                                 <input type="text" placeholder="Nombre del equipo..." class="nombre-etiqueta-crear" name="nombre_equ">
+                                <input type="text" placeholder="Contraseña (Opcional)..." class="nombre-etiqueta-crear" name="contra_equ">
                                 <input type="submit" name="enviar" value="Crear" class="btn-etiqueta">
                             </form>
             `
@@ -272,12 +281,10 @@ function abandonarEquipo() {
                 /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
                 /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
                 //message.innerHTML = '<p>Nota creada correctamente.</p>';
-                alert("BIEN")
             } else {
                 /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
                 //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
                 //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
-                alert("MAL")
             }
             modalEquipos();
         }
@@ -286,4 +293,170 @@ function abandonarEquipo() {
 }
 
 
+function unirseEquipo(id) {
+    /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
+    /* Usar el objeto FormData para guardar los parámetros que se enviarán:
+    formData.append('clave', valor);
+    valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
+    var formData = new FormData();
+    if (document.getElementById('contra_equ')) {
+        formData.append('contra_equ', document.getElementById('contra_equ').value)
+    }
+    formData.append('_token', document.getElementById('token').getAttribute("content"));
+    formData.append('_method', 'PUT');
+    /* Inicializar un objeto AJAX */
+    var ajax = objetoAjax();
+
+
+    ajax.open("POST", "unirseEquipo/" + id, true);
+
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.resultado == "OK") {
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = '<p>Nota creada correctamente.</p>';
+            } else {
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+            }
+            modalEquipos();
+        }
+    }
+    ajax.send(formData);
+}
+
+
+
+function modalContraseña(idEqu) {
+    var contenedor = document.getElementById("modalBox");
+    var recarga = '';
+    for (let i = 0; i < respuesta.length; i++) {
+        if (respuesta[i].id == idEqu) {
+            recarga += `
+            <h1 class="titulo-modal">Equipo: <span>${respuesta[i].nombre_equ}</span></h1>
+            <h3 class="subtitulo-modal">Introduce la contraseña del equipo: </h3>
+            <div class="contenido-modal modal-password">
+                <form onsubmit="unirseEquipo(${idEqu});return false;" method="POST" class="form-contra">
+                    <input id="contra_equ" class="contra-equ" name="contra_equ" type="text" placeholder="Contraseña...">
+                    <input class="enviar_contra" type="submit" name="enviar" value="Unirse al equipo">
+                </form>
+                
+            </div>
+            `;
+        }
+    }
+    contenedor.innerHTML = recarga;
+
+}
+
+
+function crearEquipo() {
+    /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
+    /* Usar el objeto FormData para guardar los parámetros que se enviarán:
+    formData.append('clave', valor);
+    valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
+    var formData = new FormData(document.getElementById('formCreateTeam'));
+
+    formData.append('_token', document.getElementById('token').getAttribute("content"));
+    formData.append('_method', 'POST');
+    /* Inicializar un objeto AJAX */
+    var ajax = objetoAjax();
+
+
+    ajax.open("POST", "crearEquipo", true);
+
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.resultado == "OK") {
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = '<p>Nota creada correctamente.</p>';
+            } else {
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+            }
+            modalEquipos();
+        }
+    }
+    ajax.send(formData);
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function modalModPerfil() {
+    /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
+    /* Usar el objeto FormData para guardar los parámetros que se enviarán:
+    formData.append('clave', valor);
+    valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
+    var contenedor = document.getElementById("modalBox");
+    var formData = new FormData();
+    formData.append('_token', document.getElementById('token').getAttribute("content"));
+
+    /* Inicializar un objeto AJAX */
+    var ajax = objetoAjax();
+    ajax.open("POST", "mostrarPerfil", true);
+    ajax.onreadystatechange = function() {
+
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var respuesta = JSON.parse(this.responseText);
+
+            var recarga = '';
+            recarga += `
+            <h1 class="titulo-modal">Modificar perfil</h1>
+            <div class="contenido-modal">
+                <form onsubmit="modificarPerfil();return false;" method="POST" id="form_mod_perfil" class="form-mod-perfil">
+                    <input type="text" name="nick_usu" value="${respuesta.nick_usu}">
+                    <input type="text" name="correo_usu" value="${respuesta.correo_usu}">
+                    <input type="password" name="contra_usu" value="${respuesta.contra_usu}">
+                    <input type="submit" name="enviar" value="Modificar" class="btn-modificar-perfil">
+                </form>
+            </div>
+            `;
+            contenedor.innerHTML = recarga;
+            abrirModal();
+        }
+    }
+    ajax.send(formData);
+
+}
+
+function modificarPerfil() {
+    alert("sfgsdg")
+        /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
+        /* Usar el objeto FormData para guardar los parámetros que se enviarán:
+        formData.append('clave', valor);
+        valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
+    var formData = new FormData(document.getElementById('form_mod_perfil'));
+    formData.append('_token', document.getElementById('token').getAttribute("content"));
+    formData.append('_method', 'PUT');
+    /* Inicializar un objeto AJAX */
+    var ajax = objetoAjax();
+
+
+    ajax.open("POST", "modificarPerfil", true);
+
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.resultado == "OK") {
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = '<p>Nota creada correctamente.</p>';
+            } else {
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+            }
+            cerrarModal();
+        }
+    }
+    ajax.send(formData);
+}

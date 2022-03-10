@@ -42,6 +42,9 @@ Route::get('etiquetas/direcciones/{id}',[DireccionesController::class,'getEtique
 Route::post('mostrarEtiqueta',[DireccionesController::class,'mostrarEtiqueta']);
 
 Route::post('mostrarEquipo',[UsuarioController::class,'mostrarEquipos']);
+
+Route::post('mostrarPerfil',[UsuarioController::class,'mostrarPerfil']);
+
 //Crear
 Route::post('crearEtiquetas',[DireccionesController::class, 'crearEtiquetasPost']);
 
@@ -56,7 +59,10 @@ Route::put('modificarEtiqueta',[DireccionesController::class, 'modificarEtiqueta
 
 Route::put('modificarEquipo',[UsuarioController::class, 'modificarEquipoPut']);
 
-Route::put('unirseEquipo',[UsuarioController::class, 'unirseEquipo']);
+Route::put('unirseEquipo/{id}',[UsuarioController::class, 'unirseEquipo']);
+
+Route::put('modificarPerfil',[UsuarioController::class, 'modificarPerfil']);
+
 
 //Eliminar
 Route::delete('eliminarEtiquetas/{id}',[DireccionesController::class, 'eliminarEtiquetas']);
