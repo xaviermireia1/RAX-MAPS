@@ -36,6 +36,8 @@ Route::post('direcciones',[DireccionesController::class,'mostrarDireccionesMAP']
 Route::get('etiqueta/{id}',[DireccionesController::class,'filtroEtiquetaMAP']);
 
 Route::post('etiquetas/usuarios',[DireccionesController::class,'cogerEtiquetaUsuarioMAP']);
+
+Route::get('etiquetas/direcciones/{id}',[DireccionesController::class,'getEtiquetaDireccionMAP']);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Route::post('mostrarEtiqueta',[DireccionesController::class,'mostrarEtiqueta']);
 

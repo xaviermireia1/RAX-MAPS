@@ -74,7 +74,7 @@ function filtroEtiqueta(id) {
     ajax.send(formData);
 }
 
-function infoUbicacion(datos) {
+async function infoUbicacion(datos) {
     if (markerPosition != []) {
         for (let y = 0; y < markerPosition.length; y++) {
             map.removeLayer(markerPosition[y]);
@@ -149,6 +149,12 @@ function infoUbicacion(datos) {
         //Este es de prueba de pop up más sacar la posicion
         strPopUpHTML += "<div>";
         strPopUpHTML += "<h1>" + datos[i].nombre_ubi + "</h1>";
+        let tagsDireccion = await TagsDireccion(datos[i].id);
+        if (tagsDireccion.length == 1) {
+            strPopUpHTML += "<p>" + tagsDireccion[0].nombre_eti + "</p>";
+        } else {
+            strPopUpHTML += "<p>/" + tagsDireccion[0].nombre_eti + "/</p>";
+        }
         strPopUpHTML += "<h3>" + datos[i].direccion_ubi + "</h3>";
         strPopUpHTML += "<p>" + datos[i].descripcion_ubi + "</p>";
         strPopUpHTML += "<img src='storage/" + datos[i].foto_ubi + "'/>";
@@ -156,6 +162,7 @@ function infoUbicacion(datos) {
         strPopUpHTML += "<button onclick='getUserTags(" + datos[i].id + ");'>Agregar etiqueta</button>";
         strPopUpHTML += "<div id='divUserTags'></div>";
         strPopUpHTML += "</div>";
+        //strPopUpHTML += "<p>" + result[0].nombre_eti + "</p>";
         markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon })
             .bindPopup(strPopUpHTML)
             .addTo(map));
@@ -210,6 +217,31 @@ function getUserTags(idUbicacion) {
     }
     ajax.send(formData);
 }
+
+function TagsDireccion(idUbicacion) {
+    return new Promise(function(resolve, reject) {
+        let token = document.getElementById('token').getAttribute("content");
+        let formData = new FormData();
+        formData.append('_token', token);
+        formData.append('_method', 'GET');
+        let ajax = objetoAjax();
+        ajax.open("POST", "etiquetas/direcciones/" + idUbicacion, true);
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                /*setTimeout(function() {
+                    resolve(JSON.parse(ajax.responseText));
+                }, 3000);*/
+                resolve(JSON.parse(ajax.responseText));
+            }
+        }
+        ajax.send(formData);
+    });
+}
+
+/*async function getTagsDireccion(idUbicacion) {
+    let tagsDireccion = await TagsDireccion(idUbicacion);
+    console.log(tagsDireccion);
+}*/
 
 window.onload = function() {
     geocoder = L.esri.Geocoding.geocodeService();
