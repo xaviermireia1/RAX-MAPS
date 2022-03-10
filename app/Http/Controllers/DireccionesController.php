@@ -126,8 +126,8 @@ class DireccionesController extends Controller
         try{
             DB::beginTransaction();
             DB::table('tbl_etiqueta')->where('id','=',$datos['id'])->update($datos);
-            return response()->json(array('resultado'=> 'OK'));
             DB::commit();
+            return response()->json(array('resultado'=> 'OK'));
         }catch(\Exception $e){
             DB::rollBack();
             return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));

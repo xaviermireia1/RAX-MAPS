@@ -51,8 +51,8 @@
                 <div class="perfil-opciones">
                     {{-- modalEtiquetas({{session()->get('id_usuario');}}); --}}
                     <button onclick="modalEtiquetas();">Mis etiquetas</button>
-                    <button onclick="abrirModal();">Modificar Perfil</button>
-                    <button onclick="abrirModal();">Equipo</button>
+                    <button onclick="modalEquipos();">Modificar Perfil</button>
+                    <button onclick="modalEquipos();">Equipo</button>
                 </div>
             </div>
         </div>

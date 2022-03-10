@@ -87,6 +87,14 @@ body {
   padding: 30px;
 }
 
+.modal .modalBox .subtitulo-modal {
+  text-align: center;
+}
+
+.modal .modalBox .subtitulo-modal span {
+  color: #69a6d9;
+}
+
 .modal .modalBox .contenido-modal {
   height: 40vh;
   width: 100%;
@@ -101,14 +109,23 @@ body {
           justify-content: space-evenly;
 }
 
-.modal .modalBox .contenido-modal .lista-etiquetas {
-  padding: 20px;
+.modal .modalBox .contenido-modal .modal-first {
+  padding: 0 20px;
   width: 50%;
   max-height: 40vh;
+}
+
+.modal .modalBox .contenido-modal .modal-first h3 {
+  text-align: center;
+}
+
+.modal .modalBox .contenido-modal .modal-first .contenido {
+  max-height: inherit;
+  padding: 20px 0;
   overflow-y: scroll;
 }
 
-.modal .modalBox .contenido-modal .lista-etiquetas .etiqueta {
+.modal .modalBox .contenido-modal .modal-first .contenido .item {
   border: 1px solid black;
   padding: 20px;
   display: -webkit-box;
@@ -120,37 +137,15 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-}
-
-.modal .modalBox .contenido-modal .lista-etiquetas .etiqueta .nombre-etiqueta {
-  width: 80%;
-}
-
-.modal .modalBox .contenido-modal .lista-etiquetas .etiqueta .eliminar-etiqueta {
   position: relative;
-  width: 20%;
 }
 
-.modal .modalBox .contenido-modal .lista-etiquetas .etiqueta .eliminar-etiqueta input {
-  width: 5vw;
-  height: 5vw;
-  border: none;
-  color: red;
-  font-size: 20px;
-  opacity: 0;
-}
-
-.modal .modalBox .contenido-modal .lista-etiquetas .etiqueta .eliminar-etiqueta .icono-eliminar {
-  -webkit-transition: 0.3s ease;
-  transition: 0.3s ease;
-  cursor: pointer;
-  color: red;
-  top: 0;
+.modal .modalBox .contenido-modal .modal-first .contenido .item .item-click {
   position: absolute;
-  right: 1vw;
-  width: 5vw;
-  height: 5vw;
-  font-size: 20px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -162,12 +157,59 @@ body {
           justify-content: center;
 }
 
-.modal .modalBox .contenido-modal .lista-etiquetas .etiqueta .eliminar-etiqueta .icono-eliminar:hover {
+.modal .modalBox .contenido-modal .modal-first .contenido .item .nombre-item {
+  width: 80%;
+}
+
+.modal .modalBox .contenido-modal .modal-first .contenido .item .boton-item {
+  position: relative;
+  width: 20%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.modal .modalBox .contenido-modal .modal-first .contenido .item .boton-item input {
+  width: 5vw;
+  height: 5vw;
+  border: none;
+  color: red;
+  font-size: 20px;
+  opacity: 0;
+}
+
+.modal .modalBox .contenido-modal .modal-first .contenido .item .boton-item .icono-eliminar {
+  -webkit-transition: 0.3s ease;
+  transition: 0.3s ease;
+  cursor: pointer;
+  color: red;
+  top: 0;
+  right: 1vw;
+  width: 3vw;
+  height: 3vw;
+  font-size: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: none;
+  background-color: #ffffff;
+}
+
+.modal .modalBox .contenido-modal .modal-first .contenido .item .boton-item .icono-eliminar:hover {
   -webkit-transform: scale(1.2);
           transform: scale(1.2);
 }
 
-.modal .modalBox .contenido-modal .crear-etiqueta {
+.modal .modalBox .contenido-modal .modal-second {
   height: 100%;
   padding: 20px;
   width: 50%;
@@ -187,7 +229,7 @@ body {
   text-align: center;
 }
 
-.modal .modalBox .contenido-modal .crear-etiqueta form {
+.modal .modalBox .contenido-modal .modal-second form {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -205,17 +247,17 @@ body {
   width: 100%;
 }
 
-.modal .modalBox .contenido-modal .crear-etiqueta form h2 {
+.modal .modalBox .contenido-modal .modal-second form h2 {
   margin: 30px;
 }
 
-.modal .modalBox .contenido-modal .crear-etiqueta form .nombre-etiqueta-crear {
+.modal .modalBox .contenido-modal .modal-second form .nombre-etiqueta-crear {
   width: 100%;
   padding: 20px;
   font-size: 15px;
 }
 
-.modal .modalBox .contenido-modal .crear-etiqueta form .btn-etiqueta {
+.modal .modalBox .contenido-modal .modal-second form .btn-etiqueta {
   margin: 30px 0;
   background-color: #69a6d9;
   width: 80%;
@@ -225,7 +267,7 @@ body {
   font-size: 15px;
 }
 
-.modal .modalBox .contenido-modal .crear-etiqueta form .btn-etiqueta:hover {
+.modal .modalBox .contenido-modal .modal-second form .btn-etiqueta:hover {
   background-color: #559ad4;
 }
 

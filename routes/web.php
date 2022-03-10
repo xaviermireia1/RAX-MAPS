@@ -39,7 +39,7 @@ Route::post('etiquetas/usuarios',[DireccionesController::class,'cogerEtiquetaUsu
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Route::post('mostrarEtiqueta',[DireccionesController::class,'mostrarEtiqueta']);
 
-Route::get('perfil/equipo',[UsuarioController::class,'mostrarEquipos']);
+Route::post('mostrarEquipo',[UsuarioController::class,'mostrarEquipos']);
 //Crear
 Route::post('crearEtiquetas',[DireccionesController::class, 'crearEtiquetasPost']);
 
@@ -62,3 +62,5 @@ Route::delete('eliminarEtiquetas/{id}',[DireccionesController::class, 'eliminarE
 Route::delete('eliminarDireccion/{id}',[DireccionesController::class, 'eliminarDireccion']);
 
 Route::delete('eliminarUsuario/{id}',[UsuarioController::class, 'eliminarUsuario']);
+
+Route::put('abandonarEquipo',[UsuarioController::class, 'abandonarEquipo']);
