@@ -114,8 +114,8 @@ class UsuarioController extends Controller
             try {
                 DB::beginTransaction();
                 DB::table('tbl_usuario')->where('id','=',$idUsuario)->update(['id_equipo '=>$id]);
-                return response()->json(array('resultado'=> 'OK'));
                 DB::commit();
+                return response()->json(array('resultado'=> 'OK'));
             } catch (\Exception $e) {
                 DB::rollBack();
                 return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
@@ -126,8 +126,8 @@ class UsuarioController extends Controller
                 try{
                     DB::beginTransaction();
                     DB::table('tbl_usuario')->where('id','=',$idUsuario)->update(['id_equipo '=>$id]);
-                    return response()->json(array('resultado'=> 'OK'));
                     DB::commit();
+                    return response()->json(array('resultado'=> 'OK'));
                 }catch (\Exception $e) {
                     DB::rollBack();
                     return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
@@ -155,8 +155,8 @@ class UsuarioController extends Controller
         try{
             DB::beginTransaction();
             DB::table('tbl_equipo')->insertGetId(['nombre_equ'=>$datos['nombre_equ'],'contra_equ'=>$datos['contra_equ']]);
-            return response()->json(array('resultado'=> 'OK'));
             DB::commit();
+            return response()->json(array('resultado'=> 'OK'));
         }catch(\Exception $e){
             DB::rollBack();
             return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
@@ -168,8 +168,8 @@ class UsuarioController extends Controller
         try{
             DB::beginTransaction();
             DB::table('tbl_equipo')->where('id','=',$datos['id'])->update($datos);
-            return response()->json(array('resultado'=> 'OK'));
             DB::commit();
+            return response()->json(array('resultado'=> 'OK'));
         }catch(\Exception $e){
             DB::rollBack();
             return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
