@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Exception;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Exception;
 use PhpParser\Node\Stmt\TryCatch;
 
 
@@ -65,9 +65,14 @@ class DireccionesController extends Controller
 
     public function crearDireccionPost(Request $request){
         $datos=$request->except('_token');
+        if($request->hasFile('foto_ubi')){
+            $datos['foto_ubi'] = $request->file('foto_ubi')->store('uploads','public');
+        }else{
+            $datos['foto_ubi'] = NULL;
+        }
         try{
             DB::beginTransaction();
-            DB::table('tbl_ubicacion')->insertGetId(['nombre_ubi'=>$datos['nombre_ubi'],'descripcion_ubi'=>$datos['descripcion_ubi'],'latitud_ubi'=>$datos['latitud_ubi'],'longitud_ubi'=>$datos['longitud_ubi'],'direccion_ubi'=>$datos['direccion_ubi']]);
+            DB::table('tbl_ubicacion')->insertGetId(['nombre_ubi'=>$datos['nombre_ubi'],'descripcion_ubi'=>$datos['descripcion_ubi'],'latitud_ubi'=>$datos['latitud_ubi'],'longitud_ubi'=>$datos['longitud_ubi'],'direccion_ubi'=>$datos['direccion_ubi'],'foto_ubi'=>$datos['foto_ubi']]);
             DB::commit();
             return response()->json(array('resultado'=> 'OK'));
         }catch(\Exception $e){
