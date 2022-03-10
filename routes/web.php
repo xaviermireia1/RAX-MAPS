@@ -54,6 +54,8 @@ Route::put('modificarEtiqueta',[DireccionesController::class, 'modificarEtiqueta
 
 Route::put('modificarEquipo',[UsuarioController::class, 'modificarEquipoPut']);
 
+Route::put('unirseEquipo',[UsuarioController::class, 'unirseEquipo']);
+
 //Eliminar
 Route::delete('eliminarEtiquetas/{id}',[DireccionesController::class, 'eliminarEtiquetas']);
 
