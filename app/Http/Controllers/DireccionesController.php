@@ -43,6 +43,11 @@ class DireccionesController extends Controller
         //return view('mostrar', compact('listaEtiquetas'));
         return response()->json($listaDirecciones);
     }
+
+    public function mostrarEtiquetaSistema(){
+        $listaEtiquetas = DB::select("SELECT * FROM tbl_etiqueta where id_usuario = 1");
+        return response()->json($listaEtiquetas);
+    }
     //Crear
     public function crearEtiquetasPost(Request $request){
         $datos = $request->except('_token');
@@ -72,7 +77,8 @@ class DireccionesController extends Controller
         }
         try{
             DB::beginTransaction();
-            DB::table('tbl_ubicacion')->insertGetId(['nombre_ubi'=>$datos['nombre_ubi'],'descripcion_ubi'=>$datos['descripcion_ubi'],'latitud_ubi'=>$datos['latitud_ubi'],'longitud_ubi'=>$datos['longitud_ubi'],'direccion_ubi'=>$datos['direccion_ubi'],'foto_ubi'=>$datos['foto_ubi']]);
+            $id = DB::table('tbl_ubicacion')->insertGetId(['nombre_ubi'=>$datos['nombre_ubi'],'descripcion_ubi'=>$datos['descripcion_ubi'],'latitud_ubi'=>$datos['latitud_ubi'],'longitud_ubi'=>$datos['longitud_ubi'],'direccion_ubi'=>$datos['direccion_ubi'],'foto_ubi'=>$datos['foto_ubi']]);
+            DB::table('tbl_registro')->insert(['id_etiqueta'=>$datos['id_eti'],'id_ubicacion'=>$id]);
             DB::commit();
             return response()->json(array('resultado'=> 'OK'));
         }catch(\Exception $e){
@@ -102,6 +108,12 @@ class DireccionesController extends Controller
             DB::beginTransaction();
             DB::table('tbl_registro')->where('id_ubicacion','=',$id)->delete();
             DB::table('tbl_objetivo')->where('id_ubicacion','=',$id)->delete();
+            $foto = DB::table('tbl_ubicacion')->select('foto_ubi')->where('id','=',$id)->first();   
+            if ($foto->foto_ubi != null) {
+                if (file_exists('storage/'.$foto->foto_ubi)) {
+                    Storage::delete('public/'.$foto->foto_ubi);
+                }
+            }       
             DB::table('tbl_ubicacion')->where('id','=',$id)->delete();
             DB::commit();
             return response()->json(array('resultado'=> 'OK'));
@@ -113,6 +125,10 @@ class DireccionesController extends Controller
     }
 
     //Modificar
+    public function modificarDireccionModal($id){
+        $direccionModal = DB::select("SELECT * FROM tbl_ubicacion where id=$id");
+        return response()->json($direccionModal);
+    }
     public function modificarDireccionPut(Request $request){
         $datos=$request->except('_token');
         try {

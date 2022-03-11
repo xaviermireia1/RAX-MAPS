@@ -47,6 +47,8 @@ Route::post('mostrarPerfil',[UsuarioController::class,'mostrarPerfil']);
 
 Route::post('mostrarDirecciones',[DireccionesController::class,'mostrarDirecciones']);
 
+Route::post('etiquetas/sistema',[DireccionesController::class,'mostrarEtiquetaSistema']);
+
 //Crear
 Route::post('crearEtiquetas',[DireccionesController::class, 'crearEtiquetasPost']);
 
@@ -56,6 +58,7 @@ Route::post('crearEquipo',[UsuarioController::class, 'crearEquipoPost']);
 
 //Modificar
 Route::put('modificarDireccion',[DireccionesController::class, 'modificarDireccionPut']);
+Route::get("modificarDireccion/{id}",[DireccionesController::class, 'modificarDireccionModal']);
 
 Route::put('modificarEtiqueta',[DireccionesController::class, 'modificarEtiquetaPut']);
 
