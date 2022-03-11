@@ -265,3 +265,109 @@ window.onload = function() {
     mostrarDirecciones();
 }
 setInterval(getLocation, 2000);
+
+
+//------------------------------------------ GINCANA-----------------------------------//
+
+var modal = document.getElementById("modal");
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.classList.add("hidden");
+    }
+}
+
+function abrirModal() {
+    modal.classList.remove("hidden")
+}
+
+function cerrarModal() {
+    modal.classList.add("hidden")
+}
+
+function modalGincana() {
+    /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
+    /* Usar el objeto FormData para guardar los parámetros que se enviarán:
+    formData.append('clave', valor);
+    valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
+    var contenedor = document.getElementById("modalBox");
+    var formData = new FormData();
+    formData.append('_token', document.getElementById('token').getAttribute("content"));
+
+    /* Inicializar un objeto AJAX */
+    var ajax = objetoAjax();
+    ajax.open("POST", "mostrarGincana", true);
+    ajax.onreadystatechange = function() {
+
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var respuesta = JSON.parse(this.responseText);
+
+            var recarga = '';
+            recarga += `
+            <h1 class="titulo-modal">Gimcanas Disponibles</h1>
+            <div class="contenido-modal">
+                <div class="modal-first">
+                    <div class="contenido">`
+            for (let i = 0; i < respuesta.length; i++) {
+                recarga += `
+                    <div class="item">
+                        <div class="nombre-item">${respuesta[i].nombre_gin}</div>
+                        <div class="boton-item">
+                            <form onsubmit="IniciarGincana(${respuesta[i].id});return false;">
+                                <div class="submit-eliminar-etiqueta">
+                                    <button type="submit" class="icono-iniciar">
+                                        <i class="fa-solid fa-play"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>`
+            }
+            recarga += `</div>
+                </div>
+            </div>
+            `;
+            contenedor.innerHTML = recarga;
+            abrirModal();
+        }
+    }
+    ajax.send(formData);
+}
+
+function IniciarGincana(id) {
+    cerrarModal();
+    var polygon = L.polygon([
+        [41.357596, 2.183804],
+        [41.383637, 2.182141],
+        [41.387918, 2.195807],
+        [41.384903, 2.199920],
+        [41.380766, 2.197533],
+        [41.374282, 2.194663],
+        [41.357662, 2.185403]
+    ]).addTo(map);
+
+    var formData = new FormData();
+    formData.append('_token', document.getElementById('token').getAttribute("content"));
+    formData.append('_method', 'POST');
+
+    var ajax = objetoAjax();
+
+    ajax.open("POST", "comprobarEquipo", true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var respuesta = JSON.parse(this.responseText);
+            console.log(respuesta);
+            //question(results);
+            if (respuesta.id_equipo == null) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error...',
+                    text: 'Debes estar en un equipo!'
+                })
+            } else {
+                alert("Estas en un equipo")
+            }
+        }
+    }
+    ajax.send(formData);
+}

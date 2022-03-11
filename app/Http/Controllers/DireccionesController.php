@@ -48,6 +48,12 @@ class DireccionesController extends Controller
         $listaEtiquetas = DB::select("SELECT * FROM tbl_etiqueta where id_usuario = 1");
         return response()->json($listaEtiquetas);
     }
+
+    public function mostrarGincana(){
+        $listaGincana = DB::select("SELECT * FROM tbl_gincana");
+        return response()->json($listaGincana);
+    }
+
     //Crear
     public function crearEtiquetasPost(Request $request){
         $datos = $request->except('_token');
@@ -198,5 +204,15 @@ class DireccionesController extends Controller
         INNER JOIN tbl_registro regi on regi.id_etiqueta = eti.id
         where regi.id_ubicacion = $idDireccion");
         return response()->json($etiquetasDireccion);
+    }
+
+    //Gincana
+    public function comprobarEquipo(){
+        if (session()->has('id_usuario')) {
+            $idUsuario = session()->get('id_usuario');
+        }
+
+        $comprobacionEquipo=DB::table('tbl_usuario')->where('id','=',$idUsuario)->first();
+        return response()->json($comprobacionEquipo);
     }
 }
