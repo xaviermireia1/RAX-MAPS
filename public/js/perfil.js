@@ -624,12 +624,12 @@ async function modificarDireccionesModal(id) {
             recarga += `
             <h1 class="titulo-modal">Modificar ubicacion #${id}</h1>
             <div class="contenido-modal">
-                <form onsubmit="modificarDireccionPost();return false;" method="POST" id="form_mod_direccion" class="form-mod-perfil">
+                <form onsubmit="modificarDireccionPost();return false;" method="POST" id="form_mod_direccion" class="form-mod-perfil" enctype="multipart/form-data">
                     <input type="text" name="nombre_ubi" value="${respuesta[0].nombre_ubi}">
                     <input type="text" name="direccion_ubi" value="${respuesta[0].direccion_ubi}">
                     <textarea name="descripcion_ubi">${respuesta[0].descripcion_ubi}</textarea>
-                    <input type="text" name="latitud_usu" value="${respuesta[0].latitud_ubi}">
-                    <input type="text" name="longitud_usu" value="${respuesta[0].longitud_ubi}">
+                    <input type="text" name="latitud_ubi" value="${respuesta[0].latitud_ubi}">
+                    <input type="text" name="longitud_ubi" value="${respuesta[0].longitud_ubi}">
                     <select name="id_eti">
                     `
             for (let z = 0; z < etiquetas.length; z++) {
@@ -638,12 +638,49 @@ async function modificarDireccionesModal(id) {
             recarga += `
                     </select>
                     <input type="file" placeholder="Imagen direccion..." class="nombre-etiqueta-crear" name="foto_ubi">
+                    <input type="hidden" name="id_ubicacion" value="${respuesta[0].id}">
                     <input type="submit" name="enviar" value="Modificar" class="btn-modificar-perfil">
                 </form>
             </div>
             `;
             contenedor.innerHTML = recarga;
             abrirModal();
+        }
+    }
+    ajax.send(formData);
+}
+
+function modificarDireccionPost() {
+    /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
+    /* Usar el objeto FormData para guardar los parámetros que se enviarán:
+    formData.append('clave', valor);
+    valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
+    var formData = new FormData(document.getElementById('form_mod_direccion'));
+
+    formData.append('_token', document.getElementById('token').getAttribute("content"));
+    formData.append('_method', 'PUT');
+    /* Inicializar un objeto AJAX */
+    var ajax = objetoAjax();
+
+
+    ajax.open("POST", "modificarDireccion", true);
+
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.resultado == "OK") {
+                console.log("OK");
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = '<p>Nota creada correctamente.</p>';
+            } else {
+                console.log(respuesta.resultado)
+                    /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                    //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                    //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+            }
+            modalDirecciones();
         }
     }
     ajax.send(formData);
