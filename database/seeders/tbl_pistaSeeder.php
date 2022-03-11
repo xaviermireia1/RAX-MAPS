@@ -14,6 +14,10 @@ class tbl_pistaSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('tbl_pista')->insert([
+            'nombre_pista' => 'Pista 1',
+            'descripcion_pista' => 'Contiene la letra W.',
+            'id_objetivo' => 1
+        ]);
     }
 }

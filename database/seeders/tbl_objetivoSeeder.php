@@ -14,6 +14,10 @@ class tbl_objetivoSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('tbl_objetivo')->insert([
+            'nombre_obj' => 'Hace referencia a un elemento de un barco y a un edificio',
+            'id_ubicacion' => 1,
+            'id_gincana' => 1
+        ]);
     }
 }
