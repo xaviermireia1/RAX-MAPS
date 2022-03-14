@@ -45,6 +45,12 @@ Route::post('mostrarEquipo',[UsuarioController::class,'mostrarEquipos']);
 
 Route::post('mostrarPerfil',[UsuarioController::class,'mostrarPerfil']);
 
+Route::post('mostrarDirecciones',[DireccionesController::class,'mostrarDirecciones']);
+
+Route::post('mostrarGincana',[DireccionesController::class,'mostrarGincana']);
+
+Route::post('etiquetas/sistema',[DireccionesController::class,'mostrarEtiquetaSistema']);
+
 //Crear
 Route::post('crearEtiquetas',[DireccionesController::class, 'crearEtiquetasPost']);
 
@@ -54,6 +60,7 @@ Route::post('crearEquipo',[UsuarioController::class, 'crearEquipoPost']);
 
 //Modificar
 Route::put('modificarDireccion',[DireccionesController::class, 'modificarDireccionPut']);
+Route::get("modificarDireccion/{id}",[DireccionesController::class, 'modificarDireccionModal']);
 
 Route::put('modificarEtiqueta',[DireccionesController::class, 'modificarEtiquetaPut']);
 
@@ -72,3 +79,6 @@ Route::delete('eliminarDireccion/{id}',[DireccionesController::class, 'eliminarD
 Route::delete('eliminarUsuario/{id}',[UsuarioController::class, 'eliminarUsuario']);
 
 Route::put('abandonarEquipo',[UsuarioController::class, 'abandonarEquipo']);
+
+//Gincana
+Route::post('comprobarEquipo',[DireccionesController::class, 'comprobarEquipo']);

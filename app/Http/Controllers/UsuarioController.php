@@ -69,7 +69,11 @@ class UsuarioController extends Controller
         if (!session()->has('rol')) {
             return view('login_register');
         }
-        return view('miPerfil');       
+        $id = session()->get('id_usuario');
+        $perfil = DB::select("SELECT usu.*, equ.nombre_equ FROM tbl_usuario usu 
+        left join tbl_equipo equ ON usu.id_equipo = equ.id
+        where usu.id = $id");
+        return view('miPerfil',compact('perfil'));       
     }
 
 
@@ -136,6 +140,12 @@ class UsuarioController extends Controller
                 try{
                     DB::beginTransaction();
                     DB::select("UPDATE tbl_usuario SET id_equipo=$id where id=$idUsuario;");
+                    $admin = DB::select("SELECT * FROM tbl_usuario where id=$idUsuario");
+                    if ($admin[0]->id_equipo == 1) {
+                        DB::select("UPDATE tbl_usuario SET id_equipo=1,id_rol=1 where id=$idUsuario");
+                        $request->session()->forget('rol');
+                        $request->session()->put('rol','administrador');
+                    }
                     DB::commit();
                     return response()->json(array('resultado'=> 'OK'));
                 }catch (\Exception $e) {
@@ -233,8 +243,6 @@ class UsuarioController extends Controller
         $passMD5=md5($datos['contra_usu']);
         $nick=$datos['nick_usu'];
         $correu=$datos['correo_usu'];
-
-
 
         try{
             DB::beginTransaction();

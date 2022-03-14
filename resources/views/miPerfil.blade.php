@@ -42,11 +42,13 @@
                 </div>
                 <div class="perfil-datos">
                     <h1 class="nombre-usuario">
-                        Lorem Ipsum Dolor
+                        {{$perfil[0]->nick_usu}}
                     </h1>
+                    @if ($perfil[0]->id_equipo != null)
                     <h2 class="equipo-usuario">
-                        Equipo A
+                        {{$perfil[0]->nombre_equ}}
                     </h2>
+                    @endif
                 </div>
                 <div class="perfil-opciones">
                     {{-- modalEtiquetas({{session()->get('id_usuario');}}); --}}
@@ -59,6 +61,11 @@
                     <div class="opcion">
                         <button onclick="modalEquipos();">Equipo</button>
                     </div>
+                    @if (Session::get('rol') == "administrador")
+                    <div class="opcion">
+                        <button onclick="modalDirecciones();">Ubicaciones</button>
+                    </div>
+                    @endif
 
                 </div>
             </div>

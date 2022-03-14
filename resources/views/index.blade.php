@@ -21,13 +21,14 @@
     <script src="https://cdn.jsdelivr.net/leaflet.esri.geocoder/2.1.0/esri-leaflet-geocoder.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
-    <script src="js/mapas.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{!! asset('css/style.css') !!}">
     <link rel="stylesheet" href="{!! asset('css/mainstyle.css') !!}">
     <script type="text/javascript" src="js/js.js"></script>
     <link rel="stylesheet" href="css/owl.carousel.css">
     {{-- <link rel="stylesheet" href="css/owl.theme.default.min.css"> --}}
     <script src="js/owl.carousel.min.js"></script>
+    <link href="fa/css/all.css" rel="stylesheet">
     <title>Raxmaps</title>
 </head>
 <body>
@@ -39,9 +40,9 @@
                 </div>
                 <ul id="form-sidebar" class="form-sidebar hidden">
                     @if (Session::get('nombre'))
-                        <li><form action="{{url('')}}" method="GET">
-                            <button>Iniciar Gimcana</button>
-                        </form></li>
+                        <li>
+                            <button onclick="modalGincana(); return false;">Iniciar Gincana</button>
+                        </li>
                         <li><form action="{{url('perfil')}}" method="POST">
                             @csrf
                             {{method_field('GET')}}
@@ -115,8 +116,14 @@
             </div>
         </div>
         
+        <div class="modal hidden" id="modal">
+            <div class="modalBox" id="modalBox">
+
+            </div>
+        </div>
     </div>
 
     <script src="js/burger.js"></script>
+    <script src="js/mapas.js"></script>
 </body>
 </html>

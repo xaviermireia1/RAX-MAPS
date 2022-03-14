@@ -21,6 +21,18 @@ body {
   top: 0;
 }
 
+.region-map {
+  z-index: 5;
+}
+
+.region-map,
+.region-content-perfil {
+  -webkit-transition: 0.5s ease;
+  transition: 0.5s ease;
+  width: 95%;
+  height: 100vh;
+}
+
 .region-content {
   width: 100%;
   display: -webkit-box;
@@ -146,6 +158,7 @@ body {
       -ms-flex-pack: center;
           justify-content: center;
   position: fixed;
+  z-index: 10;
   top: 0;
   left: 0;
   width: 100%;
@@ -397,6 +410,34 @@ body {
 }
 
 .modal .modalBox .contenido-modal .modal-first .contenido .item .boton-item .icono-eliminar:hover {
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+}
+
+.modal .modalBox .contenido-modal .modal-first .contenido .item .boton-item .icono-iniciar {
+  -webkit-transition: 0.3s ease;
+  transition: 0.3s ease;
+  cursor: pointer;
+  color: blue;
+  top: 0;
+  right: 1vw;
+  width: 3vw;
+  height: 3vw;
+  font-size: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: none;
+  background-color: #ffffff;
+}
+
+.modal .modalBox .contenido-modal .modal-first .contenido .item .boton-item .icono-iniciar:hover {
   -webkit-transform: scale(1.2);
           transform: scale(1.2);
 }
