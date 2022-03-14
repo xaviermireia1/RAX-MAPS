@@ -55,13 +55,18 @@ function modalEtiquetas() {
 
             var recarga = '';
             recarga += `
-            <h1 class="titulo-modal">Mis etiquetas</h1>
+            <div class="cerrar-modal">
+                <i class="fa-solid fa-xmark" onclick="cerrarModal();"></i>
+            </div>
+            <div class="titulo-modal-div">
+                <h1 class="titulo-modal">Mis etiquetas</h1>
+            </div>
             <div class="contenido-modal">
                 <div class="modal-first">
                     <div class="contenido">`
             for (let i = 0; i < respuesta.length; i++) {
                 recarga += `
-                    <div class="item">
+                    <div class="item etiqueta">
                         <div class="nombre-item">${respuesta[i].nombre_eti}</div>
                         <div class="boton-item">
                             <form onsubmit="eliminarEtiqueta(${respuesta[i].id});return false;">
@@ -77,7 +82,7 @@ function modalEtiquetas() {
             recarga += `</div>
                 </div>
                 <div class="modal-second">
-                    <form id="formCreateTag" method='POST' onsubmit="crearEtiqueta(); return false;">
+                    <form id="formCreateTag" method='POST' onsubmit="crearEtiqueta(); return false;" class="form-create-tag">
                         <h2>Crear etiqueta</h2>
                         <input type="text" placeholder="Nueva etiqueta..." class="nombre-etiqueta-crear" name="nombre_eti">
                         <input type="submit" name="enviar" value="Crear etiqueta" class="btn-etiqueta">
@@ -185,34 +190,39 @@ function modalEquipos() {
 
             var recarga = '';
             recarga += `
+            <div class="cerrar-modal" onclick="cerrarModal();">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <div class="titulo-modal-div">
             <h1 class="titulo-modal">Equipos</h1>`
             if (respuesta[0].nick_usu) {
                 recarga += `<h2 class="subtitulo-modal">Actualmente preteneces al equipo <span>${respuesta[0].nombre_equ}</span></h2>`
             } else {
                 recarga += `<h2 class="subtitulo-modal">Actualmente no perteneces a ningún equipo</h2>`
             }
-            recarga += `<div class="contenido-modal">`
+
+            recarga += `</div><div class="contenido-modal">`
             recarga += `<div class="modal-first">`
             if (respuesta[0].nick_usu) {
                 recarga += `
-                    <h3>Miembros del equipo "${respuesta[0].nombre_equ}": </h3>
+                    <h3 class="sticky">Miembros del equipo "${respuesta[0].nombre_equ}": </h3>
                     <div class="contenido">`
                 for (let i = 0; i < respuesta.length; i++) {
                     recarga += `
-                            <div class="item">
+                            <div class="item miembro">
                                 <div class="nombre-item">${respuesta[i].nick_usu}</div>
                             </div>`
                 }
             } else {
                 recarga += `
-                <h3>Unirse a un equipo:</h3>
+                <h3 class="sticky">Unirse a un equipo:</h3>
                 <div class="contenido">`
                 for (let i = 0; i < respuesta.length; i++) {
                     recarga += `
                     
-                        <div class="item">
+                        <div class="item equipo">
                             `
-                    if (respuesta[i].contra_equ != "") {
+                    if (respuesta[i].contra_equ != "" && respuesta[i].contra_equ != null) {
                         recarga += `
                         <button class="item-click" onclick="modalContraseña(${respuesta[i].id});">
                             <div class="nombre-item">${respuesta[i].nombre_equ}</div>
@@ -234,17 +244,17 @@ function modalEquipos() {
                 <div class="modal-second">
                     `
             if (respuesta[0].nick_usu) {
-                recarga += `<form method='POST' onsubmit="abandonarEquipo(); return false;">
+                recarga += `<form method='POST' onsubmit="abandonarEquipo(); return false;" class="form-abandonar-equipo">
                                 <h2>Abandonar equipo</h2>
-                                <input type="submit" name="enviar" value="Haz click aquí para abandonar" class="btn-etiqueta">
+                                <input type="submit" name="enviar" value="Abandonar" class="btn-etiqueta">
                             </form>
             `
 
             } else {
-                recarga += `<form id="formCreateTeam" method='POST' onsubmit="crearEquipo(); return false;">
+                recarga += `<form id="formCreateTeam" method='POST' onsubmit="crearEquipo(); return false;" class="form-crear-equipo">
                                 <h2>Crear equipo</h2>
                                 <input type="text" placeholder="Nombre del equipo..." class="nombre-etiqueta-crear" name="nombre_equ">
-                                <input type="text" placeholder="Contraseña (Opcional)..." class="nombre-etiqueta-crear" name="contra_equ">
+                                <input type="password" placeholder="Contraseña (Opcional)..." class="nombre-etiqueta-crear" name="contra_equ">
                                 <input type="submit" name="enviar" value="Crear" class="btn-etiqueta">
                             </form>
             `
@@ -315,14 +325,14 @@ function unirseEquipo(id) {
 
             var respuesta = JSON.parse(this.responseText);
             if (respuesta.resultado == "OK") {
-                f
                 /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
                 /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
                 //message.innerHTML = '<p>Nota creada correctamente.</p>';
             } else {
-                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
-                //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
-                //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+                console.log(respuesta.resultado)
+                    /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                    //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                    //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
             }
             modalEquipos();
         }
@@ -338,12 +348,18 @@ function modalContraseña(idEqu) {
     for (let i = 0; i < respuesta.length; i++) {
         if (respuesta[i].id == idEqu) {
             recarga += `
-            <h1 class="titulo-modal">Equipo: <span>${respuesta[i].nombre_equ}</span></h1>
-            <h3 class="subtitulo-modal">Introduce la contraseña del equipo: </h3>
+            <div class="cerrar-modal" onclick="cerrarModal();">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <div class="titulo-modal-div">
+                <h1 class="titulo-modal">Equipo: <span>${respuesta[i].nombre_equ}</span></h1>
+                <h3 class="subtitulo-modal">Introduce la contraseña del equipo: </h3>
+            </div>
+
             <div class="contenido-modal modal-password">
                 <form onsubmit="unirseEquipo(${idEqu});return false;" method="POST" class="form-contra">
                     <input id="contra_equ" class="contra-equ" name="contra_equ" type="text" placeholder="Contraseña...">
-                    <input class="enviar_contra" type="submit" name="enviar" value="Unirse al equipo">
+                    <button type="submit" class="enviar_contra" name="enviar">Unirse al equipo</button>
                 </form>
                 
             </div>
@@ -411,13 +427,18 @@ function modalModPerfil() {
 
             var recarga = '';
             recarga += `
-            <h1 class="titulo-modal">Modificar perfil</h1>
+            <div class="cerrar-modal" onclick="cerrarModal();">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+            <div class="titulo-modal-div">
+                <h1 class="titulo-modal">Modificar perfil</h1>
+            </div>
             <div class="contenido-modal">
                 <form onsubmit="modificarPerfil();return false;" method="POST" id="form_mod_perfil" class="form-mod-perfil">
-                    <input type="text" name="nick_usu" value="${respuesta.nick_usu}">
-                    <input type="text" name="correo_usu" value="${respuesta.correo_usu}">
-                    <input type="password" name="contra_usu" value="${respuesta.contra_usu}">
-                    <input type="submit" name="enviar" value="Modificar" class="btn-modificar-perfil">
+                    <input type="text" name="nick_usu" value="${respuesta.nick_usu}" placeholder="Nickname...">
+                    <input type="text" name="correo_usu" value="${respuesta.correo_usu}" placeholder="Correo...">
+                    <input type="password" name="contra_usu" placeholder="Contraseña...">
+                    <button type="submit" class="btn-modificar-perfil">Modificar</button>
                 </form>
             </div>
             `;
@@ -430,11 +451,10 @@ function modalModPerfil() {
 }
 
 function modificarPerfil() {
-    alert("sfgsdg")
-        /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
-        /* Usar el objeto FormData para guardar los parámetros que se enviarán:
-        formData.append('clave', valor);
-        valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
+    /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
+    /* Usar el objeto FormData para guardar los parámetros que se enviarán:
+    formData.append('clave', valor);
+    valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
     var formData = new FormData(document.getElementById('form_mod_perfil'));
     formData.append('_token', document.getElementById('token').getAttribute("content"));
     formData.append('_method', 'PUT');

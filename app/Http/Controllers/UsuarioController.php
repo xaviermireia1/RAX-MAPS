@@ -122,7 +122,7 @@ class UsuarioController extends Controller
 
         $equipo = DB::table('tbl_equipo')->where('id','=',$id)->select('contra_equ')->first();
 
-        if($equipo->contra_equ == ""){
+        if($equipo->contra_equ == "" or $equipo->contra_equ == null){
             try {
                 DB::beginTransaction();
                 //DB::table('tbl_usuario')->where('id','=',$idUsuario)->update(['id_equipo '=>$id]);
@@ -212,12 +212,8 @@ class UsuarioController extends Controller
         }
         try{
             DB::beginTransaction();
-            if ($datos["contra_equ"] == null) {
-                $idEquipo = DB::table('tbl_equipo')->insertGetId(['nombre_equ'=>$datos['nombre_equ'],'contra_equ'=>'']);
-            }else{
-                $idEquipo = DB::table('tbl_equipo')->insertGetId(['nombre_equ'=>$datos['nombre_equ'],'contra_equ'=>$datos['contra_equ']]);
-            }
-            DB::select("UPDATE tbl_usuario SET id_equipo=$idEquipo WHERE id=$idUsuario");
+            $id=DB::table('tbl_equipo')->insertGetId(['nombre_equ'=>$datos['nombre_equ'],'contra_equ'=>$datos['contra_equ']]);
+            DB::select("UPDATE tbl_usuario SET id_equipo=$id where id=$idUsuario;");
             DB::commit();
             return response()->json(array('resultado'=> 'OK'));
         }catch(\Exception $e){
