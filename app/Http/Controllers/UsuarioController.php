@@ -118,7 +118,7 @@ class UsuarioController extends Controller
 
         $equipo = DB::table('tbl_equipo')->where('id','=',$id)->select('contra_equ')->first();
 
-        if($equipo->contra_equ == ""){
+        if($equipo->contra_equ == "" or $equipo->contra_equ == null){
             try {
                 DB::beginTransaction();
                 //DB::table('tbl_usuario')->where('id','=',$idUsuario)->update(['id_equipo '=>$id]);
@@ -165,11 +165,27 @@ class UsuarioController extends Controller
     public function abandonarEquipo(){
         if (session()->has('id_usuario')) {
             $idUsuario = session()->get('id_usuario');
+            $idgrupo = DB::select("SELECT * FROM tbl_usuario where id =$idUsuario");
+            $idgrupo = $idgrupo[0]->id_equipo;
+            $rol = session()->get('rol');
         }
         try{
             DB::beginTransaction();
             //DB::table('tbl_usuario')->where('id',$idUsuario)->update(['id_equipo'=>NULL]);
-            DB::select("UPDATE tbl_usuario SET id_equipo=NULL where id=$idUsuario;");
+            DB::select("UPDATE tbl_usuario SET id_equipo=NULL,id_rol=2 where id=$idUsuario;");
+            if ($rol == "administrador") {
+                session()->forget('rol');
+                session()->put('rol','cliente');
+            }
+            //Eliminar equipo en caso que llegue a 0 (si es administrador no se borra el registro);
+            if ($idgrupo != 1) {
+                $quantityMembers = DB::select("SELECT COUNT(usu.nick_usu) as quantitymembers FROM tbl_usuario usu
+                left join tbl_equipo equ ON usu.id_equipo=equ.id
+                where id_equipo = $idgrupo");
+                if ($quantityMembers[0]->quantitymembers == 0) {
+                    DB::table('tbl_equipo')->where('id','=',$idgrupo)->delete();
+                }
+            }
             DB::commit();
             return response()->json(array('resultado'=> 'OK'));
         }catch(\Exception $e){
@@ -181,9 +197,13 @@ class UsuarioController extends Controller
     //CREAR
     public function crearEquipoPost(Request $request){
         $datos = $request->except('_token');
+        if (session()->has('id_usuario')) {
+            $idUsuario = session()->get('id_usuario');
+        }
         try{
             DB::beginTransaction();
-            DB::table('tbl_equipo')->insertGetId(['nombre_equ'=>$datos['nombre_equ'],'contra_equ'=>$datos['contra_equ']]);
+            $id=DB::table('tbl_equipo')->insertGetId(['nombre_equ'=>$datos['nombre_equ'],'contra_equ'=>$datos['contra_equ']]);
+            DB::select("UPDATE tbl_usuario SET id_equipo=$id where id=$idUsuario;");
             DB::commit();
             return response()->json(array('resultado'=> 'OK'));
         }catch(\Exception $e){

@@ -29,11 +29,9 @@ body {
     display: none!important;
 }
 
-.region-map,
-.region-content-perfil {
-    transition: 0.5s ease;
-    width: 95%;
-    height: 100vh;
+.sticky {
+    position: sticky!important;
+    top: 0;
 }
 
 .region-content {
@@ -41,12 +39,77 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.region-sidebar {
-    width: 5%;
-    height: 100vh;
-    background-color: black;
+    .region-sidebar {
+        width: 5%;
+        height: 100vh;
+        background-color: black;
+    }
+    .with-region-map,
+    .region-content-perfil {
+        transition: 0.5s ease;
+        width: 95%;
+        height: 100vh;
+    }
+    .with-region-map {
+        overflow: hidden;
+        position: relative;
+        .region-map {
+            z-index: 5;
+            width: 100%;
+            height: 100vh;
+        }
+        .filtros-mapa {
+            z-index: 8;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: #{"max(1000px, 100%)"};
+            img {
+                max-width: 5vw;
+            }
+            .owl-item {
+                width: 14vw!important;
+                padding: 0 2vw;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                &>div {
+                    border: 1px solid gray;
+                    background-color: lightgray;
+                    border-radius: 10px;
+                    padding: 20px;
+                    position: relative;
+                }
+                input {
+                    opacity: 0!important;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    &:checked+label {
+                        border: 2px solid $main;
+                    }
+                }
+                label {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+    }
+    @media(max-width:$movil) {
+        flex-direction: column;
+        .region-sidebar {
+            width: 100vw;
+            height: 10vh;
+        }
+        .with-region-map {
+            width: 100vw;
+            height: 90vh;
+        }
+    }
 }
 
 ////////////////////////////////////////////MODAL/////////////////////////
@@ -62,6 +125,32 @@ body {
     background-color: #333333b2;
     transition: 0.5s ease;
     .modalBox {
+        .cerrar-modal {
+            i {
+                color: #13232f;
+                font-size: 20px;
+            }
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 1vw;
+            right: 1vw;
+            width: 2vw;
+            height: 2vw;
+            @media(max-width: $movil) {
+                top: 3vw;
+                right: 3vw;
+                width: 6vw;
+                height: 6vw;
+            }
+        }
+        position: relative;
+        @media(max-width: $movil) {
+            height: 80vh;
+            overflow-y: scroll;
+        }
         min-height: 60vh;
         min-width: 80vw;
         background-color: $white;
@@ -71,33 +160,78 @@ body {
         align-items: center;
         padding: 50px;
         border-radius: $br;
-        .titulo-modal {
+        .titulo-modal-div {
+            margin-top: 30px;
             padding: 30px;
-        }
-        .subtitulo-modal {
-            text-align: center;
-            span {
-                color: $main;
+            @media(max-width: $movil) {
+                padding: 0!important;
+            }
+            .titulo-modal,
+            .subtitulo-modal {
+                text-align: center;
+                span {
+                    color: $main;
+                }
             }
         }
         .contenido-modal {
+            .btn-etiqueta {
+                cursor: pointer;
+            }
             height: 40vh;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-evenly;
+            @media(max-width: $movil) {
+                height: auto;
+                flex-direction: column-reverse;
+                &>div {
+                    width: 100%!important;
+                }
+                .modal-first {
+                    height: 50%!important;
+                }
+                .modal-second {
+                    height: 50%!important;
+                    h2 {
+                        margin: 0!important;
+                    }
+                    .btn-etiqueta {
+                        margin: 0!important;
+                        cursor: pointer;
+                    }
+                    form.form-create-tag {
+                        justify-content: space-between!important;
+                    }
+                }
+            }
             .modal-first {
+                .sticky {
+                    background-color: $white!important;
+                    z-index: 1;
+                }
                 padding: 0 20px;
                 width: 50%;
                 max-height: 40vh;
+                overflow-y: scroll;
                 h3 {
                     text-align: center;
                 }
                 .contenido {
                     max-height: inherit;
                     padding: 20px 0;
-                    overflow-y: scroll;
                     .item {
+                        &.equipo {
+                            button {
+                                cursor: pointer;
+                                background-color: $white!important;
+                                border: none;
+                                &:hover {
+                                    background-color: rgb(241, 241, 241)!important;
+                                }
+                            }
+                        }
                         .item-click {
                             position: absolute;
                             top: 0;
@@ -191,13 +325,76 @@ body {
                     width: 100%;
                 }
             }
+            .form-mod-perfil {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                input,
+                button {
+                    width: 50vw!important;
+                    padding: 1vw!important;
+                    margin: 1vw!important;
+                }
+                button {
+                    margin: 30px 0;
+                    background-color: $main;
+                    border: none;
+                    color: $white;
+                    padding: 20px;
+                    font-size: 15px;
+                    &:hover {
+                        background-color: $main-dark;
+                    }
+                }
+                @media(max-width:$movil) {
+                    gap: 10vw;
+                    input,
+                    button {
+                        font-size: 15px;
+                    }
+                }
+            }
+            .form-abandonar-equipo {
+                @media(max-width: $movil) {
+                    justify-content: center!important;
+                }
+            }
+        }
+        .form-contra {
+            display: flex;
+            flex-direction: column;
+            button,
+            input {
+                width: 50vw;
+                padding: 20px;
+            }
+            button {
+                margin: 30px 0;
+                background-color: $main;
+                border: none;
+                color: $white;
+                padding: 20px;
+                font-size: 15px;
+                &:hover {
+                    background-color: $main-dark;
+                }
+            }
         }
     }
 }
 
 /////////////////////////////////BURGER///////////////////////////////
 .expanded {
-    width: 300px;
+    width: 300px!important;
+    @media(max-width: $movil) {
+        position: fixed!important;
+        top: 0;
+        left: 0;
+        width: 100vw!important;
+        height: 100vh!important;
+        z-index: 15!important;
+    }
 }
 
 .btn-burger {
@@ -215,6 +412,7 @@ body {
 }
 
 .region-sidebar {
+    z-index: 20;
     position: relative;
     transition: 0.5s ease;
     input:checked~ul {
@@ -258,6 +456,9 @@ body {
             width: 100%;
             left: 0;
             margin: 0;
+            @media(max-width: $movil) {
+                bottom: 20vh;
+            }
         }
     }
     /*Estilo cuando el mouse pasa encima de cada link del menu*/
@@ -270,6 +471,8 @@ body {
             border: none;
             color: white;
             font-size: 21px;
+            width: 100%;
+            height: 100%;
         }
     }
 }
@@ -281,12 +484,24 @@ body {
     background: url("https://wallpapercave.com/wp/wp4313180.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    @media(max-width: $movil) {
+        background-size: 350vw 150vh;
+    }
     .content-login {
         width: 100%;
         height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+}
+
+.page-login {
+    .content-login {
+        @media(max-width: $movil) {
+            align-items: flex-start;
+            margin-bottom: 30vh;
+        }
     }
 }
 
@@ -466,10 +681,10 @@ body {
         justify-content: center;
         align-items: center;
         position: relative;
-        width: 70vw;
+        width: 80vw;
         background-color: rgba($form-bg, .9);
         box-shadow: 0 4px 10px 4px rgba($form-bg, .3);
-        min-height: 60vh;
+        min-height: 70vh;
         border-radius: $br;
         >div {
             padding: 20px;
@@ -482,8 +697,10 @@ body {
             justify-content: center;
             .foto-perfil {
                 border-radius: 50%;
-                max-height: #{"min(20vw, 200px)"};
                 max-width: #{"min(20vw, 200px)"};
+                @media(max-width: $movil) {
+                    max-width: #{"min(32vw, 200px)"};
+                }
             }
         }
         .perfil-datos {
@@ -500,6 +717,19 @@ body {
                 font-size: 20px;
                 &:hover {
                     background-color: $main-dark;
+                }
+            }
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            @media(max-width: $movil) {
+                flex-direction: column;
+                .opcion {
+                    button {
+                        min-width: 50vw;
+                    }
                 }
             }
         }
