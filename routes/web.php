@@ -82,3 +82,15 @@ Route::put('abandonarEquipo',[UsuarioController::class, 'abandonarEquipo']);
 
 //Gincana
 Route::post('comprobarEquipo',[DireccionesController::class, 'comprobarEquipo']);
+
+Route::get('equipo/gimcana/{id}', [DireccionesController::class, 'GincanaEquipo']);
+
+Route::get('equipo/gimcana/incio/{idGincana}/{idEquipo}', [DireccionesController::class, 'insertGincana']);
+
+Route::get('equipo/gimcana/cargar/{idGincana}', [DireccionesController::class, 'cargarGincana']);
+
+Route::get('gincana/jugadores/{idGincana}/{idEquipo}',[DireccionesController::class, 'contPlayers']);
+
+Route::get('participantes/estado/{id}',[DireccionesController::class, 'updateParticipantes']);
+
+Route::delete('participantes/eliminar/{id}', [DireccionesController::class, 'eliminarParticipante']);
