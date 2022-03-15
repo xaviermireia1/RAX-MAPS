@@ -37,6 +37,12 @@ Route::get('etiqueta/{id}',[DireccionesController::class,'filtroEtiquetaMAP']);
 
 Route::post('etiquetas/usuarios',[DireccionesController::class,'cogerEtiquetaUsuarioMAP']);
 
+Route::get('etiquetas/usuarios/{idUbicacion}/{idEtiqueta}',[DireccionesController::class,'tagUserSavedLocationMAP']);
+
+Route::get('etiquetas/usuarios/add/{idUbicacion}/{idEtiqueta}',[DireccionesController::class,'addEtiquetaDireccionMAP']);
+
+Route::get('etiquetas/usuarios/delete/{idUbicacion}/{idEtiqueta}',[DireccionesController::class,'deleteEtiquetaDireccionMAP']);
+
 Route::get('etiquetas/direcciones/{id}',[DireccionesController::class,'getEtiquetaDireccionMAP']);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Route::post('mostrarEtiqueta',[DireccionesController::class,'mostrarEtiqueta']);
