@@ -88,6 +88,9 @@
         @endforeach
         <!-- BOTON PARA CANCELAR LA RUTA -->
         <button id="btnQuitRoute">Quitar ruta</button>
+        <div class="" id="messageGame">
+
+        </div>
         <div class="region-map" id="map">
 
         </div>
@@ -96,6 +99,7 @@
 
             </div>
         </div>
+
     </div>
 
     <script src="js/burger.js"></script>
