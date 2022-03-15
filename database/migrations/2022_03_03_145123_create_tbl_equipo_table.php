@@ -16,7 +16,7 @@ class CreateTblEquipoTable extends Migration
         Schema::create('tbl_equipo', function (Blueprint $table) {
             $table->id();
             $table->string('nombre_equ');
-            $table->string('contra_equ');
+            $table->string('contra_equ')->nullable();
         });
     }
 

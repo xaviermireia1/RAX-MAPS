@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="img/icon/raxmaps.png" type="image/x-icon">
+    <script type="text/javascript" src="js/jquery.js"></script>
     <meta name="csrf-token" id="token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
     <!-- Make sure you put this AFTER Leaflet's CSS -->
@@ -23,6 +24,10 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{!! asset('css/style.css') !!}">
     <link rel="stylesheet" href="{!! asset('css/mainstyle.css') !!}">
+    <script type="text/javascript" src="js/js.js"></script>
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    {{-- <link rel="stylesheet" href="css/owl.theme.default.min.css"> --}}
+    <script src="js/owl.carousel.min.js"></script>
     <link href="fa/css/all.css" rel="stylesheet">
     <title>Raxmaps</title>
 </head>
@@ -59,41 +64,58 @@
                 </ul>
             </nav>
         </div>
-        <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA -->
-        <img class="" src="img/icon/ico_todo.png" width="20">
-        <input type="radio" name="etiqueta" onclick="filtroEtiqueta(0)"> Todo
-        @foreach ($listaEtiquetas as $etiqueta)
-            @if($etiqueta->icono_eti == 'sys_ocio')
-                <img class="" src="img/icon/ico_ocio.png" width="20">
-            @elseif($etiqueta->icono_eti == 'sys_bar')
-                <img class="" src="img/icon/ico_bar.png" width="20">
-            @elseif($etiqueta->icono_eti == 'sys_hospital')
-                <img class="" src="img/icon/ico_hospital.png" width="20">
-            @elseif($etiqueta->icono_eti == 'sys_hotel')
-                <img class="" src="img/icon/ico_hotel.png" width="20">
-            @elseif($etiqueta->icono_eti == 'sys_museo')
-                <img class="" src="img/icon/ico_museo.png" width="20">
-            @elseif($etiqueta->icono_eti == 'sys_parque')
-                <img class="" src="img/icon/ico_parque.png" width="20">
-            @elseif($etiqueta->icono_eti == 'sys_playa')
-                <img class="" src="img/icon/ico_playa.png" width="20">
-            @elseif($etiqueta->icono_eti == 'sys_restaurante')
-                <img class="" src="img/icon/ico_restaurante.png" width="20">
-            @elseif($etiqueta->icono_eti == 'sys_supermercado')
-                <img class="" src="img/icon/ico_supermercado.png" width="20">
-            @elseif($etiqueta->icono_eti == 'sys_fav')
-                <img class="" src="img/icon/ico_fav.png" width="20">
-            @endif
-            <input type="radio" name="etiqueta" onclick="filtroEtiqueta({{$etiqueta->id}})">{{$etiqueta->nombre_eti}}
-        @endforeach
-        <!-- BOTON PARA CANCELAR LA RUTA -->
-        <button id="btnQuitRoute">Quitar ruta</button>
-        <div class="" id="messageGame">
+        <div class="with-region-map">
+            <!-- RADIO BUTTON DE LOS BOTONES TANTO DEL SISTEMA COMO DEL USUARIO SI HAY SESION INICIADA -->
+            <div class="filtros-mapa">
+                <form action="">
+                    <div class="owl-carousel">
+                        <div>
+                            <input type="radio" name="etiqueta" onclick="filtroEtiqueta(0)" value="Todo">
+                            <label for="etiqueta">
+                                <img class="" src="img/icon/ico_todo.png" width="20">Todo
+                            </label>
+                            
+                        </div>
+                        @foreach ($listaEtiquetas as $etiqueta)
+                            <div>
+                                <input type="radio" name="etiqueta" onclick="filtroEtiqueta({{$etiqueta->id}})">
+                                <label for="etiqueta">
+                                    @if($etiqueta->icono_eti == 'sys_ocio')
+                                        <img class="" src="img/icon/ico_ocio.png" width="20">
+                                    @elseif($etiqueta->icono_eti == 'sys_bar')
+                                        <img class="" src="img/icon/ico_bar.png" width="20">
+                                    @elseif($etiqueta->icono_eti == 'sys_hospital')
+                                        <img class="" src="img/icon/ico_hospital.png" width="20">
+                                    @elseif($etiqueta->icono_eti == 'sys_hotel')
+                                        <img class="" src="img/icon/ico_hotel.png" width="20">
+                                    @elseif($etiqueta->icono_eti == 'sys_museo')
+                                        <img class="" src="img/icon/ico_museo.png" width="20">
+                                    @elseif($etiqueta->icono_eti == 'sys_parque')
+                                        <img class="" src="img/icon/ico_parque.png" width="20">
+                                    @elseif($etiqueta->icono_eti == 'sys_playa')
+                                        <img class="" src="img/icon/ico_playa.png" width="20">
+                                    @elseif($etiqueta->icono_eti == 'sys_restaurante')
+                                        <img class="" src="img/icon/ico_restaurante.png" width="20">
+                                    @elseif($etiqueta->icono_eti == 'sys_supermercado')
+                                        <img class="" src="img/icon/ico_supermercado.png" width="20">
+                                    @elseif($etiqueta->icono_eti == 'sys_fav')
+                                        <img class="" src="img/icon/ico_fav.png" width="20">
+                                    @endif
+                                    {{$etiqueta->nombre_eti}}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                </form>
+            </div>
 
-        </div>
-        <div class="region-map" id="map">
+            <!-- BOTON PARA CANCELAR LA RUTA -->
+            <button id="btnQuitRoute">Quitar ruta</button>
+            <div class="region-map" id="map">
 
+            </div>
         </div>
+        
         <div class="modal hidden" id="modal">
             <div class="modalBox" id="modalBox">
 
