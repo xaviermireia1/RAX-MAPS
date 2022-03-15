@@ -153,7 +153,11 @@ async function infoUbicacion(datos) {
         if (tagsDireccion.length == 1) {
             strPopUpHTML += "<p>" + tagsDireccion[0].nombre_eti + "</p>";
         } else {
-            strPopUpHTML += "<p>/" + tagsDireccion[0].nombre_eti + "/</p>";
+            strPopUpHTML += "<p>";
+            for (let i = 0; i < tagsDireccion.length; i++) {
+                strPopUpHTML += tagsDireccion[i].nombre_eti + " / ";
+            }
+            strPopUpHTML += "</p>";
         }
         strPopUpHTML += "<h3>" + datos[i].direccion_ubi + "</h3>";
         strPopUpHTML += "<p>" + datos[i].descripcion_ubi + "</p>";
@@ -194,8 +198,6 @@ function getPositionDirection(lat, lng) {
 }
 
 function getUserTags(idUbicacion) {
-    let divTags = document.getElementById('divUserTags');
-    let strDivTags = "";
     let token = document.getElementById('token').getAttribute("content");
     let formData = new FormData();
     formData.append('_token', token);
@@ -205,14 +207,98 @@ function getUserTags(idUbicacion) {
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var datos = JSON.parse(this.responseText);
-            if (datos.length != 0) {
-                for (let i = 0; i < datos.length; i++) {
-                    strDivTags += "<p>" + datos[i].nombre_eti + "</p>";
-                }
+            for (let i = 0; i < datos.length; i++) {
+                mostrarEtiquetasAgregadas(datos[i], idUbicacion);
+            }
+        }
+    }
+    ajax.send(formData);
+}
+
+function mostrarEtiquetasAgregadas(etiquetasUser, idUbicacion) {
+    let divTags = document.getElementById('divUserTags');
+    let strDivTags = "";
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'GET');
+    let ajax = objetoAjax();
+    ajax.open("POST", "etiquetas/usuarios/" + idUbicacion + "/" + etiquetasUser.id, true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var datos = JSON.parse(this.responseText);
+            if (datos.length == 0) {
+                strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})">${etiquetasUser.nombre_eti}`
+                    //console.log(etiquetasUser);
             } else {
-                strDivTags = "<p>No existe ninguna etiqueta</p>";
+                strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})" checked>${etiquetasUser.nombre_eti}`
             }
             divTags.innerHTML = strDivTags;
+        }
+    }
+    ajax.send(formData);
+}
+
+function addDeleteTagDirection(checkbox, idUbicacion, idEtiqueta) {
+    if (checkbox.checked) {
+        //Agregar
+        addTagDirection(idUbicacion, idEtiqueta)
+            //console.log("Check");
+    } else {
+        //Eliminar
+        console.log("notcheck");
+        deleteTagDirection(idUbicacion, idEtiqueta);
+    }
+}
+
+function addTagDirection(idUbicacion, idEtiqueta) {
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'GET');
+    let ajax = objetoAjax();
+    ajax.open("POST", "etiquetas/usuarios/add/" + idUbicacion + "/" + idEtiqueta, true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            console.log("Dentro");
+            var respuesta = JSON.parse(ajax.responseText);
+            if (respuesta.resultado == "OK") {
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = '<p>Nota creada correctamente.</p>';
+            } else {
+                console.log(respuesta.resultado)
+                    /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                    //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                    //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+            }
+        }
+    }
+    ajax.send(formData);
+}
+
+function deleteTagDirection(idUbicacion, idEtiqueta) {
+    console.log("dentro");
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'GET');
+    let ajax = objetoAjax();
+    ajax.open("POST", "etiquetas/usuarios/delete/" + idUbicacion + "/" + idEtiqueta, true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.resultado == "OK") {
+                console.log("OK");
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = '<p>Nota creada correctamente.</p>';
+            } else {
+                console.log(respuesta.resultado)
+                    /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                    //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                    //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+            }
         }
     }
     ajax.send(formData);

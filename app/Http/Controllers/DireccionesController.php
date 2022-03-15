@@ -195,7 +195,7 @@ class DireccionesController extends Controller
         $listaDirecciones = DB::select("SELECT ubi.*,eti.nombre_eti,eti.icono_eti  FROM tbl_ubicacion ubi 
         inner join tbl_registro ON tbl_registro.id_ubicacion = ubi.id
         left join tbl_etiqueta eti ON tbl_registro.id_etiqueta = eti.id
-        where eti.icono_eti like 'sys_%'");
+        where eti.icono_eti like 'sys_%' AND eti.icono_eti != 'sys_user'");
         return response()->json($listaDirecciones);
     }
     //Filtrar por etiquetas
@@ -204,12 +204,12 @@ class DireccionesController extends Controller
             $etiquetas = DB::select("SELECT ubi.*,eti.nombre_eti,eti.icono_eti  FROM tbl_ubicacion ubi 
             inner join tbl_registro ON tbl_registro.id_ubicacion = ubi.id
             left join tbl_etiqueta eti ON tbl_registro.id_etiqueta = eti.id
-            where eti.icono_eti like 'sys_%'");
+            where eti.icono_eti like 'sys_%' AND eti.icono_eti != 'sys_user'");
         }else{
             $etiquetas = DB::select("SELECT ubi.*,eti.nombre_eti,eti.icono_eti FROM tbl_etiqueta eti
             inner join tbl_registro regi on regi.id_etiqueta = eti.id
             left join tbl_ubicacion ubi on ubi.id = regi.id_ubicacion
-            where regi.id_etiqueta = $id AND eti.icono_eti like 'sys_%'");
+            where regi.id_etiqueta = $id AND eti.icono_eti like 'sys_%' AND eti.icono_eti != 'sys_user'");
         }
         return response()->json($etiquetas);
     }
@@ -229,7 +229,28 @@ class DireccionesController extends Controller
         where regi.id_ubicacion = $idDireccion");
         return response()->json($etiquetasDireccion);
     }
+    public function tagUserSavedLocationMAP($idUbicacion, $idEtiqueta){
+        $exists = DB::select("SELECT * FROM tbl_registro WHERE id_ubicacion=$idUbicacion AND id_etiqueta=$idEtiqueta");
+        return response()->json($exists);
+    }
 
+    public function addEtiquetaDireccionMAP($idUbicacion, $idEtiqueta){
+        try {
+            DB::insert("INSERT INTO tbl_registro (id_etiqueta, id_ubicacion) values (?,?)",[$idEtiqueta,$idUbicacion]);
+            return response()->json(array('resultado'=> 'OK'));
+        } catch (\Exception $e) {
+            return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
+        }
+    }
+    
+    public function deleteEtiquetaDireccionMAP($idUbicacion, $idEtiqueta){
+        try {
+            DB::delete('DELETE FROM tbl_registro WHERE id_ubicacion=? and id_etiqueta=?',[$idUbicacion,$idEtiqueta]);
+            return response()->json(array('resultado'=> 'OK'));
+        } catch (\Exception $e) {
+            return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
+        }
+    }
     //Gincana
     public function comprobarEquipo(){
         if (session()->has('id_usuario')) {
