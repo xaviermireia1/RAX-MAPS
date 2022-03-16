@@ -143,6 +143,12 @@ async function infoUbicacion(datos) {
                 iconSize: [38, 38],
                 iconAnchor: [10, 10],
             })
+        } else if (datos[i].icono_eti == 'sys_user') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_user.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
         }
         //Este funciona para ruta
         //markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon }).on("click", getPositionDirection).addTo(map));
@@ -278,7 +284,6 @@ function addTagDirection(idUbicacion, idEtiqueta) {
 }
 
 function deleteTagDirection(idUbicacion, idEtiqueta) {
-    console.log("dentro");
     let token = document.getElementById('token').getAttribute("content");
     let formData = new FormData();
     formData.append('_token', token);
@@ -289,7 +294,6 @@ function deleteTagDirection(idUbicacion, idEtiqueta) {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var respuesta = JSON.parse(this.responseText);
             if (respuesta.resultado == "OK") {
-                console.log("OK");
                 /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
                 /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
                 //message.innerHTML = '<p>Nota creada correctamente.</p>';
