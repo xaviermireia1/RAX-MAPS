@@ -99,4 +99,6 @@ Route::get('gincana/jugadores/{idGincana}/{idEquipo}',[DireccionesController::cl
 
 Route::get('participantes/estado/{id}',[DireccionesController::class, 'updateParticipantes']);
 
+Route::post('participantes/eliminar/session',[DireccionesController::class, 'deleteSessionGincana']);
+
 Route::delete('participantes/eliminar/{id}', [DireccionesController::class, 'eliminarParticipante']);
