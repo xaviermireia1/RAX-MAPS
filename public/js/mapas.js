@@ -160,6 +160,12 @@ async function infoUbicacion(datos) {
                 iconSize: [38, 38],
                 iconAnchor: [10, 10],
             })
+        } else if (datos[i].icono_eti == 'sys_user') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_user.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
         }
         //Este funciona para ruta
         //markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon }).on("click", getPositionDirection).addTo(map));
@@ -171,7 +177,11 @@ async function infoUbicacion(datos) {
         if (tagsDireccion.length == 1) {
             strPopUpHTML += "<p>" + tagsDireccion[0].nombre_eti + "</p>";
         } else {
-            strPopUpHTML += "<p>/" + tagsDireccion[0].nombre_eti + "/</p>";
+            strPopUpHTML += "<p>";
+            for (let i = 0; i < tagsDireccion.length; i++) {
+                strPopUpHTML += tagsDireccion[i].nombre_eti + " / ";
+            }
+            strPopUpHTML += "</p>";
         }
         strPopUpHTML += "</div>";
         strPopUpHTML += "<h3 class='direccion-ubicacion'>" + datos[i].direccion_ubi + "</h3>";
@@ -217,8 +227,6 @@ function getPositionDirection(lat, lng) {
 }
 
 function getUserTags(idUbicacion) {
-    let divTags = document.getElementById('divUserTags');
-    let strDivTags = "";
     let token = document.getElementById('token').getAttribute("content");
     let formData = new FormData();
     formData.append('_token', token);
@@ -228,14 +236,96 @@ function getUserTags(idUbicacion) {
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var datos = JSON.parse(this.responseText);
-            if (datos.length != 0) {
-                for (let i = 0; i < datos.length; i++) {
-                    strDivTags += "<p>" + datos[i].nombre_eti + "</p>";
-                }
+            for (let i = 0; i < datos.length; i++) {
+                mostrarEtiquetasAgregadas(datos[i], idUbicacion);
+            }
+        }
+    }
+    ajax.send(formData);
+}
+
+function mostrarEtiquetasAgregadas(etiquetasUser, idUbicacion) {
+    let divTags = document.getElementById('divUserTags');
+    let strDivTags = "";
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'GET');
+    let ajax = objetoAjax();
+    ajax.open("POST", "etiquetas/usuarios/" + idUbicacion + "/" + etiquetasUser.id, true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var datos = JSON.parse(this.responseText);
+            if (datos.length == 0) {
+                strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})">${etiquetasUser.nombre_eti}`
+                    //console.log(etiquetasUser);
             } else {
-                strDivTags = "<p>No existe ninguna etiqueta</p>";
+                strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})" checked>${etiquetasUser.nombre_eti}`
             }
             divTags.innerHTML = strDivTags;
+        }
+    }
+    ajax.send(formData);
+}
+
+function addDeleteTagDirection(checkbox, idUbicacion, idEtiqueta) {
+    if (checkbox.checked) {
+        //Agregar
+        addTagDirection(idUbicacion, idEtiqueta)
+            //console.log("Check");
+    } else {
+        //Eliminar
+        console.log("notcheck");
+        deleteTagDirection(idUbicacion, idEtiqueta);
+    }
+}
+
+function addTagDirection(idUbicacion, idEtiqueta) {
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'GET');
+    let ajax = objetoAjax();
+    ajax.open("POST", "etiquetas/usuarios/add/" + idUbicacion + "/" + idEtiqueta, true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            console.log("Dentro");
+            var respuesta = JSON.parse(ajax.responseText);
+            if (respuesta.resultado == "OK") {
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = '<p>Nota creada correctamente.</p>';
+            } else {
+                console.log(respuesta.resultado)
+                    /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                    //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                    //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+            }
+        }
+    }
+    ajax.send(formData);
+}
+
+function deleteTagDirection(idUbicacion, idEtiqueta) {
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'GET');
+    let ajax = objetoAjax();
+    ajax.open("POST", "etiquetas/usuarios/delete/" + idUbicacion + "/" + idEtiqueta, true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.resultado == "OK") {
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = '<p>Nota creada correctamente.</p>';
+            } else {
+                console.log(respuesta.resultado)
+                    /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                    //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                    //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+            }
         }
     }
     ajax.send(formData);
@@ -361,9 +451,36 @@ function modalGincana() {
     ajax.send(formData);
 }
 
-function IniciarGincana(id) {
+function GincanaEquipo(idGincana) {
+    return new Promise(function(resolve, reject) {
+        let token = document.getElementById('token').getAttribute("content");
+        let formData = new FormData();
+        formData.append('_token', token);
+        formData.append('_method', 'GET');
+        let ajax = objetoAjax();
+        ajax.open("POST", "equipo/gimcana/" + idGincana, true);
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                /*setTimeout(function() {
+                    resolve(JSON.parse(ajax.responseText));
+                }, 3000);*/
+                resolve(JSON.parse(ajax.responseText));
+            }
+        }
+        ajax.send(formData);
+    });
+}
+
+async function IniciarGincana(id) {
     cerrarModal();
-    var polygon = L.polygon([
+    deleteSessionGincana();
+    idEquipo_Global = 0;
+    idGincana_Global = 0;
+    objetivoNum = 0;
+    gincana = 0;
+    infoObjetivos = null;
+    let teamInGame = await GincanaEquipo(id);
+    polygon = L.polygon([
         [41.357596, 2.183804],
         [41.383637, 2.182141],
         [41.387918, 2.195807],
@@ -372,7 +489,6 @@ function IniciarGincana(id) {
         [41.374282, 2.194663],
         [41.357662, 2.185403]
     ]).addTo(map);
-
     var formData = new FormData();
     formData.append('_token', document.getElementById('token').getAttribute("content"));
     formData.append('_method', 'POST');
@@ -383,7 +499,7 @@ function IniciarGincana(id) {
     ajax.onreadystatechange = function() {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var respuesta = JSON.parse(this.responseText);
-            console.log(respuesta);
+            //console.log(respuesta);
             //question(results);
             if (respuesta.id_equipo == null) {
                 Swal.fire({
@@ -392,9 +508,272 @@ function IniciarGincana(id) {
                     text: 'Debes estar en un equipo!'
                 })
             } else {
-                alert("Estas en un equipo")
+                //console.log(Object.keys(teamInGame).length);
+                idEquipo_Global = respuesta.id_equipo;
+                idGincana_Global = id;
+                if (Object.keys(teamInGame).length != 0) {
+                    //console.log(teamInGame);
+                    cargarJuego(id, respuesta.id_equipo);
+                } else {
+                    //console.log("No hay registro");
+                    iniciarJuego(id, respuesta.id_equipo);
+                }
             }
         }
     }
     ajax.send(formData);
+}
+
+function cargarJuego(idGincana, idEquipo) {
+    //console.log(idGincana);
+    //console.log(idEquipo);
+    //console.log("Numero objetivo: " + objetivoNum)
+    intervalDistance = null;
+    /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
+    /* Usar el objeto FormData para guardar los parámetros que se enviarán:
+    formData.append('clave', valor);
+    valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
+    if (infoObjetivos == null) {
+        var formData = new FormData();
+        formData.append('_token', document.getElementById('token').getAttribute("content"));
+        /* Inicializar un objeto AJAX */
+        var ajax = objetoAjax();
+        ajax.open("GET", "equipo/gimcana/cargar/" + idGincana, true);
+        ajax.onreadystatechange = function() {
+
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                var respuesta = JSON.parse(this.responseText);
+                infoObjetivos = respuesta;
+                gincana = respuesta.length;
+                mostrarObjetivo(infoObjetivos);
+            }
+        }
+        ajax.send(formData);
+    } else {
+        mostrarObjetivo(infoObjetivos);
+    }
+}
+
+function iniciarJuego(idGincana, idEquipo) {
+    var formData = new FormData();
+    formData.append('_token', document.getElementById('token').getAttribute("content"));
+    formData.append('_method', 'GET');
+
+    var ajax = objetoAjax();
+
+    ajax.open("GET", "equipo/gimcana/incio/" + idGincana + "/" + idEquipo, true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.resultado == "OK") {
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = '<p>Nota creada correctamente.</p>';
+                cargarJuego(idGincana, idEquipo);
+
+            } else {
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+            }
+        }
+    }
+    ajax.send(formData);
+}
+
+function contPlayers(idGincana, idEquipo) {
+    return new Promise(function(resolve, reject) {
+        let token = document.getElementById('token').getAttribute("content");
+        let formData = new FormData();
+        formData.append('_token', token);
+        formData.append('_method', 'GET');
+        let ajax = objetoAjax();
+        ajax.open("POST", "gincana/jugadores/" + idGincana + "/" + idEquipo, true);
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                /*setTimeout(function() {ss
+                    resolve(JSON.parse(ajax.responseText));
+                }, 3000);*/
+                //console.log(ajax.responseText);
+                resolve(JSON.parse(ajax.responseText));
+            }
+        }
+        ajax.send(formData);
+    });
+}
+
+function comprobarPosicion(meLatitud, meLongitud, latitudUbi, longitudUbi, idParticipante) {
+    /*console.log(meLatitud);
+    console.log(meLongitud);
+    console.log(latitudUbi);
+    console.log(longitudUbi);
+    console.log(parseFloat(latitudUbi));
+    console.log(parseFloat(longitudUbi));*/
+    rad = function(x) { return x * Math.PI / 180; }
+    var R = 6378.137; //Radio de la tierra en km
+    var dLat = rad(parseFloat(latitudUbi) - meLatitud);
+    var dLong = rad(parseFloat(longitudUbi) - meLongitud);
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(meLatitud)) * Math.cos(rad(parseFloat(latitudUbi))) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    d = d.toFixed(3) * 1000;
+    //console.log(d + "m");
+    //if (d <= 500) {
+    if (d <= 500) {
+        //console.log("Cerca");
+        //clearInterval(intervalDistance);
+        updateEstado(idParticipante);
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Posición Incorrecta',
+            text: 'Sigue investigando...'
+        })
+    }
+}
+
+async function updateEstado(idParticipante) {
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'GET');
+    let ajax = objetoAjax();
+    ajax.open("POST", "participantes/estado/" + idParticipante, true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            //console.log(ajax.responseText);
+            var respuesta = JSON.parse(ajax.responseText);
+            //console.log(respuesta)
+            if (respuesta.resultado == "OK") {
+                objetivoNum = objetivoNum + 1
+                intervalWaitAllPlayers = null;
+                if (gincana != objetivoNum) {
+                    //setInterval(mostrarObjetivo, 10000, infoObjetivos);
+                    //deleteSessionGincana();
+                    if (intervalWaitAllPlayers) {
+                        clearInterval(intervalWaitAllPlayers);
+                    }
+                    //let prueba = await deleteSessionGincana()
+                    deleteSessionGincana();
+                    mostrarObjetivo(infoObjetivos);
+                } else {
+                    //cleartInterval();
+                    //deleteSessionGincana();
+                    if (intervalWaitAllPlayers) {
+                        clearInterval(intervalWaitAllPlayers);
+                    }
+                    //let prueba = await deleteSessionGincana()
+                    deleteSessionGincana();
+                    finalizarJuego(idParticipante);
+                }
+            } else if (respuesta.resultado == "EQUIPO_INCOMPLETO") {
+                document.getElementById("messageAllUsers").style.display = "block";
+                document.getElementById("messageAllUsers").innerHTML = "<p>Faltan más jugadores por llegar, espera a que lleguen los demás</p>";
+                intervalWaitAllPlayers = setInterval(waitPlayers, 10000, idParticipante);
+                //console.log(idEquipo_Global)
+                //console.log(idGincana_Global)
+                Swal.fire({
+                        icon: 'warning',
+                        title: 'Posicion correcta',
+                        text: 'Faltan jugadores de tu equipo por llegar...'
+                    })
+                    //setInterval(mostrarObjetivo, 10000, infoObjetivos);
+                    //updateEstado(idParticipante);
+            } else {
+
+            }
+        }
+    }
+    ajax.send(formData);
+}
+
+async function waitPlayers(idParticipante) {
+    let quantityPlayersInPosition = await contPlayers(idGincana_Global, idEquipo_Global);
+    if (quantityPlayersInPosition.length == 0 || quantityPlayersInPosition[0].estado == 0) {
+        clearInterval(intervalWaitAllPlayers);
+        objetivoNum = objetivoNum + 1
+        if (gincana != objetivoNum) {
+            //setInterval(mostrarObjetivo, 10000, infoObjetivos);
+            deleteSessionGincana();
+            mostrarObjetivo(infoObjetivos);
+        } else {
+            //cleartInterval(intervalWaitAllPlayers);
+            deleteSessionGincana();
+            finalizarJuego(idParticipante);
+        }
+    }
+}
+
+function finalizarJuego(idParticipante) {
+    map.removeLayer(polygon);
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'DELETE');
+    let ajax = objetoAjax();
+    ajax.open("POST", "participantes/eliminar/" + idParticipante, true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.resultado == "OK") {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Felicitaciones!!!',
+                    text: 'Has terminado el juego con exito...'
+                })
+                var contenedor = document.getElementById("messageGame");
+                contenedor.style.display = "none";
+            } else {
+
+            }
+        }
+    }
+    ajax.send(formData);
+}
+
+function deleteSessionGincana() {
+    //console.log("Cierro session");
+    //return new Promise(function(resolve, reject) {
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'POST');
+    let ajax = objetoAjax();
+    ajax.open("POST", "participantes/eliminar/session", true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.resultado == "OK") {
+                //resolve(respuesta.resultado);
+            } else {
+                console.log(respuesta.resultado);
+                //reject(respuesta.resultado);
+            }
+        }
+    }
+    ajax.send(formData);
+    //});
+}
+async function mostrarObjetivo(respuestaObjetivo) {
+    var contenedor = document.getElementById("messageGame");
+    let quantityPlayersInPosition = await contPlayers(idGincana_Global, idEquipo_Global);
+    var recarga = '';
+    recarga += `
+            <h1 class="">Objetivo Gimcana</h1>
+            <div class="">
+                <div class="">
+                    <div class="">
+                        <div class="">
+                            <div class="">${respuestaObjetivo[objetivoNum].nombre_obj}</div>
+                            <div id="messageAllUsers" style="display:none;"></div>
+                            <div class=""><button onclick="comprobarPosicion(${myPosition.coords.latitude}, ${myPosition.coords.longitude}, ${respuestaObjetivo[objetivoNum].latitud_ubi}, ${respuestaObjetivo[objetivoNum].longitud_ubi}, ${quantityPlayersInPosition[0].id})">Comprobar posicion</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+    contenedor.innerHTML = recarga;
+    //intervalDistance = setInterval(comprobarPosicion(myPosition.coords.latitude, myPosition.coords.longitude, respuesta.latitud_ubi, respuesta.longitud_ubi), 1000);
+    //intervalDistance = setInterval(comprobarPosicion, 1000, myPosition.coords.latitude, myPosition.coords.longitude, respuesta.latitud_ubi, respuesta.longitud_ubi);
+    //comprobarPosicion(myPosition.coords.latitude, myPosition.coords.longitude, respuestaObjetivo[objetivoNum].latitud_ubi, respuestaObjetivo[objetivoNum].longitud_ubi, quantityPlayersInPosition[0].id);
 }

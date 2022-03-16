@@ -37,6 +37,12 @@ Route::get('etiqueta/{id}',[DireccionesController::class,'filtroEtiquetaMAP']);
 
 Route::post('etiquetas/usuarios',[DireccionesController::class,'cogerEtiquetaUsuarioMAP']);
 
+Route::get('etiquetas/usuarios/{idUbicacion}/{idEtiqueta}',[DireccionesController::class,'tagUserSavedLocationMAP']);
+
+Route::get('etiquetas/usuarios/add/{idUbicacion}/{idEtiqueta}',[DireccionesController::class,'addEtiquetaDireccionMAP']);
+
+Route::get('etiquetas/usuarios/delete/{idUbicacion}/{idEtiqueta}',[DireccionesController::class,'deleteEtiquetaDireccionMAP']);
+
 Route::get('etiquetas/direcciones/{id}',[DireccionesController::class,'getEtiquetaDireccionMAP']);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 Route::post('mostrarEtiqueta',[DireccionesController::class,'mostrarEtiqueta']);
@@ -78,7 +84,23 @@ Route::delete('eliminarDireccion/{id}',[DireccionesController::class, 'eliminarD
 
 Route::delete('eliminarUsuario/{id}',[UsuarioController::class, 'eliminarUsuario']);
 
+Route::delete('darseDeBaja',[UsuarioController::class, 'darseDeBaja']);
+
 Route::put('abandonarEquipo',[UsuarioController::class, 'abandonarEquipo']);
 
 //Gincana
 Route::post('comprobarEquipo',[DireccionesController::class, 'comprobarEquipo']);
+
+Route::get('equipo/gimcana/{id}', [DireccionesController::class, 'GincanaEquipo']);
+
+Route::get('equipo/gimcana/incio/{idGincana}/{idEquipo}', [DireccionesController::class, 'insertGincana']);
+
+Route::get('equipo/gimcana/cargar/{idGincana}', [DireccionesController::class, 'cargarGincana']);
+
+Route::get('gincana/jugadores/{idGincana}/{idEquipo}',[DireccionesController::class, 'contPlayers']);
+
+Route::get('participantes/estado/{id}',[DireccionesController::class, 'updateParticipantes']);
+
+Route::post('participantes/eliminar/session',[DireccionesController::class, 'deleteSessionGincana']);
+
+Route::delete('participantes/eliminar/{id}', [DireccionesController::class, 'eliminarParticipante']);

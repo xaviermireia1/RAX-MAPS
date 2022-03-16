@@ -20,19 +20,23 @@ class UsuarioController extends Controller
     public function loginPost(LoginValidacion2 $request){
         $datos= $request->except('_token','_method');
         $passMD5 = md5($datos['contra_usu']);
+        $countUser=DB::table("tbl_rol")->join('tbl_usuario', 'tbl_rol.id', '=', 'tbl_usuario.id_rol')->where('correo_usu','=',$datos['correo_usu'])->where('contra_usu','=',$passMD5)->select('tbl_rol.nombre_rol', 'tbl_usuario.*')->count();
         $user=DB::table("tbl_rol")->join('tbl_usuario', 'tbl_rol.id', '=', 'tbl_usuario.id_rol')->where('correo_usu','=',$datos['correo_usu'])->where('contra_usu','=',$passMD5)->select('tbl_rol.nombre_rol', 'tbl_usuario.*')->first();
-        if($user->nombre_rol=='administrador'){
-           $request->session()->put('nombre',$request->correo_usu);
-           $request->session()->put('id_usuario',$user->id);
-           $request->session()->put('rol','administrador');
-           return redirect('');
-        }if($user->nombre_rol=='cliente'){
+        if($countUser!=0){
+            if($user->nombre_rol=='administrador'){
             $request->session()->put('nombre',$request->correo_usu);
             $request->session()->put('id_usuario',$user->id);
-            $request->session()->put('rol','cliente');
+            $request->session()->put('rol','administrador');
             return redirect('');
+            }if($user->nombre_rol=='cliente'){
+                $request->session()->put('nombre',$request->correo_usu);
+                $request->session()->put('id_usuario',$user->id);
+                $request->session()->put('rol','cliente');
+                return redirect('');
+            }
+        }else{
+            return redirect('login');
         }
-        return redirect('');
     }
 
     public function registraUsuario(LoginValidacion $request){
@@ -70,10 +74,10 @@ class UsuarioController extends Controller
             return view('login_register');
         }
         $id = session()->get('id_usuario');
-        $perfil = DB::select("SELECT usu.*, equ.nombre_equ FROM tbl_usuario usu 
+        $perfil = DB::select("SELECT usu.*, equ.nombre_equ FROM tbl_usuario usu
         left join tbl_equipo equ ON usu.id_equipo = equ.id
         where usu.id = $id");
-        return view('miPerfil',compact('perfil'));       
+        return view('miPerfil',compact('perfil'));
     }
 
 
@@ -136,7 +140,7 @@ class UsuarioController extends Controller
         }else{
             $equipoContraseña = DB::table('tbl_equipo')->where('id','=',$id)->select('*')->first();
             if($datos['contra_equ'] == $equipoContraseña->contra_equ){
-                
+
                 try{
                     DB::beginTransaction();
                     DB::select("UPDATE tbl_usuario SET id_equipo=$id where id=$idUsuario;");
@@ -160,14 +164,40 @@ class UsuarioController extends Controller
 
     //Eliminar
     //Darse de baja
-    public function eliminarUsuario($id){
+    public function darseDeBaja(){
+        if (session()->has('id_usuario')) {
+            $idUsuario = session()->get('id_usuario');
+        }
+
+        $idEti = DB::select("SELECT id FROM tbl_etiqueta WHERE id_usuario = $idUsuario");
+        $idEqui = DB::select("SELECT id_equipo FROM tbl_usuario WHERE id = $idUsuario");
+        $idEtiqueta= $idEti[0]->id;
+        $idEquipo = $idEqui[0]->id_equipo;
+
         try{
             DB::beginTransaction();
-            DB::table('tbl_usuario')->where('id','=',$id)->delete();
+            //DB::table('tbl_registro')->where('id_etiqueta','=',$idEtiqueta[0])->delete();
+            DB::delete("DELETE FROM tbl_registro WHERE id_etiqueta = $idEtiqueta");
+            //DB::table('tbl_etiqueta')->where('id_usuario','=',$idUsuario)->delete();
+            DB::delete("DELETE FROM tbl_etiqueta WHERE id_usuario = $idUsuario");
+            //DB::table('tbl_usuario')->where('id','=',$idUsuario)->delete();
+            DB::delete("DELETE FROM tbl_usuario WHERE id = $idUsuario");
+            if($idEquipo != NULL){
+                if ($idEquipo != 1) {
+                    $quantityMembers = DB::select("SELECT COUNT(usu.nick_usu) as quantitymembers FROM tbl_usuario usu
+                    left join tbl_equipo equ ON usu.id_equipo=equ.id where id_equipo = $idEquipo");
+                    if ($quantityMembers[0]->quantitymembers == 0) {
+                        //DB::table('tbl_equipo')->where('id','=',$idEquipo)->delete();
+                        DB::delete("DELETE FROM tbl_equipo WHERE id = $idEquipo");
+                    }
+                }
+            }
             DB::commit();
+            session()->flush();
+            return response()->json(array('resultado'=> 'OK'));
         }catch(\Exception $e){
             DB::rollBack();
-            return $e->getMessage();
+            return response()->json(array('resultado'=> 'NOK'));
         }
     }
 

@@ -172,8 +172,6 @@ class DireccionesController extends Controller
         }
     }
 
-    
-    
     public function modificarEtiquetaPut(Request $request){
         $datos = $request->except('_token','_method');
         try{
@@ -197,7 +195,7 @@ class DireccionesController extends Controller
         $listaDirecciones = DB::select("SELECT ubi.*,eti.nombre_eti,eti.icono_eti  FROM tbl_ubicacion ubi 
         inner join tbl_registro ON tbl_registro.id_ubicacion = ubi.id
         left join tbl_etiqueta eti ON tbl_registro.id_etiqueta = eti.id
-        where eti.icono_eti like 'sys_%'");
+        where eti.icono_eti like 'sys_%' AND eti.icono_eti != 'sys_user'");
         return response()->json($listaDirecciones);
     }
     //Filtrar por etiquetas
@@ -206,7 +204,7 @@ class DireccionesController extends Controller
             $etiquetas = DB::select("SELECT ubi.*,eti.nombre_eti,eti.icono_eti  FROM tbl_ubicacion ubi 
             inner join tbl_registro ON tbl_registro.id_ubicacion = ubi.id
             left join tbl_etiqueta eti ON tbl_registro.id_etiqueta = eti.id
-            where eti.icono_eti like 'sys_%'");
+            where eti.icono_eti like 'sys_%' AND eti.icono_eti != 'sys_user'");
         }else{
             $etiquetas = DB::select("SELECT ubi.*,eti.nombre_eti,eti.icono_eti FROM tbl_etiqueta eti
             inner join tbl_registro regi on regi.id_etiqueta = eti.id
@@ -226,12 +224,42 @@ class DireccionesController extends Controller
         return response()->json($etiqueta);
     }
     public function getEtiquetaDireccionMAP($idDireccion){
-        $etiquetasDireccion = DB::select("SELECT eti.nombre_eti FROM tbl_etiqueta eti 
-        INNER JOIN tbl_registro regi on regi.id_etiqueta = eti.id
-        where regi.id_ubicacion = $idDireccion");
+        if (session()->has('id_usuario')) {
+            $idUser = session()->get('id_usuario');
+            $etiquetasDireccion = DB::select("SELECT eti.nombre_eti FROM tbl_etiqueta eti 
+            INNER JOIN tbl_registro regi on regi.id_etiqueta = eti.id
+            INNER JOIN tbl_usuario user on eti.id_usuario = user.id
+            where regi.id_ubicacion = $idDireccion and (user.id = $idUser or user.id = 1)"); 
+        }else{
+            $etiquetasDireccion = DB::select("SELECT eti.nombre_eti FROM tbl_etiqueta eti 
+            INNER JOIN tbl_registro regi on regi.id_etiqueta = eti.id
+            INNER JOIN tbl_usuario user on eti.id_usuario = user.id
+            where regi.id_ubicacion = $idDireccion and user.id = 1");
+        }
         return response()->json($etiquetasDireccion);
     }
+    public function tagUserSavedLocationMAP($idUbicacion, $idEtiqueta){
+        $exists = DB::select("SELECT * FROM tbl_registro WHERE id_ubicacion=$idUbicacion AND id_etiqueta=$idEtiqueta");
+        return response()->json($exists);
+    }
 
+    public function addEtiquetaDireccionMAP($idUbicacion, $idEtiqueta){
+        try {
+            DB::insert("INSERT INTO tbl_registro (id_etiqueta, id_ubicacion) values (?,?)",[$idEtiqueta,$idUbicacion]);
+            return response()->json(array('resultado'=> 'OK'));
+        } catch (\Exception $e) {
+            return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
+        }
+    }
+    
+    public function deleteEtiquetaDireccionMAP($idUbicacion, $idEtiqueta){
+        try {
+            DB::delete('DELETE FROM tbl_registro WHERE id_ubicacion=? and id_etiqueta=?',[$idUbicacion,$idEtiqueta]);
+            return response()->json(array('resultado'=> 'OK'));
+        } catch (\Exception $e) {
+            return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
+        }
+    }
     //Gincana
     public function comprobarEquipo(){
         if (session()->has('id_usuario')) {
@@ -240,5 +268,86 @@ class DireccionesController extends Controller
 
         $comprobacionEquipo=DB::table('tbl_usuario')->where('id','=',$idUsuario)->first();
         return response()->json($comprobacionEquipo);
+    }
+
+    public function GincanaEquipo($id){
+        if (session()->has('id_usuario')) {
+            $idUsuario = session()->get('id_usuario');
+        }
+
+        $comprobacionEquipo=DB::table('tbl_usuario')->where('id','=',$idUsuario)->first();
+
+        $equipo = $comprobacionEquipo->id_equipo;
+        $insGincanaEquipo = DB::table('tbl_participacion')->where('id_gincana','=',$id)->where('id_equipo','=', $equipo)->first();
+        return response()->json($insGincanaEquipo);
+    }
+
+    public function insertGincana($idGincana, $idEquipo){
+        $estado = 0;
+        try{
+            DB::beginTransaction();
+            DB::table('tbl_participacion')->insertGetId(['id_gincana'=>$idGincana,'id_equipo'=>$idEquipo,'estado'=>$estado]);
+            DB::commit();
+            return response()->json(array('resultado'=> 'OK'));
+        }catch(\Exception $e){
+            DB::rollBack();
+            return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
+        }
+    }
+
+    public function cargarGincana($idGincana){
+        //$cargarObjetivo = DB::table('tbl_ubicacion')->join('tbl_objetivo','tbl_ubicacion.id','=','tbl_objetivo.id_ubicacion')->where('tbl_objetivo.	id_gincana','=',$idGincana)->select('tbl_ubicacion.latitud_ubi','tbl_ubicacion.longitud_ubi','tbl_objetivo.*')->get();
+        $cargarObjetivo = DB::select("SELECT tbl_ubicacion.longitud_ubi, tbl_ubicacion.latitud_ubi, tbl_objetivo.*
+        FROM tbl_ubicacion INNER JOIN tbl_objetivo ON tbl_ubicacion.id = tbl_objetivo.id_ubicacion
+        WHERE tbl_objetivo.id_gincana = $idGincana");
+        return response()->json($cargarObjetivo);
+    }
+
+    public function contPlayers($idGincana, $idEquipo){
+        $contPlayers = DB::select("SELECT tbl_participacion.id, tbl_participacion.estado, count(tbl_equipo.id) as 'ContadorEquipo' FROM tbl_equipo
+        INNER JOIN tbl_participacion ON tbl_equipo.id = tbl_participacion.id_equipo
+        INNER JOIN tbl_gincana ON tbl_gincana.id = tbl_participacion.id_gincana
+        INNER JOIN tbl_usuario ON tbl_equipo.id = tbl_usuario.id_equipo
+        WHERE tbl_equipo.id = $idEquipo AND tbl_participacion.id_gincana = $idGincana GROUP BY tbl_participacion.id, tbl_participacion.estado, 'ContadorEquipo'");
+        return response()->json($contPlayers);
+    }
+    public function updateParticipantes($idParticipante){
+        //Si no tiene estado actualizamos el registro
+        if (!session()->has('estado')) {
+            session()->put('estado',true); //Crear estado
+            DB::select("UPDATE tbl_participacion SET estado = estado + 1 WHERE id = $idParticipante");
+            //Si no comprobamos si el estado es igual a la cantidad de participantes, en caso de que sea así,
+            //eliminamos la variable de session y cargamos el siguiente objetivo
+        }
+        try{
+            $estadoIgualJugadores = DB::select("SELECT tbl_participacion.estado, count(tbl_usuario.id) as 'Contadorjugadores'
+            FROM tbl_participacion INNER JOIN tbl_equipo ON tbl_equipo.id = tbl_participacion.id_equipo
+            INNER JOIN tbl_usuario ON tbl_equipo.id = tbl_usuario.id_equipo WHERE tbl_participacion.id = $idParticipante
+            GROUP BY tbl_participacion.estado, 'Contadorjugadores'");
+            //Si es igual cargamos el siguiente objetivo
+            if ($estadoIgualJugadores[0]->estado == $estadoIgualJugadores[0]->Contadorjugadores) {
+                session()->forget('estado');
+                DB::select("UPDATE tbl_participacion SET estado = 0 WHERE id = $idParticipante");
+                return response()->json(array('resultado'=> 'OK'));
+            }
+            return response()->json(array('resultado'=> 'EQUIPO_INCOMPLETO'));
+        }catch(\PDOException $e){
+            return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
+        }
+    }
+    public function deleteSessionGincana(){
+            session()->forget('estado');
+            return response()->json(array('resultado'=> 'OK'));
+    }
+    public function eliminarParticipante($idParticipante){
+        /*if (session()->has("estado")) {
+            session()->forget('estado');
+        }*/
+        try{
+            DB::select("DELETE FROM tbl_participacion WHERE id = $idParticipante");
+            return response()->json(array('resultado'=> 'OK'));
+        }catch(\PDOException $e){
+            return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
+        }
     }
 }

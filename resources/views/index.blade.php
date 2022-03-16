@@ -102,6 +102,8 @@
                                             <img class="" src="img/icon/ico_supermercado.png" width="20">
                                         @elseif($etiqueta->icono_eti == 'sys_fav')
                                             <img class="" src="img/icon/ico_fav.png" width="20">
+                                        @elseif($etiqueta->icono_eti == 'sys_user')
+                                            <img class="" src="img/icon/ico_user.png" width="20">
                                         @endif
                                         {{$etiqueta->nombre_eti}}
                                     </label>
@@ -125,6 +127,8 @@
 
             </div>
         </div>
+
+        <div id="messageGame"></div>
     </div>
 
     <script src="js/burger.js"></script>
