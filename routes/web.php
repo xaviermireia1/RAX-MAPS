@@ -84,6 +84,8 @@ Route::delete('eliminarDireccion/{id}',[DireccionesController::class, 'eliminarD
 
 Route::delete('eliminarUsuario/{id}',[UsuarioController::class, 'eliminarUsuario']);
 
+Route::delete('darseDeBaja',[UsuarioController::class, 'darseDeBaja']);
+
 Route::put('abandonarEquipo',[UsuarioController::class, 'abandonarEquipo']);
 
 //Gincana

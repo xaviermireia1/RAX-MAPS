@@ -61,6 +61,9 @@
                     <div class="opcion">
                         <button onclick="modalEquipos();">Equipo</button>
                     </div>
+                    <div class="opcion">
+                        <button onclick="darseBaja();">Darse de Baja</button>
+                    </div>
                     @if (Session::get('rol') == "administrador")
                     <div class="opcion">
                         <button onclick="modalDirecciones();">Ubicaciones</button>

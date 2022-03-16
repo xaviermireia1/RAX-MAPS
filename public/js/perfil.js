@@ -725,3 +725,39 @@ function selectEtiquetas() {
         ajax.send(formData);
     });
 }
+
+function darseBaja() {
+    /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
+    /* Usar el objeto FormData para guardar los parámetros que se enviarán:
+    formData.append('clave', valor);
+    valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
+    var formData = new FormData();
+
+    formData.append('_token', document.getElementById('token').getAttribute("content"));
+    formData.append('_method', 'DELETE');
+    /* Inicializar un objeto AJAX */
+    var ajax = objetoAjax();
+
+
+    ajax.open("POST", "darseDeBaja", true);
+
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.resultado == "OK") {
+                console.log("OK");
+                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                //message.innerHTML = '<p>Nota creada correctamente.</p>';
+                window.location.replace('http://localhost/RAX-MAPS/public/');
+            } else {
+                console.log(respuesta.resultado)
+                    /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+                    //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+                    //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+            }
+        }
+    }
+    ajax.send(formData);
+}
