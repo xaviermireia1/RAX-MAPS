@@ -446,6 +446,7 @@ function GincanaEquipo(idGincana) {
 
 async function IniciarGincana(id) {
     cerrarModal();
+    deleteSessionGincana();
     idEquipo_Global = 0;
     idGincana_Global = 0;
     objetivoNum = 0;
@@ -604,7 +605,7 @@ function comprobarPosicion(meLatitud, meLongitud, latitudUbi, longitudUbi, idPar
     }
 }
 
-function updateEstado(idParticipante) {
+async function updateEstado(idParticipante) {
     let token = document.getElementById('token').getAttribute("content");
     let formData = new FormData();
     formData.append('_token', token);
@@ -618,14 +619,30 @@ function updateEstado(idParticipante) {
             //console.log(respuesta)
             if (respuesta.resultado == "OK") {
                 objetivoNum = objetivoNum + 1
+                intervalWaitAllPlayers = null;
                 if (gincana != objetivoNum) {
                     //setInterval(mostrarObjetivo, 10000, infoObjetivos);
+                    //deleteSessionGincana();
+                    if (intervalWaitAllPlayers) {
+                        clearInterval(intervalWaitAllPlayers);
+                    }
+                    //let prueba = await deleteSessionGincana()
+                    deleteSessionGincana();
                     mostrarObjetivo(infoObjetivos);
                 } else {
                     //cleartInterval();
+                    //deleteSessionGincana();
+                    if (intervalWaitAllPlayers) {
+                        clearInterval(intervalWaitAllPlayers);
+                    }
+                    //let prueba = await deleteSessionGincana()
+                    deleteSessionGincana();
                     finalizarJuego(idParticipante);
                 }
             } else if (respuesta.resultado == "EQUIPO_INCOMPLETO") {
+                document.getElementById("messageAllUsers").style.display = "block";
+                document.getElementById("messageAllUsers").innerHTML = "<p>Faltan más jugadores por llegar, espera a que lleguen los demás</p>";
+                intervalWaitAllPlayers = setInterval(waitPlayers, 10000, idParticipante);
                 //console.log(idEquipo_Global)
                 //console.log(idGincana_Global)
                 Swal.fire({
@@ -641,6 +658,23 @@ function updateEstado(idParticipante) {
         }
     }
     ajax.send(formData);
+}
+
+async function waitPlayers(idParticipante) {
+    let quantityPlayersInPosition = await contPlayers(idGincana_Global, idEquipo_Global);
+    if (quantityPlayersInPosition.length == 0 || quantityPlayersInPosition[0].estado == 0) {
+        clearInterval(intervalWaitAllPlayers);
+        objetivoNum = objetivoNum + 1
+        if (gincana != objetivoNum) {
+            //setInterval(mostrarObjetivo, 10000, infoObjetivos);
+            deleteSessionGincana();
+            mostrarObjetivo(infoObjetivos);
+        } else {
+            //cleartInterval(intervalWaitAllPlayers);
+            deleteSessionGincana();
+            finalizarJuego(idParticipante);
+        }
+    }
 }
 
 function finalizarJuego(idParticipante) {
@@ -670,6 +704,29 @@ function finalizarJuego(idParticipante) {
     ajax.send(formData);
 }
 
+function deleteSessionGincana() {
+    //console.log("Cierro session");
+    //return new Promise(function(resolve, reject) {
+    let token = document.getElementById('token').getAttribute("content");
+    let formData = new FormData();
+    formData.append('_token', token);
+    formData.append('_method', 'POST');
+    let ajax = objetoAjax();
+    ajax.open("POST", "participantes/eliminar/session", true);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4 && ajax.status == 200) {
+            var respuesta = JSON.parse(this.responseText);
+            if (respuesta.resultado == "OK") {
+                //resolve(respuesta.resultado);
+            } else {
+                console.log(respuesta.resultado);
+                //reject(respuesta.resultado);
+            }
+        }
+    }
+    ajax.send(formData);
+    //});
+}
 async function mostrarObjetivo(respuestaObjetivo) {
     var contenedor = document.getElementById("messageGame");
     let quantityPlayersInPosition = await contPlayers(idGincana_Global, idEquipo_Global);
@@ -681,6 +738,7 @@ async function mostrarObjetivo(respuestaObjetivo) {
                     <div class="">
                         <div class="">
                             <div class="">${respuestaObjetivo[objetivoNum].nombre_obj}</div>
+                            <div id="messageAllUsers" style="display:none;"></div>
                             <div class=""><button onclick="comprobarPosicion(${myPosition.coords.latitude}, ${myPosition.coords.longitude}, ${respuestaObjetivo[objetivoNum].latitud_ubi}, ${respuestaObjetivo[objetivoNum].longitud_ubi}, ${quantityPlayersInPosition[0].id})">Comprobar posicion</button></div>
                         </div>
                     </div>

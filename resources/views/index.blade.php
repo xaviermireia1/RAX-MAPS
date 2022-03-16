@@ -124,6 +124,7 @@
             </div>
         </div>
 
+        <div id="messageGame"></div>
     </div>
 
     <script src="js/burger.js"></script>

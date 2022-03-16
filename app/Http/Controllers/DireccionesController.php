@@ -335,8 +335,14 @@ class DireccionesController extends Controller
             return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
         }
     }
-
+    public function deleteSessionGincana(){
+            session()->forget('estado');
+            return response()->json(array('resultado'=> 'OK'));
+    }
     public function eliminarParticipante($idParticipante){
+        /*if (session()->has("estado")) {
+            session()->forget('estado');
+        }*/
         try{
             DB::select("DELETE FROM tbl_participacion WHERE id = $idParticipante");
             return response()->json(array('resultado'=> 'OK'));
