@@ -502,6 +502,9 @@ async function modalDirecciones() {
 
             var recarga = '';
             recarga += `
+            <div class="cerrar-modal" onclick="cerrarModal();">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
             <h1 class="titulo-modal">Ubicaciones</h1>
             <div class="contenido-modal">
                 <div class="modal-first">
@@ -535,7 +538,7 @@ async function modalDirecciones() {
                         <h2>Crear Ubicaciones</h2>
                         <input type="text" placeholder="Nombre ubicacion..." class="nombre-etiqueta-crear" name="nombre_ubi">
                         <input type="text" placeholder="Direccion ubicación..." class="nombre-etiqueta-crear" name="direccion_ubi">
-                        <textarea name="descripcion_ubi"></textarea>
+                        <textarea name="descripcion_ubi" placeholder="Descripción..." class="nombre-etiqueta-crear"></textarea>
                         <input type="text" placeholder="Latitud direccion..." class="nombre-etiqueta-crear" name="latitud_ubi">
                         <input type="text" placeholder="Longitud direccion..." class="nombre-etiqueta-crear" name="longitud_ubi">
                         <select name="id_eti">

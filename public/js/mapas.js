@@ -57,6 +57,22 @@ function mostrarDirecciones() {
     }
     ajax.send(formData);
 }
+
+function get_filter() { //Estilos etiquetas
+
+    var listaFiltro = document.getElementsByClassName("etiqueta");
+    for (var i = 0; i < listaFiltro.length; i += 1) {
+
+        if (listaFiltro[i].checked == true) {
+            listaFiltro[i].parentElement.style.backgroundColor = "#69a6d9";
+
+        } else {
+            listaFiltro[i].parentElement.style.backgroundColor = "lightgrey";
+
+        }
+    }
+}
+
 //filtro por Etiquetas
 function filtroEtiqueta(id) {
     let token = document.getElementById('token').getAttribute("content");
@@ -69,6 +85,7 @@ function filtroEtiqueta(id) {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var datos = JSON.parse(this.responseText);
             infoUbicacion(datos);
+            get_filter();
         }
     }
     ajax.send(formData);
@@ -147,19 +164,23 @@ async function infoUbicacion(datos) {
         //Este funciona para ruta
         //markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon }).on("click", getPositionDirection).addTo(map));
         //Este es de prueba de pop up más sacar la posicion
-        strPopUpHTML += "<div>";
-        strPopUpHTML += "<h1>" + datos[i].nombre_ubi + "</h1>";
+        strPopUpHTML += "<div class='contenido-popup'>";
+        strPopUpHTML += "<h1 class='nombre-ubicacion'>" + datos[i].nombre_ubi + "</h1>";
+        strPopUpHTML += "<div class='etiquetas-ubicacion'>";
         let tagsDireccion = await TagsDireccion(datos[i].id);
         if (tagsDireccion.length == 1) {
             strPopUpHTML += "<p>" + tagsDireccion[0].nombre_eti + "</p>";
         } else {
             strPopUpHTML += "<p>/" + tagsDireccion[0].nombre_eti + "/</p>";
         }
-        strPopUpHTML += "<h3>" + datos[i].direccion_ubi + "</h3>";
-        strPopUpHTML += "<p>" + datos[i].descripcion_ubi + "</p>";
+        strPopUpHTML += "</div>";
+        strPopUpHTML += "<h3 class='direccion-ubicacion'>" + datos[i].direccion_ubi + "</h3>";
+        strPopUpHTML += "<p class='descripcion-ubicacion'>" + datos[i].descripcion_ubi + "</p>";
         strPopUpHTML += "<img src='storage/" + datos[i].foto_ubi + "'/>";
-        strPopUpHTML += "<button onclick='getPositionDirection(\"" + datos[i].latitud_ubi + "\",\"" + datos[i].longitud_ubi + "\");'>Coger ubicación</button>";
-        strPopUpHTML += "<button onclick='getUserTags(" + datos[i].id + ");'>Agregar etiqueta</button>";
+        strPopUpHTML += "<div class='botones-ubicacion'>"
+        strPopUpHTML += "<button onclick='getPositionDirection(\"" + datos[i].latitud_ubi + "\",\"" + datos[i].longitud_ubi + "\");'><i class='fa-solid fa-location-arrow'></i> Coger ubicación</button>";
+        strPopUpHTML += "<button onclick='getUserTags(" + datos[i].id + ");'><i class='fa-solid fa-tag'></i> Agregar etiqueta</button>";
+        strPopUpHTML += "</div>"
         strPopUpHTML += "<div id='divUserTags'></div>";
         strPopUpHTML += "</div>";
         //strPopUpHTML += "<p>" + result[0].nombre_eti + "</p>";
@@ -184,8 +205,10 @@ function getPositionDirection(lat, lng) {
         addWaypoints: false,
         routeWhileDragging: false,
         fitSelectedRoutes: false,
+        position: 'bottomright',
     }).addTo(map);
     btnQuitRoute.style.display = 'block';
+    document.getElementById("btnQuitRoute").focus();
     btnQuitRoute.onclick = function() {
         btnQuitRoute.style.display = 'none';
         map.removeControl(routingControl);
@@ -256,6 +279,7 @@ window.onload = function() {
         maxZoom: 18,
         id: 'mapbox/streets-v11',
         tileSize: 512,
+        zoomControl: false,
         zoomOffset: -1,
         accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
     }).addTo(map);
@@ -263,8 +287,11 @@ window.onload = function() {
     map.locate({ setView: true, maxZoom: 18 });
     getLocation();
     mostrarDirecciones();
+    map.addControl(L.control.zoom({ position: 'bottomleft' }));
+
 }
 setInterval(getLocation, 2000);
+
 
 
 //------------------------------------------ GINCANA-----------------------------------//

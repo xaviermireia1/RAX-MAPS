@@ -25,7 +25,46 @@ body {
   z-index: 5;
 }
 
-.region-map,
+.region-map .leaflet-top.leaflet-left {
+  display: none !important;
+}
+
+#btnQuitRoute {
+  -webkit-box-shadow: 10px 5px 5px #6b6b6b;
+          box-shadow: 10px 5px 5px #6b6b6b;
+  position: fixed;
+  right: 0;
+  top: 30vh;
+  -webkit-transition: 0.5s ease;
+  transition: 0.5s ease;
+  background-color: #408ecf;
+  border: #69a6d9;
+  height: 5vw;
+  width: 10vw;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+  color: white;
+  font-size: calc(1vw + 15px);
+  z-index: 15;
+  cursor: pointer;
+}
+
+#btnQuitRoute:hover {
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  #btnQuitRoute {
+    height: 20vw;
+    width: 25vw;
+    right: -35px;
+  }
+  #btnQuitRoute:focus {
+    right: 0;
+  }
+}
+
 .region-content-perfil {
   -webkit-transition: 0.5s ease;
   transition: 0.5s ease;
@@ -65,6 +104,12 @@ body {
   position: relative;
 }
 
+@media (max-width: 768px) {
+  .region-content .with-region-map {
+    margin-top: 10vh;
+  }
+}
+
 .region-content .with-region-map .region-map {
   z-index: 5;
   width: 100%;
@@ -76,58 +121,11 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: max(1000px, 100%);
+  width: 100%;
 }
 
 .region-content .with-region-map .filtros-mapa img {
   max-width: 5vw;
-}
-
-.region-content .with-region-map .filtros-mapa .owl-item {
-  width: 14vw !important;
-  padding: 0 2vw;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-.region-content .with-region-map .filtros-mapa .owl-item > div {
-  border: 1px solid gray;
-  background-color: lightgray;
-  border-radius: 10px;
-  padding: 20px;
-  position: relative;
-}
-
-.region-content .with-region-map .filtros-mapa .owl-item input {
-  opacity: 0 !important;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.region-content .with-region-map .filtros-mapa .owl-item input:checked + label {
-  border: 2px solid #69a6d9;
-}
-
-.region-content .with-region-map .filtros-mapa .owl-item label {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 
 @media (max-width: 768px) {
@@ -145,6 +143,93 @@ body {
     width: 100vw;
     height: 90vh;
   }
+}
+
+.leaflet-popup-pane .leaflet-popup-content-wrapper {
+  width: 82vw;
+}
+
+.leaflet-popup-pane .leaflet-popup-content-wrapper .leaflet-popup-content {
+  width: auto;
+}
+
+.leaflet-popup-pane .leaflet-popup-content-wrapper .leaflet-popup-content > div img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.leaflet-popup-pane .leaflet-popup-content-wrapper .leaflet-popup-content > div .botones-ubicacion {
+  margin: 20px 0;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.leaflet-popup-pane .leaflet-popup-content-wrapper .leaflet-popup-content > div .botones-ubicacion button {
+  background-color: #ffffff;
+  border: 2px solid #408ecf;
+  border-radius: 50px;
+  color: #408ecf;
+  padding: 3vw;
+}
+
+.wrapper {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.wrapper .carousel {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 10px;
+}
+
+.owl-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.owl-item > div {
+  border: 1px solid gray;
+  background-color: lightgray;
+  border-radius: 10px;
+  padding: 3vw;
+  position: relative;
+}
+
+.owl-item input {
+  opacity: 0 !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.owl-item label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: calc(1vw + 10px);
 }
 
 .modal {
@@ -226,6 +311,7 @@ body {
   .modal .modalBox {
     height: 80vh;
     overflow-y: scroll;
+    margin-top: 10vh;
   }
 }
 
@@ -501,7 +587,7 @@ body {
 }
 
 .modal .modalBox .contenido-modal .modal-second form .btn-etiqueta:hover {
-  background-color: #559ad4;
+  background-color: #408ecf;
 }
 
 .modal .modalBox .contenido-modal .form-mod-perfil {
@@ -537,7 +623,7 @@ body {
 }
 
 .modal .modalBox .contenido-modal .form-mod-perfil button:hover {
-  background-color: #559ad4;
+  background-color: #408ecf;
 }
 
 @media (max-width: 768px) {
@@ -556,6 +642,10 @@ body {
         -ms-flex-pack: center !important;
             justify-content: center !important;
   }
+}
+
+.modal .modalBox .contenido-modal .form-abandonar-equipo input {
+  background-color: #d62d2d !important;
 }
 
 .modal .modalBox .form-contra {
@@ -584,7 +674,7 @@ body {
 }
 
 .modal .modalBox .form-contra button:hover {
-  background-color: #559ad4;
+  background-color: #408ecf;
 }
 
 .expanded {
@@ -602,9 +692,25 @@ body {
   }
 }
 
+.expanded nav {
+  height: auto !important;
+}
+
 .btn-burger {
   position: relative;
   padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .btn-burger {
+    height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
 }
 
 .btn-burger button {
@@ -624,6 +730,16 @@ body {
   transition: 0.5s ease;
   /* Estilo del boton cuando el menú está expandido*/
   /*Estilo cuando el mouse pasa encima de cada link del menu*/
+}
+
+@media (max-width: 768px) {
+  .region-sidebar {
+    position: fixed;
+    top: 0;
+  }
+  .region-sidebar nav {
+    height: 100%;
+  }
 }
 
 .region-sidebar input:checked ~ ul {
@@ -700,7 +816,6 @@ body {
 
 .page-login,
 .page-perfil {
-  overflow: hidden;
   background: url("https://wallpapercave.com/wp/wp4313180.jpg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -957,6 +1072,13 @@ body {
           justify-content: center;
 }
 
+@media (max-width: 768px) {
+  .region-content-perfil {
+    height: 90vh !important;
+    margin-top: 20vh !important;
+  }
+}
+
 .region-content-perfil .perfil {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -986,7 +1108,7 @@ body {
 
 .region-content-perfil .perfil .perfil-foto {
   position: absolute;
-  top: -100px;
+  top: -30px;
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -994,6 +1116,12 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .region-content-perfil .perfil .perfil-foto {
+    top: -30vw;
+  }
 }
 
 .region-content-perfil .perfil .perfil-foto .foto-perfil {
@@ -1010,6 +1138,10 @@ body {
 .region-content-perfil .perfil .perfil-datos {
   text-align: center;
   color: white;
+}
+
+.region-content-perfil .perfil .perfil-datos .equipo-usuario {
+  color: #69a6d9 !important;
 }
 
 .region-content-perfil .perfil .perfil-opciones {
@@ -1039,7 +1171,7 @@ body {
 }
 
 .region-content-perfil .perfil .perfil-opciones button:hover {
-  background-color: #559ad4;
+  background-color: #408ecf;
 }
 
 @media (max-width: 768px) {
