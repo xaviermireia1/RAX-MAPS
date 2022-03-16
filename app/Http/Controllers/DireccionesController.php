@@ -209,7 +209,7 @@ class DireccionesController extends Controller
             $etiquetas = DB::select("SELECT ubi.*,eti.nombre_eti,eti.icono_eti FROM tbl_etiqueta eti
             inner join tbl_registro regi on regi.id_etiqueta = eti.id
             left join tbl_ubicacion ubi on ubi.id = regi.id_ubicacion
-            where regi.id_etiqueta = $id AND eti.icono_eti like 'sys_%' AND eti.icono_eti != 'sys_user'");
+            where regi.id_etiqueta = $id AND eti.icono_eti like 'sys_%'");
         }
         return response()->json($etiquetas);
     }
@@ -224,9 +224,18 @@ class DireccionesController extends Controller
         return response()->json($etiqueta);
     }
     public function getEtiquetaDireccionMAP($idDireccion){
-        $etiquetasDireccion = DB::select("SELECT eti.nombre_eti FROM tbl_etiqueta eti 
-        INNER JOIN tbl_registro regi on regi.id_etiqueta = eti.id
-        where regi.id_ubicacion = $idDireccion");
+        if (session()->has('id_usuario')) {
+            $idUser = session()->get('id_usuario');
+            $etiquetasDireccion = DB::select("SELECT eti.nombre_eti FROM tbl_etiqueta eti 
+            INNER JOIN tbl_registro regi on regi.id_etiqueta = eti.id
+            INNER JOIN tbl_usuario user on eti.id_usuario = user.id
+            where regi.id_ubicacion = $idDireccion and (user.id = $idUser or user.id = 1)"); 
+        }else{
+            $etiquetasDireccion = DB::select("SELECT eti.nombre_eti FROM tbl_etiqueta eti 
+            INNER JOIN tbl_registro regi on regi.id_etiqueta = eti.id
+            INNER JOIN tbl_usuario user on eti.id_usuario = user.id
+            where regi.id_ubicacion = $idDireccion and user.id = 1");
+        }
         return response()->json($etiquetasDireccion);
     }
     public function tagUserSavedLocationMAP($idUbicacion, $idEtiqueta){
