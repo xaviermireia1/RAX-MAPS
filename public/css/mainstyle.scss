@@ -411,7 +411,10 @@ body {
         padding: 50px;
         border-radius: $br;
         .titulo-modal-div {
-            margin-top: 30px;
+            &.div-modificar {
+                margin-top: 10vh!important;
+            }
+            margin-top: 25vh;
             padding: 30px;
             @media(max-width: $movil) {
                 padding: 0!important;
@@ -443,7 +446,10 @@ body {
                     height: 50%!important;
                 }
                 .modal-second {
-                    height: 50%!important;
+                    form {
+                        gap: 20px;
+                    }
+                    height: auto!important;
                     h2 {
                         margin: 0!important;
                     }
@@ -630,6 +636,11 @@ body {
                 input {
                     background-color: rgb(214, 45, 45)!important;
                 }
+            }
+        }
+        .modal-direcciones {
+            .modal-second {
+                overflow-y: scroll;
             }
         }
         .form-contra {

@@ -62,7 +62,7 @@
                         <button onclick="modalEquipos();">Equipo</button>
                     </div>
                     <div class="opcion">
-                        <button onclick="darseBaja();">Darse de Baja</button>
+                        <button onclick="window.location.href='{{url('darseDeBaja')}}'">Darse de Baja</button>
                     </div>
                     @if (Session::get('rol') == "administrador")
                     <div class="opcion">

@@ -565,8 +565,12 @@ body {
 }
 
 .modal .modalBox .titulo-modal-div {
-  margin-top: 30px;
+  margin-top: 25vh;
   padding: 30px;
+}
+
+.modal .modalBox .titulo-modal-div.div-modificar {
+  margin-top: 10vh !important;
 }
 
 @media (max-width: 768px) {
@@ -618,7 +622,10 @@ body {
     height: 50% !important;
   }
   .modal .modalBox .contenido-modal .modal-second {
-    height: 50% !important;
+    height: auto !important;
+  }
+  .modal .modalBox .contenido-modal .modal-second form {
+    gap: 20px;
   }
   .modal .modalBox .contenido-modal .modal-second h2 {
     margin: 0 !important;
@@ -895,6 +902,10 @@ body {
 
 .modal .modalBox .contenido-modal .form-abandonar-equipo input {
   background-color: #d62d2d !important;
+}
+
+.modal .modalBox .modal-direcciones .modal-second {
+  overflow-y: scroll;
 }
 
 .modal .modalBox .form-contra {

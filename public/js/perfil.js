@@ -351,7 +351,7 @@ function modalContraseña(idEqu) {
             <div class="cerrar-modal" onclick="cerrarModal();">
                 <i class="fa-solid fa-xmark"></i>
             </div>
-            <div class="titulo-modal-div">
+            <div class="titulo-modal-div div-modificar">
                 <h1 class="titulo-modal">Equipo: <span>${respuesta[i].nombre_equ}</span></h1>
                 <h3 class="subtitulo-modal">Introduce la contraseña del equipo: </h3>
             </div>
@@ -430,7 +430,7 @@ function modalModPerfil() {
             <div class="cerrar-modal" onclick="cerrarModal();">
                 <i class="fa-solid fa-xmark"></i>
             </div>
-            <div class="titulo-modal-div">
+            <div class="titulo-modal-div div-modificar">
                 <h1 class="titulo-modal">Modificar perfil</h1>
             </div>
             <div class="contenido-modal">
@@ -506,7 +506,7 @@ async function modalDirecciones() {
                 <i class="fa-solid fa-xmark"></i>
             </div>
             <h1 class="titulo-modal">Ubicaciones</h1>
-            <div class="contenido-modal">
+            <div class="contenido-modal modal-direcciones">
                 <div class="modal-first">
                     <div class="contenido">`
             for (let i = 0; i < respuesta.length; i++) {
@@ -729,38 +729,38 @@ function selectEtiquetas() {
     });
 }
 
-function darseBaja() {
-    /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
-    /* Usar el objeto FormData para guardar los parámetros que se enviarán:
-    formData.append('clave', valor);
-    valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
-    var formData = new FormData();
+// function darseBaja() {
+//     /* Si hace falta obtenemos el elemento HTML donde introduciremos la recarga (datos o mensajes) */
+//     /* Usar el objeto FormData para guardar los parámetros que se enviarán:
+//     formData.append('clave', valor);
+//     valor = elemento/s que se pasarán como parámetros: token, method, inputs... */
+//     var formData = new FormData();
 
-    formData.append('_token', document.getElementById('token').getAttribute("content"));
-    formData.append('_method', 'DELETE');
-    /* Inicializar un objeto AJAX */
-    var ajax = objetoAjax();
+//     formData.append('_token', document.getElementById('token').getAttribute("content"));
+//     formData.append('_method', 'DELETE');
+//     /* Inicializar un objeto AJAX */
+//     var ajax = objetoAjax();
 
 
-    ajax.open("POST", "darseDeBaja", true);
+//     ajax.open("POST", "darseDeBaja", true);
 
-    ajax.onreadystatechange = function() {
-        if (ajax.readyState == 4 && ajax.status == 200) {
+//     ajax.onreadystatechange = function() {
+//         if (ajax.readyState == 4 && ajax.status == 200) {
 
-            var respuesta = JSON.parse(this.responseText);
-            if (respuesta.resultado == "OK") {
-                console.log("OK");
-                /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
-                /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
-                //message.innerHTML = '<p>Nota creada correctamente.</p>';
-                window.location.replace('../public');
-            } else {
-                console.log(respuesta.resultado)
-                    /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
-                    //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
-                    //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
-            }
-        }
-    }
-    ajax.send(formData);
-}
+//             var respuesta = JSON.parse(this.responseText);
+//             if (respuesta.resultado == "OK") {
+//                 console.log("OK");
+//                 /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+//                 /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+//                 //message.innerHTML = '<p>Nota creada correctamente.</p>';
+//                 window.location.href('../public');
+//             } else {
+//                 console.log(respuesta.resultado)
+//                     /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
+//                     //    /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
+//                     //message.innerHTML = 'Ha habido un error:' + respuesta.resultado;
+//             }
+//         }
+//     }
+//     ajax.send(formData);
+// }

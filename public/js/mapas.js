@@ -240,9 +240,6 @@ function getUserTags(idUbicacion) {
     strDivTags = "";
     let token = document.getElementById('token').getAttribute("content");
     let formData = new FormData();
-    let divTags = document.getElementById('divUserTags');
-    let strDivTags = "";
-    comprobarEtiquetas = ""
     formData.append('_token', token);
     formData.append('_method', 'POST');
     let ajax = objetoAjax();
@@ -251,12 +248,8 @@ function getUserTags(idUbicacion) {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var datos = JSON.parse(this.responseText);
             for (let i = 0; i < datos.length; i++) {
-                //console.log(datos[i])
                 mostrarEtiquetasAgregadas(datos[i], idUbicacion);
-
             }
-            console.log(comprobarEtiquetas)
-            divTags.innerHTML = comprobarEtiquetas;
         }
     }
     ajax.send(formData);
@@ -274,14 +267,12 @@ function mostrarEtiquetasAgregadas(etiquetasUser, idUbicacion) {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var datos = JSON.parse(this.responseText);
             if (datos.length == 0) {
-                comprobarEtiquetas += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})">${etiquetasUser.nombre_eti}`;
-                //strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})">${etiquetasUser.nombre_eti}`
-                //console.log(etiquetasUser);
+                strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})">${etiquetasUser.nombre_eti}`
+                    //console.log(etiquetasUser);
             } else {
-                comprobarEtiquetas += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})" checked>${etiquetasUser.nombre_eti}`;
-                //strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})" checked>${etiquetasUser.nombre_eti}`
+                strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})" checked>${etiquetasUser.nombre_eti}`
             }
-            //divTags.innerHTML = strDivTags;
+            divTags.innerHTML = strDivTags;
         }
     }
     ajax.send(formData);
@@ -640,7 +631,7 @@ function comprobarPosicion(meLatitud, meLongitud, latitudUbi, longitudUbi, idPar
     d = d.toFixed(3) * 1000;
     //console.log(d + "m");
     //if (d <= 500) {
-    if (d <= 500) {
+    if (d <= 10000) {
         //console.log("Cerca");
         //clearInterval(intervalDistance);
         updateEstado(idParticipante);
