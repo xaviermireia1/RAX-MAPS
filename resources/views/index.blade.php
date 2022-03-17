@@ -25,13 +25,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="{!! asset('css/style.css') !!}">
     <link rel="stylesheet" href="{!! asset('css/mainstyle.css') !!}">
     <script type="text/javascript" src="js/js.js"></script>
     <link href="fa/css/all.css" rel="stylesheet">
     <title>Raxmaps</title>
 </head>
-<body>
+<body class="page-mapa">
     <div class="region-content">
         <div class="region-sidebar" id="sidebar">
             <nav>
@@ -128,7 +127,7 @@
             </div>
         </div>
 
-        <div id="messageGame"></div>
+        <div id="messageGame" class="messageGame in hidden"></div>
     </div>
 
     <script src="js/burger.js"></script>

@@ -19,8 +19,8 @@ class tbl_equipoSeeder extends Seeder
             'contra_equ' => 'qweQWE123'
         ]);
         DB::table('tbl_equipo')->insert([
-            'nombre_equ' => 'equipo a',
-            'contra_equ' => ''
+            'nombre_equ' => 'Profesores',
+            'contra_equ' => 'laravel'
         ]);
     }
 }

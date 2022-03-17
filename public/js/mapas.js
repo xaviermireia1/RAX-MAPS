@@ -65,9 +65,13 @@ function get_filter() { //Estilos etiquetas
 
         if (listaFiltro[i].checked == true) {
             listaFiltro[i].parentElement.style.backgroundColor = "#69a6d9";
+            listaFiltro[i].parentElement.style.color = "white";
+            listaFiltro[i].parentElement.style.boxShadow = "4px 0px 10px #6b6b6b";
 
         } else {
             listaFiltro[i].parentElement.style.backgroundColor = "lightgrey";
+            listaFiltro[i].parentElement.style.color = "black";
+            listaFiltro[i].parentElement.style.boxShadow = "none";
 
         }
     }
@@ -186,12 +190,12 @@ async function infoUbicacion(datos) {
         strPopUpHTML += "</div>";
         strPopUpHTML += "<h3 class='direccion-ubicacion'>" + datos[i].direccion_ubi + "</h3>";
         strPopUpHTML += "<p class='descripcion-ubicacion'>" + datos[i].descripcion_ubi + "</p>";
-        strPopUpHTML += "<img src='storage/" + datos[i].foto_ubi + "'/>";
+        strPopUpHTML += "<div class='foto-ubicacion'><img src='storage/" + datos[i].foto_ubi + "'/></div>";
         strPopUpHTML += "<div class='botones-ubicacion'>"
         strPopUpHTML += "<button onclick='getPositionDirection(\"" + datos[i].latitud_ubi + "\",\"" + datos[i].longitud_ubi + "\");'><i class='fa-solid fa-location-arrow'></i> Coger ubicación</button>";
         strPopUpHTML += "<button onclick='getUserTags(" + datos[i].id + ");'><i class='fa-solid fa-tag'></i> Agregar etiqueta</button>";
         strPopUpHTML += "</div>"
-        strPopUpHTML += "<div id='divUserTags'></div>";
+        strPopUpHTML += "<div class='div-user-tags-container'><div id='divUserTags'></div></div>";
         strPopUpHTML += "</div>";
         //strPopUpHTML += "<p>" + result[0].nombre_eti + "</p>";
         markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon })
@@ -229,6 +233,9 @@ function getPositionDirection(lat, lng) {
 function getUserTags(idUbicacion) {
     let token = document.getElementById('token').getAttribute("content");
     let formData = new FormData();
+    let divTags = document.getElementById('divUserTags');
+    let strDivTags = "";
+    comprobarEtiquetas = ""
     formData.append('_token', token);
     formData.append('_method', 'POST');
     let ajax = objetoAjax();
@@ -237,8 +244,12 @@ function getUserTags(idUbicacion) {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var datos = JSON.parse(this.responseText);
             for (let i = 0; i < datos.length; i++) {
+                //console.log(datos[i])
                 mostrarEtiquetasAgregadas(datos[i], idUbicacion);
+
             }
+            console.log(comprobarEtiquetas)
+            divTags.innerHTML = comprobarEtiquetas;
         }
     }
     ajax.send(formData);
@@ -257,12 +268,14 @@ function mostrarEtiquetasAgregadas(etiquetasUser, idUbicacion) {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var datos = JSON.parse(this.responseText);
             if (datos.length == 0) {
-                strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})">${etiquetasUser.nombre_eti}`
-                    //console.log(etiquetasUser);
+                comprobarEtiquetas += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})">${etiquetasUser.nombre_eti}`;
+                //strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})">${etiquetasUser.nombre_eti}`
+                //console.log(etiquetasUser);
             } else {
-                strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})" checked>${etiquetasUser.nombre_eti}`
+                comprobarEtiquetas += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})" checked>${etiquetasUser.nombre_eti}`;
+                //strDivTags += `<input type="checkbox" onclick="addDeleteTagDirection(this,${idUbicacion},${etiquetasUser.id})" checked>${etiquetasUser.nombre_eti}`
             }
-            divTags.innerHTML = strDivTags;
+            //divTags.innerHTML = strDivTags;
         }
     }
     ajax.send(formData);
@@ -421,7 +434,7 @@ function modalGincana() {
 
             var recarga = '';
             recarga += `
-            <h1 class="titulo-modal">Gimcanas Disponibles</h1>
+            <h1 class="titulo-modal">Gincanas Disponibles</h1>
             <div class="contenido-modal">
                 <div class="modal-first">
                     <div class="contenido">`
@@ -445,7 +458,9 @@ function modalGincana() {
             </div>
             `;
             contenedor.innerHTML = recarga;
+            document.getElementsByClassName("region-sidebar")[0].classList.remove("expanded");
             abrirModal();
+
         }
     }
     ajax.send(formData);
@@ -719,10 +734,10 @@ function finalizarJuego(idParticipante) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Felicitaciones!!!',
-                    text: 'Has terminado el juego con exito...'
+                    text: 'Has terminado el juego con éxito...'
                 })
                 var contenedor = document.getElementById("messageGame");
-                contenedor.style.display = "none";
+                contenedor.classList.add("hidden");
             } else {
 
             }
@@ -759,21 +774,33 @@ async function mostrarObjetivo(respuestaObjetivo) {
     let quantityPlayersInPosition = await contPlayers(idGincana_Global, idEquipo_Global);
     var recarga = '';
     recarga += `
-            <h1 class="">Objetivo Gimcana</h1>
-            <div class="">
-                <div class="">
-                    <div class="">
-                        <div class="">
-                            <div class="">${respuestaObjetivo[objetivoNum].nombre_obj}</div>
-                            <div id="messageAllUsers" style="display:none;"></div>
-                            <div class=""><button onclick="comprobarPosicion(${myPosition.coords.latitude}, ${myPosition.coords.longitude}, ${respuestaObjetivo[objetivoNum].latitud_ubi}, ${respuestaObjetivo[objetivoNum].longitud_ubi}, ${quantityPlayersInPosition[0].id})">Comprobar posicion</button></div>
-                        </div>
-                    </div>
-                </div>
+        <div class="simbolo-pista" onclick="cerrarPista();"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <div class="content-modal">
+            <div class="cerrar-modal" onclick="cerrarPista();">
+                <i class="fa-solid fa-xmark"></i>
             </div>
+            <h1 class="titulo-objetivo">Objetivo Gincana</h1>
+            <div class="contenido">
+                <div class="nombre-objetivo">${respuestaObjetivo[objetivoNum].nombre_obj}</div>
+                <div id="messageAllUsers" style="display:none;"></div>
+                <div class="btn-comprobarPosicion"><button onclick="comprobarPosicion(${myPosition.coords.latitude}, ${myPosition.coords.longitude}, ${respuestaObjetivo[objetivoNum].latitud_ubi}, ${respuestaObjetivo[objetivoNum].longitud_ubi}, ${quantityPlayersInPosition[0].id})">Comprobar posición</button></div>
+            </div>
+        </div>
             `;
     contenedor.innerHTML = recarga;
+    contenedor.classList.remove("hidden");
     //intervalDistance = setInterval(comprobarPosicion(myPosition.coords.latitude, myPosition.coords.longitude, respuesta.latitud_ubi, respuesta.longitud_ubi), 1000);
     //intervalDistance = setInterval(comprobarPosicion, 1000, myPosition.coords.latitude, myPosition.coords.longitude, respuesta.latitud_ubi, respuesta.longitud_ubi);
     //comprobarPosicion(myPosition.coords.latitude, myPosition.coords.longitude, respuestaObjetivo[objetivoNum].latitud_ubi, respuestaObjetivo[objetivoNum].longitud_ubi, quantityPlayersInPosition[0].id);
+}
+
+function cerrarPista() {
+    modalPista = document.getElementById('messageGame');
+    if (modalPista.classList.contains('out')) {
+        document.getElementById('messageGame').classList.add('in');
+        document.getElementById('messageGame').classList.remove('out');
+    } else {
+        document.getElementById('messageGame').classList.remove('in');
+        document.getElementById('messageGame').classList.add('out');
+    }
 }
