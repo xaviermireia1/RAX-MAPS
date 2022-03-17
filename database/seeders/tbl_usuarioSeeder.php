@@ -65,7 +65,7 @@ class tbl_usuarioSeeder extends Seeder
         ]);
         DB::table('tbl_usuario')->insert([
             'nick_usu' => 'Ignasi',
-            'correo_usu' => 'danny@gmail.com',
+            'correo_usu' => 'ignasi@gmail.com',
             'contra_usu' => MD5('1234'),
             'id_rol' => 2,
             'id_equipo' => 2
