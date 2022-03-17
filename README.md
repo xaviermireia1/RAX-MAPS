@@ -1,4 +1,4 @@
-# PROYECTO 3 - GLOVO
+# PROYECTO 4 - RAX-MAPS
 
 **Este proyecto trata realizar una pequeña de aplicaciones de mapas. En esta podremos ver la ruta para ir a una ubicación en concreto, también el usuario podrá añadir etiquetas personalizables que podra crea. Otro uso que tiene la aplicación es poder realizar una gincana que consiste en ir a puntos en concreto dentro de una zona en concreto.**
 
