@@ -753,7 +753,7 @@ function darseBaja() {
                 /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/
                 /* utilizamos innerHTML para introduciremos la recarga en el elemento html pertinente */
                 //message.innerHTML = '<p>Nota creada correctamente.</p>';
-                window.location.replace('http://localhost/RAX-MAPS/public/');
+                window.location.replace('../public');
             } else {
                 console.log(respuesta.resultado)
                     /* creación de estructura: la estructura que creamos no ha de contener código php ni código blade*/

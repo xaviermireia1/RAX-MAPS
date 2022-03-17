@@ -195,7 +195,7 @@ class DireccionesController extends Controller
         $listaDirecciones = DB::select("SELECT ubi.*,eti.nombre_eti,eti.icono_eti  FROM tbl_ubicacion ubi 
         inner join tbl_registro ON tbl_registro.id_ubicacion = ubi.id
         left join tbl_etiqueta eti ON tbl_registro.id_etiqueta = eti.id
-        where eti.icono_eti like 'sys_%' AND eti.icono_eti != 'sys_user'");
+        where eti.icono_eti like 'sys_%' AND eti.icono_eti != 'sys_user' AND eti.icono_eti != 'sys_fav'");
         return response()->json($listaDirecciones);
     }
     //Filtrar por etiquetas
@@ -204,7 +204,7 @@ class DireccionesController extends Controller
             $etiquetas = DB::select("SELECT ubi.*,eti.nombre_eti,eti.icono_eti  FROM tbl_ubicacion ubi 
             inner join tbl_registro ON tbl_registro.id_ubicacion = ubi.id
             left join tbl_etiqueta eti ON tbl_registro.id_etiqueta = eti.id
-            where eti.icono_eti like 'sys_%' AND eti.icono_eti != 'sys_user'");
+            where eti.icono_eti like 'sys_%' AND eti.icono_eti != 'sys_user' AND eti.icono_eti != 'sys_fav'");
         }else{
             $etiquetas = DB::select("SELECT ubi.*,eti.nombre_eti,eti.icono_eti FROM tbl_etiqueta eti
             inner join tbl_registro regi on regi.id_etiqueta = eti.id
