@@ -23,8 +23,20 @@ Si quieres obtener nuestro proyecto sigue estos pasos:
 
 ```
      CORREO       |  CONTRASEÑA
------------------------
+--------------------------------
+Administradores
+--------------------------------
 sistema@gmail.com   |     1234  
+xavi@gmail.com   |     1234 
+arnau@gmail.com   |     1234 
+raul@gmail.com   |     1234 
+--------------------------------
+Clientes
+--------------------------------
+sergio@gmail.com   |     1234  
+danny@gmail.com   |     1234 
+agnes@gmail.com   |     1234 
+ignasi@gmail.com   |     1234 
 ```
 
 ## Construido con 🛠️
