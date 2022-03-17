@@ -171,13 +171,17 @@ class UsuarioController extends Controller
 
         $idEti = DB::select("SELECT id FROM tbl_etiqueta WHERE id_usuario = $idUsuario");
         $idEqui = DB::select("SELECT id_equipo FROM tbl_usuario WHERE id = $idUsuario");
-        $idEtiqueta= $idEti[0]->id;
+        //$idEtiqueta= $idEti[0]->id;
         $idEquipo = $idEqui[0]->id_equipo;
 
         try{
             DB::beginTransaction();
             //DB::table('tbl_registro')->where('id_etiqueta','=',$idEtiqueta[0])->delete();
-            DB::delete("DELETE FROM tbl_registro WHERE id_etiqueta = $idEtiqueta");
+            if (count($idEti) != 0) {
+                foreach($idEti as $idEtiqueta) {
+                    DB::delete("DELETE FROM tbl_registro WHERE id_etiqueta = $idEtiqueta->id");
+                }
+            }
             //DB::table('tbl_etiqueta')->where('id_usuario','=',$idUsuario)->delete();
             DB::delete("DELETE FROM tbl_etiqueta WHERE id_usuario = $idUsuario");
             //DB::table('tbl_usuario')->where('id','=',$idUsuario)->delete();
@@ -197,7 +201,7 @@ class UsuarioController extends Controller
             return response()->json(array('resultado'=> 'OK'));
         }catch(\Exception $e){
             DB::rollBack();
-            return response()->json(array('resultado'=> 'NOK'));
+            return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
         }
     }
 

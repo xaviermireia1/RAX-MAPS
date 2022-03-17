@@ -149,6 +149,12 @@ async function infoUbicacion(datos) {
                 iconSize: [38, 38],
                 iconAnchor: [10, 10],
             })
+        } else if (datos[i].icono_eti == 'sys_fav') {
+            icon = L.icon({
+                iconUrl: 'img/icon/ico_fav.png',
+                iconSize: [38, 38],
+                iconAnchor: [10, 10],
+            })
         }
         //Este funciona para ruta
         //markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon }).on("click", getPositionDirection).addTo(map));
@@ -204,6 +210,7 @@ function getPositionDirection(lat, lng) {
 }
 
 function getUserTags(idUbicacion) {
+    strDivTags = "";
     let token = document.getElementById('token').getAttribute("content");
     let formData = new FormData();
     formData.append('_token', token);
@@ -223,7 +230,6 @@ function getUserTags(idUbicacion) {
 
 function mostrarEtiquetasAgregadas(etiquetasUser, idUbicacion) {
     let divTags = document.getElementById('divUserTags');
-    let strDivTags = "";
     let token = document.getElementById('token').getAttribute("content");
     let formData = new FormData();
     formData.append('_token', token);
