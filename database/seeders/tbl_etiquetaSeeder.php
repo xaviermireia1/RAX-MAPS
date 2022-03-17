@@ -59,5 +59,25 @@ class tbl_etiquetaSeeder extends Seeder
             'icono_eti' =>'sys_parque',
             'id_usuario' => 1
         ]);
+        DB::table('tbl_etiqueta')->insert([//9
+            'nombre_eti' => 'Favorito',
+            'icono_eti' =>'sys_fav',
+            'id_usuario' => 5
+        ]);
+        DB::table('tbl_etiqueta')->insert([//9
+            'nombre_eti' => 'Favorito',
+            'icono_eti' =>'sys_fav',
+            'id_usuario' => 6
+        ]);
+        DB::table('tbl_etiqueta')->insert([//9
+            'nombre_eti' => 'Favorito',
+            'icono_eti' =>'sys_fav',
+            'id_usuario' => 7
+        ]);
+        DB::table('tbl_etiqueta')->insert([//9
+            'nombre_eti' => 'Favorito',
+            'icono_eti' =>'sys_fav',
+            'id_usuario' => 8
+        ]);
     }
 }

@@ -57,6 +57,26 @@ function mostrarDirecciones() {
     }
     ajax.send(formData);
 }
+
+function get_filter() { //Estilos etiquetas
+
+    var listaFiltro = document.getElementsByClassName("etiqueta");
+    for (var i = 0; i < listaFiltro.length; i += 1) {
+
+        if (listaFiltro[i].checked == true) {
+            listaFiltro[i].parentElement.style.backgroundColor = "#69a6d9";
+            listaFiltro[i].parentElement.style.color = "white";
+            listaFiltro[i].parentElement.style.boxShadow = "4px 0px 10px #6b6b6b";
+
+        } else {
+            listaFiltro[i].parentElement.style.backgroundColor = "lightgrey";
+            listaFiltro[i].parentElement.style.color = "black";
+            listaFiltro[i].parentElement.style.boxShadow = "none";
+
+        }
+    }
+}
+
 //filtro por Etiquetas
 function filtroEtiqueta(id) {
     let token = document.getElementById('token').getAttribute("content");
@@ -69,6 +89,7 @@ function filtroEtiqueta(id) {
         if (ajax.readyState == 4 && ajax.status == 200) {
             var datos = JSON.parse(this.responseText);
             infoUbicacion(datos);
+            get_filter();
         }
     }
     ajax.send(formData);
@@ -159,8 +180,9 @@ async function infoUbicacion(datos) {
         //Este funciona para ruta
         //markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon }).on("click", getPositionDirection).addTo(map));
         //Este es de prueba de pop up más sacar la posicion
-        strPopUpHTML += "<div>";
-        strPopUpHTML += "<h1>" + datos[i].nombre_ubi + "</h1>";
+        strPopUpHTML += "<div class='contenido-popup'>";
+        strPopUpHTML += "<h1 class='nombre-ubicacion'>" + datos[i].nombre_ubi + "</h1>";
+        strPopUpHTML += "<div class='etiquetas-ubicacion'>";
         let tagsDireccion = await TagsDireccion(datos[i].id);
         if (tagsDireccion.length == 1) {
             strPopUpHTML += "<p>" + tagsDireccion[0].nombre_eti + "</p>";
@@ -171,12 +193,15 @@ async function infoUbicacion(datos) {
             }
             strPopUpHTML += "</p>";
         }
-        strPopUpHTML += "<h3>" + datos[i].direccion_ubi + "</h3>";
-        strPopUpHTML += "<p>" + datos[i].descripcion_ubi + "</p>";
-        strPopUpHTML += "<img src='storage/" + datos[i].foto_ubi + "'/>";
-        strPopUpHTML += "<button onclick='getPositionDirection(\"" + datos[i].latitud_ubi + "\",\"" + datos[i].longitud_ubi + "\");'>Coger ubicación</button>";
-        strPopUpHTML += "<button onclick='getUserTags(" + datos[i].id + ");'>Agregar etiqueta</button>";
-        strPopUpHTML += "<div id='divUserTags'></div>";
+        strPopUpHTML += "</div>";
+        strPopUpHTML += "<h3 class='direccion-ubicacion'>" + datos[i].direccion_ubi + "</h3>";
+        strPopUpHTML += "<p class='descripcion-ubicacion'>" + datos[i].descripcion_ubi + "</p>";
+        strPopUpHTML += "<div class='foto-ubicacion'><img src='storage/" + datos[i].foto_ubi + "'/></div>";
+        strPopUpHTML += "<div class='botones-ubicacion'>"
+        strPopUpHTML += "<button onclick='getPositionDirection(\"" + datos[i].latitud_ubi + "\",\"" + datos[i].longitud_ubi + "\");'><i class='fa-solid fa-location-arrow'></i> Coger ubicación</button>";
+        strPopUpHTML += "<button onclick='getUserTags(" + datos[i].id + ");'><i class='fa-solid fa-tag'></i> Agregar etiqueta</button>";
+        strPopUpHTML += "</div>"
+        strPopUpHTML += "<div class='div-user-tags-container'><div id='divUserTags'></div></div>";
         strPopUpHTML += "</div>";
         //strPopUpHTML += "<p>" + result[0].nombre_eti + "</p>";
         markerPosition.push(L.marker([datos[i].latitud_ubi, datos[i].longitud_ubi], { icon: icon })
@@ -200,8 +225,10 @@ function getPositionDirection(lat, lng) {
         addWaypoints: false,
         routeWhileDragging: false,
         fitSelectedRoutes: false,
+        position: 'bottomright',
     }).addTo(map);
     btnQuitRoute.style.display = 'block';
+    document.getElementById("btnQuitRoute").focus();
     btnQuitRoute.onclick = function() {
         btnQuitRoute.style.display = 'none';
         map.removeControl(routingControl);
@@ -352,6 +379,7 @@ window.onload = function() {
         maxZoom: 18,
         id: 'mapbox/streets-v11',
         tileSize: 512,
+        zoomControl: false,
         zoomOffset: -1,
         accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
     }).addTo(map);
@@ -359,8 +387,11 @@ window.onload = function() {
     map.locate({ setView: true, maxZoom: 18 });
     getLocation();
     mostrarDirecciones();
+    map.addControl(L.control.zoom({ position: 'bottomleft' }));
+
 }
 setInterval(getLocation, 2000);
+
 
 
 //------------------------------------------ GINCANA-----------------------------------//
@@ -400,7 +431,7 @@ function modalGincana() {
 
             var recarga = '';
             recarga += `
-            <h1 class="titulo-modal">Gimcanas Disponibles</h1>
+            <h1 class="titulo-modal">Gincanas Disponibles</h1>
             <div class="contenido-modal">
                 <div class="modal-first">
                     <div class="contenido">`
@@ -424,7 +455,9 @@ function modalGincana() {
             </div>
             `;
             contenedor.innerHTML = recarga;
+            document.getElementsByClassName("region-sidebar")[0].classList.remove("expanded");
             abrirModal();
+
         }
     }
     ajax.send(formData);
@@ -598,7 +631,7 @@ function comprobarPosicion(meLatitud, meLongitud, latitudUbi, longitudUbi, idPar
     d = d.toFixed(3) * 1000;
     //console.log(d + "m");
     //if (d <= 500) {
-    if (d <= 500) {
+    if (d <= 10000) {
         //console.log("Cerca");
         //clearInterval(intervalDistance);
         updateEstado(idParticipante);
@@ -698,10 +731,10 @@ function finalizarJuego(idParticipante) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Felicitaciones!!!',
-                    text: 'Has terminado el juego con exito...'
+                    text: 'Has terminado el juego con éxito...'
                 })
                 var contenedor = document.getElementById("messageGame");
-                contenedor.style.display = "none";
+                contenedor.classList.add("hidden");
             } else {
 
             }
@@ -738,21 +771,33 @@ async function mostrarObjetivo(respuestaObjetivo) {
     let quantityPlayersInPosition = await contPlayers(idGincana_Global, idEquipo_Global);
     var recarga = '';
     recarga += `
-            <h1 class="">Objetivo Gimcana</h1>
-            <div class="">
-                <div class="">
-                    <div class="">
-                        <div class="">
-                            <div class="">${respuestaObjetivo[objetivoNum].nombre_obj}</div>
-                            <div id="messageAllUsers" style="display:none;"></div>
-                            <div class=""><button onclick="comprobarPosicion(${myPosition.coords.latitude}, ${myPosition.coords.longitude}, ${respuestaObjetivo[objetivoNum].latitud_ubi}, ${respuestaObjetivo[objetivoNum].longitud_ubi}, ${quantityPlayersInPosition[0].id})">Comprobar posicion</button></div>
-                        </div>
-                    </div>
-                </div>
+        <div class="simbolo-pista" onclick="cerrarPista();"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <div class="content-modal">
+            <div class="cerrar-modal" onclick="cerrarPista();">
+                <i class="fa-solid fa-xmark"></i>
             </div>
+            <h1 class="titulo-objetivo">Objetivo Gincana</h1>
+            <div class="contenido">
+                <div class="nombre-objetivo">${respuestaObjetivo[objetivoNum].nombre_obj}</div>
+                <div id="messageAllUsers" style="display:none;"></div>
+                <div class="btn-comprobarPosicion"><button onclick="comprobarPosicion(${myPosition.coords.latitude}, ${myPosition.coords.longitude}, ${respuestaObjetivo[objetivoNum].latitud_ubi}, ${respuestaObjetivo[objetivoNum].longitud_ubi}, ${quantityPlayersInPosition[0].id})">Comprobar posición</button></div>
+            </div>
+        </div>
             `;
     contenedor.innerHTML = recarga;
+    contenedor.classList.remove("hidden");
     //intervalDistance = setInterval(comprobarPosicion(myPosition.coords.latitude, myPosition.coords.longitude, respuesta.latitud_ubi, respuesta.longitud_ubi), 1000);
     //intervalDistance = setInterval(comprobarPosicion, 1000, myPosition.coords.latitude, myPosition.coords.longitude, respuesta.latitud_ubi, respuesta.longitud_ubi);
     //comprobarPosicion(myPosition.coords.latitude, myPosition.coords.longitude, respuestaObjetivo[objetivoNum].latitud_ubi, respuestaObjetivo[objetivoNum].longitud_ubi, quantityPlayersInPosition[0].id);
+}
+
+function cerrarPista() {
+    modalPista = document.getElementById('messageGame');
+    if (modalPista.classList.contains('out')) {
+        document.getElementById('messageGame').classList.add('in');
+        document.getElementById('messageGame').classList.remove('out');
+    } else {
+        document.getElementById('messageGame').classList.remove('in');
+        document.getElementById('messageGame').classList.add('out');
+    }
 }

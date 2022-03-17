@@ -46,7 +46,7 @@ class tbl_ubicacionSeeder extends Seeder
             'direccion_ubi' => 'Barcelona',
             'foto_ubi'=> 'uploads/playa_san_sebas.jpg'
         ]);
-        DB::table('tbl_ubicacion')->insert([
+        DB::table('tbl_ubicacion')->insert([//5
             'nombre_ubi' => 'Playa de Sant Miquel',
             'descripcion_ubi' => 'Concurrida playa urbana ideal para bañarse y tomar el sol, con socorristas, instalaciones deportivas y restaurantes.',
             'latitud_ubi' => '41.37683880275199',
@@ -86,7 +86,7 @@ class tbl_ubicacionSeeder extends Seeder
             'direccion_ubi' => 'Carrer de la Maquinista, 46-48, 08003 Barcelona',
             'foto_ubi'=> 'uploads/lidl_barceloneta.jpeg'
         ]);
-        DB::table('tbl_ubicacion')->insert([
+        DB::table('tbl_ubicacion')->insert([//10
             'nombre_ubi' => 'Hospital del mar',
             'descripcion_ubi' => 'Hospital general',
             'latitud_ubi' => '41.38449837858989',
@@ -126,7 +126,7 @@ class tbl_ubicacionSeeder extends Seeder
             'direccion_ubi' => 'Carrer de Andrea Dòria, 28, 08003 Barcelona',
             'foto_ubi'=> 'uploads/bar_pinol.jpg'
         ]);
-        DB::table('tbl_ubicacion')->insert([
+        DB::table('tbl_ubicacion')->insert([//15
             'nombre_ubi' => 'Bar Leo',
             'descripcion_ubi' => 'Legendario bar de tapas de barrio de ambiente flamenco decorado con recuerdos del difunto cantaor Bambino.',
             'latitud_ubi' => '41.379477050359924',

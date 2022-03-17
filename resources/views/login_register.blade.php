@@ -20,11 +20,11 @@
             </ul>
             <div class="tab-content">
                 <div id="signup">
-                    <h1>Registrate Gratis</h1>
+                    <h1>Regístrate Gratis</h1>
                     <form action="{{url('registro')}}" method="post">
                         @csrf
                         <div class="field-wrap">
-                            <label>Nickaname<span class="req">*</span></label>
+                            <label>Nickname<span class="req">*</span></label>
                             <input name="nick_usu" type="text" autocomplete="off"/>
                             @error('nick_usu')
                                 <br>
@@ -78,7 +78,7 @@
                                 {{$message}}
                             @enderror
                         </div>
-                        <button class="button button-block"/>Iniciar Sesion</button>
+                        <button class="button button-block"/>Iniciar Sesión</button>
                     </form>
                 </div>
             </div><!-- tab-content -->

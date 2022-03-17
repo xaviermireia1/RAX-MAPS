@@ -4,7 +4,7 @@ $form-bg: #13232f;
 $white: #ffffff;
 $main: #69a6d9;
 $main-light: lighten($main, 5%);
-$main-dark: darken($main, 5%);
+$main-dark: darken($main, 10%);
 $gray-light: #a0b3b0;
 $gray: #ddd;
 $thin: 300;
@@ -36,9 +36,40 @@ body {
 
 .region-map {
     z-index: 5;
+    .leaflet-top.leaflet-left {
+        display: none!important;
+    }
 }
 
-.region-map,
+#btnQuitRoute {
+    box-shadow: 10px 5px 5px #6b6b6b;
+    position: fixed;
+    right: 0;
+    top: 30vh;
+    transition: 0.5s ease;
+    background-color: $main-dark;
+    border: $main;
+    height: 5vw;
+    width: 10vw;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    color: white;
+    font-size: #{"calc(1vw + 15px)"};
+    z-index: 14;
+    cursor: pointer;
+    &:hover {
+        transform: scale(1.1);
+    }
+    @media(max-width:$movil) {
+        height: 20vw;
+        width: 25vw;
+        right: -35px;
+        &:focus {
+            right: 0;
+        }
+    }
+}
+
 .region-content-perfil {
     transition: 0.5s ease;
     width: 95%;
@@ -54,6 +85,7 @@ body {
         width: 5%;
         height: 100vh;
         background-color: black;
+        overflow: hidden;
     }
     .with-region-map,
     .region-content-perfil {
@@ -62,6 +94,9 @@ body {
         height: 100vh;
     }
     .with-region-map {
+        @media(max-width: $movil) {
+            margin-top: 10vh;
+        }
         overflow: hidden;
         position: relative;
         .region-map {
@@ -74,39 +109,16 @@ body {
             position: absolute;
             top: 0;
             left: 0;
-            width: #{"max(1000px, 100%)"};
+            width: 100%;
             img {
                 max-width: 5vw;
             }
-            .owl-item {
-                width: 14vw!important;
-                padding: 0 2vw;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                &>div {
-                    border: 1px solid gray;
-                    background-color: lightgray;
-                    border-radius: 10px;
-                    padding: 20px;
-                    position: relative;
-                }
-                input {
-                    opacity: 0!important;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    &:checked+label {
-                        border: 2px solid $main;
-                    }
-                }
-                label {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
+            .owl-stage-outer {
+                overflow-x: clip!important;
+                overflow-y: visible!important;
+            }
+            .owl-dots {
+                display: none!important;
             }
         }
     }
@@ -123,7 +135,232 @@ body {
     }
 }
 
+/////////////////////////////////////////////ELEMENTOS MAPAS//////////////////////
+.leaflet-popup-pane {
+    //POPUP
+    .leaflet-popup-content-wrapper {
+        width: 82vw;
+        .leaflet-popup-content {
+            width: auto;
+            >div {
+                .foto-ubicacion {
+                    width: 100%!important;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    img {
+                        max-width: 100%;
+                        border-radius: 5px;
+                        max-height: 30vh;
+                    }
+                }
+                .botones-ubicacion {
+                    margin: 20px 0;
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    button {
+                        background-color: $white;
+                        border: 2px solid $main-dark;
+                        border-radius: 50px;
+                        color: $main-dark;
+                        padding: 3vw;
+                    }
+                }
+                .div-user-tags-container {
+                    overflow-x: scroll;
+                    #divUserTags {
+                        width: max-content;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.leaflet-control-zoom {
+    //ZOOM CONTROLS
+    position: relative;
+    top: -10vh;
+}
+
+//////////////////////////////////////////////OWL-CAROUSEL/////////////////////
+.wrapper {
+    width: 100%;
+    .carousel {
+        max-width: 1200px;
+        margin: auto;
+        padding: 0 10px;
+        .card {}
+    }
+    margin-top: 10px;
+}
+
+.owl-item {
+    // padding: 0 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &>div {
+        border: 1px solid gray;
+        background-color: lightgray;
+        border-radius: 10px;
+        padding: 3vw;
+        position: relative;
+    }
+    input {
+        opacity: 0!important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: #{"calc(1vw + 10px)"};
+    }
+}
+
 ////////////////////////////////////////////MODAL/////////////////////////
+.page-mapa {
+    .modalBox {
+        height: auto!important;
+        * {
+            text-align: center;
+        }
+        width: 80vw;
+    }
+    .messageGame {
+        transition: 0.5s ease;
+        &.out {
+            .content-modal {
+                display: none!important;
+            }
+            box-shadow: 10px 5px 5px #6b6b6b;
+            position: fixed;
+            left: 0;
+            top: 30vh;
+            background-color: $main-dark;
+            border: $main;
+            height: 5vw;
+            width: 10vw;
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+            color: white;
+            font-size: #{"calc(1vw + 15px)"};
+            z-index: 14;
+            cursor: pointer;
+            &:hover {
+                transform: scale(1.1);
+            }
+            @media(max-width:$movil) {
+                height: 10vw;
+                width: 10vw;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .simbolo-pista {
+                height: 100%;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+        z-index: 14;
+        @media(max-width:$movil) {
+            height: 20vw;
+            width: 25vw;
+            right: -35px;
+            &:focus {
+                right: 0;
+            }
+        }
+        &.in {
+            height: 100%;
+            position: fixed;
+            width: 100%;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #6b6b6b83;
+            .simbolo-pista {
+                display: none!important;
+            }
+            .content-modal {
+                .cerrar-modal {
+                    i {
+                        color: #13232f;
+                        font-size: 20px;
+                    }
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: absolute;
+                    top: 1vw;
+                    right: 1vw;
+                    width: 2vw;
+                    height: 2vw;
+                    @media(max-width: $movil) {
+                        top: 3vw;
+                        right: 3vw;
+                        width: 6vw;
+                        height: 6vw;
+                    }
+                }
+                * {
+                    text-align: center;
+                }
+                .contenido {
+                    height: 30vh;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-around;
+                    button {
+                        cursor: pointer;
+                        background-color: $main;
+                        border: none;
+                        color: white;
+                        padding: 20px;
+                        font-size: 20px;
+                        &:hover {
+                            background-color: $main-dark;
+                        }
+                    }
+                }
+                position: relative;
+                background-color: white;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                @media(max-width: $movil) {
+                    max-height: 80vh;
+                    overflow-y: scroll;
+                    margin-top: 10vh;
+                }
+                min-height: 60vh;
+                width: 80vw;
+                background-color: $white;
+                padding: 10vw;
+                border-radius: $br;
+            }
+        }
+    }
+}
+
 .modal {
     display: flex;
     align-items: center;
@@ -162,6 +399,7 @@ body {
         @media(max-width: $movil) {
             height: 80vh;
             overflow-y: scroll;
+            margin-top: 10vh;
         }
         min-height: 60vh;
         min-width: 80vw;
@@ -173,7 +411,10 @@ body {
         padding: 50px;
         border-radius: $br;
         .titulo-modal-div {
-            margin-top: 30px;
+            &.div-modificar {
+                margin-top: 10vh!important;
+            }
+            margin-top: 25vh;
             padding: 30px;
             @media(max-width: $movil) {
                 padding: 0!important;
@@ -205,7 +446,10 @@ body {
                     height: 50%!important;
                 }
                 .modal-second {
-                    height: 50%!important;
+                    form {
+                        gap: 20px;
+                    }
+                    height: auto!important;
                     h2 {
                         margin: 0!important;
                     }
@@ -389,6 +633,14 @@ body {
                 @media(max-width: $movil) {
                     justify-content: center!important;
                 }
+                input {
+                    background-color: rgb(214, 45, 45)!important;
+                }
+            }
+        }
+        .modal-direcciones {
+            .modal-second {
+                overflow-y: scroll;
             }
         }
         .form-contra {
@@ -425,9 +677,17 @@ body {
         height: 100vh!important;
         z-index: 15!important;
     }
+    nav {
+        height: auto!important;
+    }
 }
 
 .btn-burger {
+    @media(max-width: $movil) {
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
     position: relative;
     padding: 10px;
     button {
@@ -442,7 +702,14 @@ body {
 }
 
 .region-sidebar {
-    z-index: 20;
+    @media(max-width: $movil) {
+        position: fixed;
+        top: 0;
+        nav {
+            height: 100%;
+        }
+    }
+    z-index: 100;
     position: relative;
     transition: 0.5s ease;
     input:checked~ul {
@@ -510,7 +777,6 @@ body {
 ///////////////////////////LOGIN///////////////////////////////////
 .page-login,
 .page-perfil {
-    overflow: hidden;
     background: url("https://wallpapercave.com/wp/wp4313180.jpg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -702,6 +968,10 @@ body {
 
 ///////////////////////////////PERFIL//////////////////////////////////
 .region-content-perfil {
+    @media(max-width: $movil) {
+        height: 90vh!important;
+        margin-top: 20vh!important;
+    }
     display: flex;
     align-items: center;
     justify-content: center;
@@ -721,7 +991,10 @@ body {
         }
         .perfil-foto {
             position: absolute;
-            top: -100px;
+            @media(max-width: $movil) {
+                top: -30vw;
+            }
+            top: -30px;
             width: 100%;
             display: flex;
             justify-content: center;
@@ -736,6 +1009,9 @@ body {
         .perfil-datos {
             text-align: center;
             color: white;
+            .equipo-usuario {
+                color: $main!important;
+            }
         }
         .perfil-opciones {
             button {

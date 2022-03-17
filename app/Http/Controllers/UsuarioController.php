@@ -198,10 +198,11 @@ class UsuarioController extends Controller
             }
             DB::commit();
             session()->flush();
-            return response()->json(array('resultado'=> 'OK'));
+            // return response()->json(array('resultado'=> 'OK'));
+            return redirect("/");
         }catch(\Exception $e){
             DB::rollBack();
-            return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
+            // return response()->json(array('resultado'=> 'NOK: '.$e->getMessage()));
         }
     }
 
